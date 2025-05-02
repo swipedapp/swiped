@@ -1,10 +1,19 @@
+# Crap
 .DS_Store
-.DS_Store
-swiped./.DS_Store
-swiped./.DS_Store
-.DS_Store
-.DS_Store
-swiped./.DS_Store
-.DS_Store
-swiped./Loos Extended Bold.ttf
-swiped./fonts/loos_bold.ttf
+
+# Xcode
+*.pbxuser
+!default.pbxuser
+xcuserdata
+*.xccheckout
+*.xcuserstate
+
+# Carthage
+Carthage/
+
+# Theos
+.theos
+packages/
+
+# Font
+*.ttf
