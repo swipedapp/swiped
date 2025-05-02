@@ -33,14 +33,12 @@ class BehindView: UIView {
 		titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
 
 		continueButton.translatesAutoresizingMaskIntoConstraints = false
-		continueButton.titleLabel!.font = UIFont(name: "LoosExtended-Bold", size: 16)
-		continueButton.setTitle("Keep going", for: .normal)
+		continueButton.setText(text: "Keep going")
 		continueButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		continueButton.tag = Action.continue.rawValue
 		
 		deleteButton.translatesAutoresizingMaskIntoConstraints = false
-		deleteButton.titleLabel!.font = UIFont(name: "LoosExtended-Bold", size: 16)
-		deleteButton.setTitle("Delete", for: .normal)
+		deleteButton.setText(text: "Delete")
 		deleteButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		deleteButton.tag = Action.delete.rawValue
 		

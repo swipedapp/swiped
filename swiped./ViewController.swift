@@ -36,6 +36,10 @@ class ViewController: UIViewController {
 	}
 
 	private func configureNavigationBar() {
+		UIBarButtonItem.appearance().setTitleTextAttributes([
+			.font: UIFont(name: "LoosExtended-Bold", size: 18)!
+		], for: .normal)
+
 		let backButton = UIBarButtonItem(title: "Back",
 																		 style: .plain,
 																		 target: self,

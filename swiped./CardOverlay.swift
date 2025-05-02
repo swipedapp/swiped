@@ -83,7 +83,9 @@ private class CardOverlayLabelView: UIView {
                       left: leftAnchor,
                       bottom: bottomAnchor,
                       right: rightAnchor,
+											paddingTop: -2,
                       paddingLeft: 8,
+											paddingBottom: 2,
                       paddingRight: 3)
   }
 
@@ -95,7 +97,7 @@ private class CardOverlayLabelView: UIView {
 extension NSAttributedString.Key {
 
   static var overlayAttributes: [NSAttributedString.Key: Any] = [
-    NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Bold", size: 42)!,
+    NSAttributedString.Key.font: UIFont(name: "LoosExtended-Bold", size: 42)!,
     NSAttributedString.Key.kern: 5.0
   ]
 }

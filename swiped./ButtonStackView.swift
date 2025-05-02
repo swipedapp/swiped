@@ -38,15 +38,15 @@ class ButtonStackView: UIStackView {
 
 	private func configureButtons() {
 		undoButton.setImage(UIImage(systemName: "arrow.uturn.backward.circle"), for: .normal)
-		undoButton.setTitle("Undo", for: .normal)
+		undoButton.setText(text: "Undo")
 		undoButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		undoButton.tag = Action.undo.rawValue
 		
-		deleteButton.setTitle("Delete", for: .normal)
+		deleteButton.setText(text: "Delete")
 		deleteButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		deleteButton.tag = Action.delete.rawValue
 
-		keepButton.setTitle("Keep", for: .normal)
+		keepButton.setText(text: "Keep")
 		keepButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		keepButton.tag = Action.keep.rawValue
 		
