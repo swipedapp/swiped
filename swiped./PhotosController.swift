@@ -60,8 +60,17 @@ class PhotosController {
 		
 		// Pick a random photo
 		let randomIndex = Int.random(in: 0..<fetchResult.count)
-		let asset = fetchResult.object(at: randomIndex)
+		var asset = fetchResult.object(at: randomIndex)
+		
+		while DatabaseController.shared.getPhoto(id: asset.localIdentifier) != nil {
+			asset = fetchResult.object(at: randomIndex)
+		}
+		
 		card.asset = asset
+		
+		let photo = Photo(id: asset.localIdentifier)
+		//photo.size = asset
+		card.photo = photo
 		
 		// Create thumbnail options
 		let thumbnailOptions = PHImageRequestOptions()
@@ -112,6 +121,10 @@ class PhotosController {
 	}
 	
 	func delete(cards: [PhotoCard]) {
+		for card in cards {
+			DatabaseController.shared.addPhoto(photo: card.photo!)
+		}
+
 		let assets = cards.compactMap { $0.asset }
 		
 		PHPhotoLibrary.shared().performChanges {

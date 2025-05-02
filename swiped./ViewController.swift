@@ -159,10 +159,28 @@ extension ViewController: ButtonStackViewDelegate, SwipeCardStackDataSource, Swi
 
 	func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
 		print("Swiped \(direction)")
+		let card = cards[index]
 		
-		if direction == .left {
+		var choice: Photo.Choice
+		switch direction {
+		case .left:
+			choice = .delete
 			toDelete.append(cards[index])
+			
+		case .right:
+			choice = .keep
+			
+		case .up:
+			choice = .skip
+
+		case .down:
+			fatalError()
 		}
+		
+		let photo = card.photo!
+		photo.choice = choice
+		photo.swipeDate = Date()
+		DatabaseController.shared.addPhoto(photo: photo)
 	}
 
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {

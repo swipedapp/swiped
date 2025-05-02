@@ -9,7 +9,8 @@ import UIKit
 import Photos
 
 class PhotoCard: Equatable {
-	var id: Int
+	let id: Int
+	var photo: Photo?
 	var asset: PHAsset?
 	var thumbnail: UIImage?
 	var fullImage: UIImage?

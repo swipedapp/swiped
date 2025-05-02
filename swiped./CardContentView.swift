@@ -23,7 +23,7 @@ class CardContentView: UIView {
 		shadowView.translatesAutoresizingMaskIntoConstraints = false
 		shadowView.backgroundColor = .secondarySystemBackground
 		shadowView.layer.cornerRadius = 8
-		shadowView.applyShadow(radius: 50, opacity: 0.3, offset: CGSize(width: 0, height: -4))
+		shadowView.applyShadow(radius: 50, opacity: 0.3, offset: CGSize(width: 0, height: 8))
 		addSubview(shadowView)
 		
 		containerView.translatesAutoresizingMaskIntoConstraints = false
