@@ -16,11 +16,11 @@ class DatabaseController {
 
 	private let photos = Table("photos")
 	
-	private let id = Expression<String>("id")
-	private let size = Expression<Double>("size")
-	private let choice = Expression<Int>("choice")
-	private let swipeDate = Expression<TimeInterval>("swipeDate")
-	
+	private let id = SQLite.Expression<String>("id")
+	private let size = SQLite.Expression<Double>("size")
+	private let choice = SQLite.Expression<Int>("choice")
+	private let swipeDate = SQLite.Expression<TimeInterval>("swipeDate")
+
 	private init() {
 		do {
 			let documents = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
@@ -49,7 +49,7 @@ class DatabaseController {
 	}
 	
 	func getPhoto(id photoID: String) -> Photo? {
-		let query = photos.select(id)
+		let query = photos.select(*)
 			.where(id == photoID)
 			.limit(1)
 
