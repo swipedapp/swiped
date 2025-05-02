@@ -53,7 +53,10 @@
 				3269A8B22DC4593200215B83 /* swiped. */,
 				3269A8B12DC4593200215B83 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 1;
 		};
 		3269A8B12DC4593200215B83 /* Products */ = {
 			isa = PBXGroup;
@@ -159,6 +162,7 @@
 				INFOPLIST_FILE = swiped./Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = swiped.;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow us to display photos so you can use the app.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -189,6 +193,7 @@
 				INFOPLIST_FILE = swiped./Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = swiped.;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow us to display photos so you can use the app.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
