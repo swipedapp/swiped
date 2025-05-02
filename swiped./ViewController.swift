@@ -181,7 +181,10 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			fatalError()
 		}
 		
-		let photo = card.photo!
+		guard let photo = card.photo else {
+			return
+		}
+
 		photo.choice = choice
 		photo.swipeDate = Date()
 		DatabaseController.shared.addPhoto(photo: photo)
