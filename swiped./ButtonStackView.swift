@@ -7,19 +7,19 @@
 
 import UIKit
 
-protocol ButtonStackViewDelegate: AnyObject {
-	func didTapButton(button: ActionButton)
-}
-
 class ButtonStackView: UIStackView {
-	
+
 	enum Action: Int {
 		case undo = 1
 		case delete = 2
 		case keep = 3
 	}
-	
-	weak var delegate: ButtonStackViewDelegate?
+
+	protocol Delegate: AnyObject {
+		func didTapButton(action: Action)
+	}
+
+	weak var delegate: Delegate?
 
 	private let undoButton = ActionButton(frame: .zero)
 	private let deleteButton = ActionButton(frame: .zero)
@@ -59,6 +59,7 @@ class ButtonStackView: UIStackView {
 	}
 
 	@objc private func handleTap(_ button: ActionButton) {
-		delegate?.didTapButton(button: button)
+		let action = ButtonStackView.Action(rawValue: button.tag)!
+		delegate?.didTapButton(action: action)
 	}
 }

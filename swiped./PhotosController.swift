@@ -120,13 +120,9 @@ class PhotosController {
 		}
 	}
 	
-	func delete(cards: [PhotoCard]) {
-		for card in cards {
-			DatabaseController.shared.addPhoto(photo: card.photo!)
-		}
-
+	func delete(cards: [PhotoCard], callback: @escaping () -> Void) {
 		let assets = cards.compactMap { $0.asset }
-		
+
 		PHPhotoLibrary.shared().performChanges {
 			PHAssetChangeRequest.deleteAssets(assets as NSFastEnumeration)
 		} completionHandler: { success, error in
@@ -138,6 +134,8 @@ class PhotosController {
 				if !success {
 					self.delegate?.didFail(error: .failedToDelete)
 				}
+
+				callback()
 			}
 		}
 	}

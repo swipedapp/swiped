@@ -7,38 +7,44 @@
 
 import UIKit
 
-protocol BehindViewDelegate: AnyObject {
-	func didTapBehindButton(button: ActionButton)
-}
-
 class BehindView: UIView {
-	
+
 	enum Action: Int {
 		case `continue`
 		case delete
 	}
+
+	protocol Delegate: AnyObject {
+		func didTapBehindButton(action: Action)
+	}
 	
-	weak var delegate: BehindViewDelegate?
-	
+	weak var delegate: Delegate?
+
+	private let titleLabel = UILabel()
 	private let continueButton = ActionButton()
 	private let deleteButton = ActionButton()
-	
+
 	override init(frame: CGRect) {
 		super.init(frame: .zero)
 		
 		translatesAutoresizingMaskIntoConstraints = false
-		
+
+		titleLabel.translatesAutoresizingMaskIntoConstraints = false
+		titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+
 		continueButton.translatesAutoresizingMaskIntoConstraints = false
-		continueButton.setTitle("Continue", for: .normal)
+		continueButton.titleLabel!.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+		continueButton.setTitle("Keep going", for: .normal)
 		continueButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		continueButton.tag = Action.continue.rawValue
 		
 		deleteButton.translatesAutoresizingMaskIntoConstraints = false
+		deleteButton.titleLabel!.font = UIFont.systemFont(ofSize: 16, weight: .medium)
 		deleteButton.setTitle("Delete", for: .normal)
 		deleteButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		deleteButton.tag = Action.delete.rawValue
 		
-		let stackView = UIStackView(arrangedSubviews: [continueButton, deleteButton])
+		let stackView = UIStackView(arrangedSubviews: [titleLabel, continueButton, deleteButton])
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 		stackView.axis = .vertical
 		stackView.alignment = .fill
@@ -63,7 +69,11 @@ class BehindView: UIView {
 	}
 	
 	@objc private func handleTap(_ button: ActionButton) {
-		delegate?.didTapBehindButton(button: button)
+		delegate?.didTapBehindButton(action: Action(rawValue: button.tag)!)
 	}
-	
+
+	func updateCount(count: Int) {
+		titleLabel.text = "Ready to delete \(count) photos?"
+	}
+
 }

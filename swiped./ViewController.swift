@@ -123,7 +123,7 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 	}
 }
 
-extension ViewController: ButtonStackViewDelegate, SwipeCardStackDataSource, SwipeCardStackDelegate, BehindViewDelegate {
+extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, ButtonStackView.Delegate, BehindView.Delegate {
 
 	func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
 		let card = SwipeCard()
@@ -187,30 +187,41 @@ extension ViewController: ButtonStackViewDelegate, SwipeCardStackDataSource, Swi
 		print("Card tapped")
 	}
 
-	func didTapButton(button: ActionButton) {
-		switch ButtonStackView.Action(rawValue: button.tag) {
+	func didTapButton(action: ButtonStackView.Action) {
+		switch action {
 		case .undo:
 			cardStack.undoLastSwipe(animated: true)
 		case .delete:
 			cardStack.swipe(.left, animated: true)
 		case .keep:
 			cardStack.swipe(.right, animated: true)
-		case .none:
-			fatalError()
 		}
 	}
 
-	func didTapBehindButton(button: ActionButton) {
-		switch BehindView.Action(rawValue: button.tag) {
-		case .continue:
-			break
-		case .delete:
-			photosController.delete(cards: toDelete)
-			toDelete.removeAll()
-		case .none:
-			fatalError()
+	func didTapBehindButton(action: BehindView.Action) {
+		let keepGoing = {
+			self.loadBatch()
+
+			self.cardStack.isUserInteractionEnabled = true
+			self.buttonStackView.isUserInteractionEnabled = true
+
+			UIView.animate(withDuration: 0.3) {
+				self.buttonStackView.alpha = 1
+			}
 		}
-		
+
+		switch action {
+		case .continue:
+			keepGoing()
+			break
+
+		case .delete:
+			photosController.delete(cards: toDelete) {
+				self.toDelete.removeAll()
+				keepGoing()
+			}
+		}
+
 		// Release all but the last card from memory
 		let oldCount = cards.count
 		let allButLast = 0..<oldCount - 1
