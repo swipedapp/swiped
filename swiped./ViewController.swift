@@ -193,6 +193,17 @@ extension ViewController: ButtonStackViewDelegate, SwipeCardStackDataSource, Swi
 			fatalError()
 		}
 		
+		// Release all but the last card from memory
+		let oldCount = cards.count
+		let allButLast = 0..<oldCount - 1
+		cards.removeSubrange(allButLast)
+		
+		var indices = [Int]()
+		for i in allButLast {
+			indices.append(i)
+		}
+		cardStack.deleteCards(atIndices: indices)
+
 		loadBatch()
 		
 		cardStack.isUserInteractionEnabled = true

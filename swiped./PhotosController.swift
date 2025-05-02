@@ -71,16 +71,15 @@ class PhotosController {
 		
 		// Create full image options
 		let fullImageOptions = PHImageRequestOptions()
-		fullImageOptions.deliveryMode = .highQualityFormat
-		fullImageOptions.resizeMode = .exact
+		fullImageOptions.deliveryMode = .opportunistic
+		fullImageOptions.resizeMode = .fast
 		fullImageOptions.isSynchronous = false
 		fullImageOptions.isNetworkAccessAllowed = true
 		
 		// Request thumbnail
-		let thumbnailSize = CGSize(width: 1000, height: 1000)
 		PHImageManager.default().requestImage(
 			for: asset,
-			targetSize: thumbnailSize,
+			targetSize: PHImageManagerMaximumSize,
 			contentMode: .aspectFill,
 			options: thumbnailOptions
 		) { thumbnailImage, thumbnailInfo in
@@ -93,7 +92,7 @@ class PhotosController {
 				self.delegate?.didLoadThumbnail(for: card, image: thumbnailImage)
 			}
 		}
-				
+		
 		// Request full quality image asynchronously
 		PHImageManager.default().requestImage(
 			for: asset,
