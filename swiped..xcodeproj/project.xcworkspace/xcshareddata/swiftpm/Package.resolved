@@ -1,0 +1,15 @@
+{
+  "originHash" : "48e733a205c429105488cf3d529ac277eff233804197dcdb2d99ae6270429359",
+  "pins" : [
+    {
+      "identity" : "shuffle",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mac-gallagher/Shuffle",
+      "state" : {
+        "branch" : "master",
+        "revision" : "df246b9cd6b8b5e021b23c80706b4a4571785c1b"
+      }
+    }
+  ],
+  "version" : 3
+}

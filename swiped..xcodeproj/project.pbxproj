@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		32D99B6B2DC45A22003285A5 /* Shuffle in Frameworks */ = {isa = PBXBuildFile; productRef = 32D99B6A2DC45A22003285A5 /* Shuffle */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		3269A8B02DC4593200215B83 /* swiped..app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiped..app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32D99B6B2DC45A22003285A5 /* Shuffle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = swiped.;
 			packageProductDependencies = (
+				32D99B6A2DC45A22003285A5 /* Shuffle */,
 			);
 			productName = swiped.;
 			productReference = 3269A8B02DC4593200215B83 /* swiped..app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = 3269A8A72DC4593200215B83;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				32D99B692DC45A22003285A5 /* XCRemoteSwiftPackageReference "Shuffle" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3269A8B12DC4593200215B83 /* Products */;
 			projectDirPath = "";
@@ -148,6 +157,8 @@
 				DEVELOPMENT_TEAM = LDAP5Z3HV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = swiped./Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = swiped.;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -158,7 +169,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ma.swiped-";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ma.swiped;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -176,6 +187,8 @@
 				DEVELOPMENT_TEAM = LDAP5Z3HV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = swiped./Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = swiped.;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -186,7 +199,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ma.swiped-";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ma.swiped;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -337,6 +350,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		32D99B692DC45A22003285A5 /* XCRemoteSwiftPackageReference "Shuffle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-gallagher/Shuffle";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		32D99B6A2DC45A22003285A5 /* Shuffle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32D99B692DC45A22003285A5 /* XCRemoteSwiftPackageReference "Shuffle" */;
+			productName = Shuffle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3269A8A82DC4593200215B83 /* Project object */;
 }
