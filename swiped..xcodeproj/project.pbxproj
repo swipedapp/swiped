@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		32D99B6B2DC45A22003285A5 /* Shuffle in Frameworks */ = {isa = PBXBuildFile; productRef = 32D99B6A2DC45A22003285A5 /* Shuffle */; };
+		32D99B882DC48324003285A5 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 32D99B872DC48324003285A5 /* SQLite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32D99B882DC48324003285A5 /* SQLite in Frameworks */,
 				32D99B6B2DC45A22003285A5 /* Shuffle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,6 +89,7 @@
 			name = swiped.;
 			packageProductDependencies = (
 				32D99B6A2DC45A22003285A5 /* Shuffle */,
+				32D99B872DC48324003285A5 /* SQLite */,
 			);
 			productName = swiped.;
 			productReference = 3269A8B02DC4593200215B83 /* swiped..app */;
@@ -118,6 +121,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				32D99B692DC45A22003285A5 /* XCRemoteSwiftPackageReference "Shuffle" */,
+				32D99B862DC48324003285A5 /* XCRemoteSwiftPackageReference "SQLite" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3269A8B12DC4593200215B83 /* Products */;
@@ -367,6 +371,14 @@
 				kind = branch;
 			};
 		};
+		32D99B862DC48324003285A5 /* XCRemoteSwiftPackageReference "SQLite" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -374,6 +386,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 32D99B692DC45A22003285A5 /* XCRemoteSwiftPackageReference "Shuffle" */;
 			productName = Shuffle;
+		};
+		32D99B872DC48324003285A5 /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32D99B862DC48324003285A5 /* XCRemoteSwiftPackageReference "SQLite" */;
+			productName = SQLite;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

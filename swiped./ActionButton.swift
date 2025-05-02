@@ -13,7 +13,7 @@ class ActionButton: UIButton {
 		super.init(frame: .zero)
 		
 		var config = UIButton.Configuration.plain()
-		config.baseForegroundColor = .black
+		config.baseForegroundColor = .white
 		configuration = config
 	}
 	

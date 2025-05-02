@@ -27,15 +27,14 @@ class DatabaseController {
 			let path = documents.appendingPathComponent("swiped.sqlite3")
 			db = try Connection(path.path)
 			
-			try db.run(photos.create { t in
+			try db.run(photos.create(ifNotExists: true) { t in
 				t.column(id, primaryKey: true)
 				t.column(size)
 				t.column(choice)
 				t.column(swipeDate)
 			})
 		} catch {
-			print("oh no \(error)")
-			fatalError()
+			fatalError(error.localizedDescription)
 		}
 	}
 	

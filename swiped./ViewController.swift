@@ -20,7 +20,7 @@ class ViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
+		view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
 		buttonStackView.delegate = self
