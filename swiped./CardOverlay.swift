@@ -30,7 +30,7 @@ class CardOverlay: UIView {
 
   private func createLeftOverlay() {
     let leftTextView = CardOverlayLabelView(withTitle: "DELETE",
-																						color: .systemRed,
+																						color: .sampleRed,
 																						rotation: CGFloat.pi / 10)
     addSubview(leftTextView)
     leftTextView.anchor(top: topAnchor,
@@ -41,7 +41,7 @@ class CardOverlay: UIView {
 
   private func createUpOverlay() {
     let upTextView = CardOverlayLabelView(withTitle: "SKIP",
-																					color: .systemBlue,
+																					color: .sampleBlue,
 																					rotation: -CGFloat.pi / 20)
     addSubview(upTextView)
     upTextView.anchor(bottom: bottomAnchor, paddingBottom: 20)
@@ -50,7 +50,7 @@ class CardOverlay: UIView {
 
   private func createRightOverlay() {
 		let rightTextView = CardOverlayLabelView(withTitle: "KEEP",
-																						 color: .systemGreen,
+																						 color: .sampleGreen,
 																						 rotation: -CGFloat.pi / 10)
     addSubview(rightTextView)
     rightTextView.anchor(top: topAnchor,
@@ -101,7 +101,7 @@ extension NSAttributedString.Key {
 }
 
 extension UIColor {
-  static var sampleRed = UIColor(red: 252 / 255, green: 70 / 255, blue: 93 / 255, alpha: 1)
-  static var sampleGreen = UIColor(red: 49 / 255, green: 193 / 255, blue: 109 / 255, alpha: 1)
-  static var sampleBlue = UIColor(red: 52 / 255, green: 154 / 255, blue: 254 / 255, alpha: 1)
+  static var sampleRed = UIColor(red: 300, green: 0 / 255, blue: 0 / 255, alpha: 1)
+  static var sampleGreen = UIColor(red: 0 / 255, green: 300, blue: 0 / 255, alpha: 1)
+  static var sampleBlue = UIColor(red: 0 / 255, green: 0 / 255, blue: 300, alpha: 1)
 }
