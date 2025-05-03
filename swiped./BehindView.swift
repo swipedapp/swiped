@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SQLite
 
 class BehindView: UIView {
 
@@ -30,13 +31,13 @@ class BehindView: UIView {
 		translatesAutoresizingMaskIntoConstraints = false
 
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
-		titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-
-		continueButton.translatesAutoresizingMaskIntoConstraints = false
-		continueButton.setText(text: "Keep going")
-		continueButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
-		continueButton.tag = Action.continue.rawValue
+		titleLabel.font = UIFont(name: "LoosExtended-Bold", size: 16)!
 		
+//		continueButton.translatesAutoresizingMaskIntoConstraints = false
+//		continueButton.setText(text: "Keep going")
+//		continueButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
+//		continueButton.tag = Action.continue.rawValue
+		//titleLabel.text = "Ready to delete photos?"
 		deleteButton.translatesAutoresizingMaskIntoConstraints = false
 		deleteButton.setText(text: "Delete")
 		deleteButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
