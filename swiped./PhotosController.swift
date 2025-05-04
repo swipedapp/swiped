@@ -25,16 +25,14 @@ class PhotosController {
 		
 	weak var delegate: PhotoLoadDelegate?
 		
-	func loadRandomPhoto(for card: PhotoCard) {
+	func loadRandomPhoto(for card: PhotoCard, callback: @escaping (UIImage) -> Void) {
 		// Request permission to access photo library
 		PHPhotoLibrary.requestAuthorization { [weak self] status in
 			guard let self = self else { return }
 			
 			switch status {
-			case .authorized:
-				self.fetchRandomPhoto(for: card)
-			case .limited:
-				self.fetchRandomPhoto(for: card)
+			case .authorized, .limited:
+				self.fetchRandomPhoto(for: card, callback: callback)
 			default:
 				DispatchQueue.main.async {
 					self.delegate?.didFail(error: .noAccessToPhotoLibrary)
@@ -43,7 +41,7 @@ class PhotosController {
 		}
 	}
 		
-	private func fetchRandomPhoto(for card: PhotoCard) {
+	private func fetchRandomPhoto(for card: PhotoCard, callback: @escaping (UIImage) -> Void) {
 		// Create fetch options
 		let fetchOptions = PHFetchOptions()
 		fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
@@ -59,11 +57,12 @@ class PhotosController {
 		}
 		
 		// Pick a random photo
-		let randomIndex = Int.random(in: 0..<fetchResult.count)
-		var asset = fetchResult.object(at: randomIndex)
+		var randomIndex = Int.random(in: 0..<fetchResult.count)
+		var asset = fetchResult.object(at: randomIndex) as PHAsset
 		
 		while DatabaseController.shared.getPhoto(id: asset.localIdentifier) != nil {
-			asset = fetchResult.object(at: randomIndex)
+			randomIndex = Int.random(in: 0..<fetchResult.count)
+			asset = fetchResult.object(at: randomIndex) as PHAsset
 		}
 		
 		card.asset = asset
@@ -88,10 +87,17 @@ class PhotosController {
 		// Request thumbnail
 		PHImageManager.default().requestImage(
 			for: asset,
-			targetSize: PHImageManagerMaximumSize,
+			targetSize: CGSize(width: 200, height: 200),
 			contentMode: .aspectFill,
 			options: thumbnailOptions
 		) { thumbnailImage, thumbnailInfo in
+			print("==================")
+			print("ID: \(asset.localIdentifier)")
+			print("Date: \(asset.creationDate ?? .distantPast)")
+			print("Res: \(asset.pixelWidth)x\(asset.pixelHeight)")
+			print("Type: \(asset.mediaType)")
+			print("Subtypes: \(asset.mediaSubtypes)")
+
 			DispatchQueue.main.async {
 				guard let thumbnailImage = thumbnailImage else {
 					self.delegate?.didFail(error: .failedToFetchPhoto)
@@ -99,6 +105,7 @@ class PhotosController {
 				}
 				
 				self.delegate?.didLoadThumbnail(for: card, image: thumbnailImage)
+				callback(thumbnailImage)
 			}
 		}
 		

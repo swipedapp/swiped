@@ -12,6 +12,7 @@ class CardContentView: UIView {
 	private let shadowView = UIView()
 	private let containerView = UIView()
 	private let imageView = UIImageView()
+	private let spinner = UIActivityIndicatorView(style: .medium)
 	
 	let card: PhotoCard
 
@@ -36,6 +37,10 @@ class CardContentView: UIView {
 		imageView.layer.minificationFilter = .trilinear
 		imageView.layer.magnificationFilter = .trilinear
 		containerView.addSubview(imageView)
+		
+		spinner.translatesAutoresizingMaskIntoConstraints = false
+		spinner.color = .white
+		containerView.addSubview(spinner)
 		
 		NSLayoutConstraint.activate([
 			imageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
@@ -62,6 +67,11 @@ class CardContentView: UIView {
 			shadowView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
 		])
 		
+		NSLayoutConstraint.activate([
+			spinner.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 8),
+			spinner.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8)
+		])
+		
 		updateCard()
   }
 	
@@ -70,6 +80,16 @@ class CardContentView: UIView {
 	}
 	
 	func updateCard() {
+		if let asset = card.asset {
+			dateLabel.text = DateFormatter().
+		}
+		
+		if card.fullImage == nil {
+			spinner.startAnimating()
+		} else {
+			spinner.stopAnimating()
+		}
+		
 		guard let image = card.fullImage ?? card.thumbnail else {
 			imageView.image = nil
 			return

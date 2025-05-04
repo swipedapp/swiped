@@ -91,10 +91,13 @@ class ViewController: UIViewController {
 	
 	private func loadBatch() {
 		for _ in 0..<20 {
-			let card = PhotoCard(id: self.cards.count)
-			self.cards.append(card)
-			self.cardStack.appendCards(atIndices: [card.id])
-			photosController.loadRandomPhoto(for: card)
+			let card = PhotoCard()
+
+			photosController.loadRandomPhoto(for: card) { image in
+				card.id = self.cards.count
+				self.cards.append(card)
+				self.cardStack.appendCards(atIndices: [card.id])
+			}
 		}
 	}
 }
@@ -182,10 +185,6 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		}
 		
 		guard let photo = card.photo else {
-			print("⚠️ App Bugged!! reloading batch")
-			let alert = UIAlertController(title: "Oh Bugger!🪲", message: "swiped. encountered an issue and could not swipe the issue away. please restart the app to continue", preferredStyle: .alert)
-			self.present(alert, animated: true, completion: nil)
-			
 			return
 		}
 
