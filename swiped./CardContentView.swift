@@ -9,6 +9,15 @@ import UIKit
 
 class CardContentView: UIView {
 	
+	private static let dateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateStyle = .medium
+		return dateFormatter
+	}()
+	
+	private let infoView = UIStackView()
+	private let dateLabel = UILabel()
+
 	private let shadowView = UIView()
 	private let containerView = UIView()
 	private let imageView = UIImageView()
@@ -20,6 +29,16 @@ class CardContentView: UIView {
 		self.card = card
 		
 		super.init(frame: .zero)
+		
+//		infoView.translatesAutoresizingMaskIntoConstraints = false
+//		infoView.spacing = 4
+//		infoView.axis = .vertical
+//		infoView.distribution = .fill
+//		addSubview(infoView)
+//		
+//		dateLabel.translatesAutoresizingMaskIntoConstraints = false
+//		dateLabel.font = UIFont(name: "LoosExtended-Bold", size: 24)
+//		infoView.addArrangedSubview(dateLabel)
 		
 		shadowView.translatesAutoresizingMaskIntoConstraints = false
 		shadowView.backgroundColor = .secondarySystemBackground
@@ -39,7 +58,10 @@ class CardContentView: UIView {
 		containerView.addSubview(imageView)
 		
 		spinner.translatesAutoresizingMaskIntoConstraints = false
-		spinner.color = .white
+		spinner.color = .blue
+		spinner.tintColor = .red
+		spinner.hidesWhenStopped = true
+		spinner.startAnimating()
 		containerView.addSubview(spinner)
 		
 		NSLayoutConstraint.activate([
@@ -68,8 +90,10 @@ class CardContentView: UIView {
 		])
 		
 		NSLayoutConstraint.activate([
-			spinner.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 8),
-			spinner.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8)
+			spinner.widthAnchor.constraint(equalToConstant: 24),
+			spinner.heightAnchor.constraint(equalToConstant: 24),
+			spinner.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
+			spinner.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8)
 		])
 		
 		updateCard()
@@ -81,7 +105,7 @@ class CardContentView: UIView {
 	
 	func updateCard() {
 		if let asset = card.asset {
-			dateLabel.text = DateFormatter().
+//			dateLabel.text = Self.dateFormatter.string(from: asset.creationDate ?? .distantPast)
 		}
 		
 		if card.fullImage == nil {
