@@ -45,10 +45,9 @@ class PhotosController {
 		// Create fetch options
 		let fetchOptions = PHFetchOptions()
 		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
-		fetchOptions.predicate = NSPredicate(format: "isHidden == NO AND (mediaType == %d OR mediaType == %d) AND sourceType == %d",
+		fetchOptions.predicate = NSPredicate(format: "isHidden == NO AND (mediaType == %d OR mediaType == %d)",
 																				 PHAssetMediaType.image.rawValue,
-																				 PHAssetMediaType.video.rawValue,
-																				 PHAssetSourceType.typeUserLibrary.rawValue)
+																				 PHAssetMediaType.video.rawValue)
 
 		// Fetch all photos
 		let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
@@ -61,12 +60,21 @@ class PhotosController {
 		}
 		
 		// Pick a random photo
-		var randomIndex = Int.random(in: 0..<fetchResult.count)
-		var asset = fetchResult.object(at: randomIndex) as PHAsset
-		
-		while DatabaseController.shared.getPhoto(id: asset.localIdentifier) != nil {
-			randomIndex = Int.random(in: 0..<fetchResult.count)
+		var asset: PHAsset!
+		while true {
+			let randomIndex = Int.random(in: 0..<fetchResult.count)
 			asset = fetchResult.object(at: randomIndex) as PHAsset
+			
+			if asset.sourceType.contains(.typeCloudShared) || asset.sourceType.contains(.typeiTunesSynced) {
+				continue
+			}
+			
+			if let oldPhoto = DatabaseController.shared.getPhoto(id: asset.localIdentifier),
+				 oldPhoto.choice != .skip {
+				continue
+			}
+			
+			break
 		}
 		
 		card.asset = asset
@@ -95,13 +103,6 @@ class PhotosController {
 			contentMode: .aspectFill,
 			options: thumbnailOptions
 		) { thumbnailImage, thumbnailInfo in
-			print("==================")
-			print("ID: \(asset.localIdentifier)")
-			print("Date: \(asset.creationDate ?? .distantPast)")
-			print("Res: \(asset.pixelWidth)x\(asset.pixelHeight)")
-			print("Type: \(asset.mediaType)")
-			print("Subtypes: \(asset.mediaSubtypes)")
-
 			DispatchQueue.main.async {
 				guard let thumbnailImage = thumbnailImage else {
 					self.delegate?.didFail(error: .failedToFetchPhoto)
