@@ -142,7 +142,8 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 			present(alert, animated: true)
 
 		case .failedToFetchPhoto:
-			// No alert
+			let alert = UIAlertController(title: "Oh Bugger!🪲", message: "We couldn't load your photo library. Please try again later.", preferredStyle: .alert)
+			present(alert, animated: true)
 			break
 		}
 	}
