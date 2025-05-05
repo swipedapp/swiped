@@ -79,7 +79,7 @@ class PhotosController {
 		
 		// Create full image options
 		let fullImageOptions = PHImageRequestOptions()
-		fullImageOptions.deliveryMode = .opportunistic
+		fullImageOptions.deliveryMode = .highQualityFormat
 		fullImageOptions.resizeMode = .fast
 		fullImageOptions.isSynchronous = false
 		fullImageOptions.isNetworkAccessAllowed = true

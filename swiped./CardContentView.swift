@@ -8,15 +8,6 @@
 import UIKit
 
 class CardContentView: UIView {
-	
-	private static let dateFormatter: DateFormatter = {
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateStyle = .medium
-		return dateFormatter
-	}()
-	
-	private let infoView = UIStackView()
-	private let dateLabel = UILabel()
 
 	private let shadowView = UIView()
 	private let containerView = UIView()
@@ -29,16 +20,6 @@ class CardContentView: UIView {
 		self.card = card
 		
 		super.init(frame: .zero)
-		
-//		infoView.translatesAutoresizingMaskIntoConstraints = false
-//		infoView.spacing = 4
-//		infoView.axis = .vertical
-//		infoView.distribution = .fill
-//		addSubview(infoView)
-//		
-//		dateLabel.translatesAutoresizingMaskIntoConstraints = false
-//		dateLabel.font = UIFont(name: "LoosExtended-Bold", size: 24)
-//		infoView.addArrangedSubview(dateLabel)
 		
 		shadowView.translatesAutoresizingMaskIntoConstraints = false
 		shadowView.backgroundColor = .secondarySystemBackground
@@ -58,11 +39,26 @@ class CardContentView: UIView {
 		containerView.addSubview(imageView)
 		
 		spinner.translatesAutoresizingMaskIntoConstraints = false
-		spinner.color = .blue
-		spinner.tintColor = .red
+		spinner.color = .white
 		spinner.hidesWhenStopped = true
 		spinner.startAnimating()
 		containerView.addSubview(spinner)
+		
+		NSLayoutConstraint.activate([
+			containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
+			containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
+			containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 100),
+			containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -60),
+			containerView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -80),
+			containerView.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -160)
+		])
+		
+		NSLayoutConstraint.activate([
+			shadowView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+			shadowView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+			shadowView.topAnchor.constraint(equalTo: containerView.topAnchor),
+			shadowView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+		])
 		
 		NSLayoutConstraint.activate([
 			imageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
@@ -71,22 +67,6 @@ class CardContentView: UIView {
 			imageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
 			imageView.widthAnchor.constraint(equalTo: containerView.widthAnchor),
 			imageView.heightAnchor.constraint(equalTo: containerView.heightAnchor)
-		])
-		
-		NSLayoutConstraint.activate([
-			containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-			containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-			containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
-			containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
-			containerView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -40),
-			containerView.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -40)
-		])
-		
-		NSLayoutConstraint.activate([
-			shadowView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-			shadowView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-			shadowView.topAnchor.constraint(equalTo: containerView.topAnchor),
-			shadowView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
 		])
 		
 		NSLayoutConstraint.activate([
@@ -104,10 +84,6 @@ class CardContentView: UIView {
 	}
 	
 	func updateCard() {
-		if let asset = card.asset {
-//			dateLabel.text = Self.dateFormatter.string(from: asset.creationDate ?? .distantPast)
-		}
-		
 		if card.fullImage == nil {
 			spinner.startAnimating()
 		} else {

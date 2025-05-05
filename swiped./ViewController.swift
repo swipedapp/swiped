@@ -9,9 +9,10 @@ import UIKit
 import Shuffle
 
 class ViewController: UIViewController {
-    
+
 	private let cardStack = SwipeCardStack()
 	private let buttonStackView = ButtonStackView()
+	private let infoView = CardInfoView()
 	private let behindView = BehindView()
 
 	private let photosController = PhotosController()
@@ -29,6 +30,7 @@ class ViewController: UIViewController {
 
 		configureNavigationBar()
 		layoutButtonStackView()
+		layoutInfoView()
 		layoutBehindView()
 		layoutCardStackView()
 		
@@ -75,6 +77,13 @@ class ViewController: UIViewController {
 										 left: view.safeAreaLayoutGuide.leftAnchor,
 										 bottom: buttonStackView.topAnchor,
 										 right: view.safeAreaLayoutGuide.rightAnchor)
+	}
+	
+	private func layoutInfoView() {
+		view.addSubview(infoView)
+		infoView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+										left: view.safeAreaLayoutGuide.leftAnchor,
+										right: view.safeAreaLayoutGuide.rightAnchor)
 	}
 	
 	private func layoutBehindView() {
@@ -191,10 +200,15 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		photo.choice = choice
 		photo.swipeDate = Date()
 		DatabaseController.shared.addPhoto(photo: photo)
+		
+		if cards.count > index {
+			infoView.card = cards[index + 1]
+		}
 	}
 
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
 		print("Card tapped")
+		infoView.card = cards[index]
 	}
 
 	func didTapButton(action: ButtonStackView.Action) {
