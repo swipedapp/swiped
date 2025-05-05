@@ -44,6 +44,8 @@ class PhotosController {
 	private func fetchRandomPhoto(for card: PhotoCard, callback: @escaping (UIImage) -> Void) {
 		// Create fetch options
 		let fetchOptions = PHFetchOptions()
+		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
+		fetchOptions.predicate = NSPredicate(format: "isHidden == NO")
 		fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
 		
 		// Fetch all photos

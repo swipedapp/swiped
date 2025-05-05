@@ -46,7 +46,7 @@ class CardInfoView: UIView {
 		NSLayoutConstraint.activate([
 			infoView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
 			infoView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-			infoView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+			infoView.topAnchor.constraint(equalTo: self.topAnchor, constant: 18),
 			infoView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -40),
 		])
 	}
@@ -93,6 +93,18 @@ class CardInfoView: UIView {
 			}
 			if asset.mediaSubtypes.contains(.videoTimelapse) {
 				types.append("Time Lapse")
+			}
+			if asset.mediaSubtypes.contains(.screenRecording) {
+				types.append("Screen Recording")
+			}
+			if asset.burstIdentifier != nil {
+				types.append("Burst Photo")
+			}
+			if asset.hasAdjustments {
+				types.append("Edited")
+			}
+			if asset.isFavorite {
+				types.append("Favorite")
 			}
 			
 			if types.isEmpty {

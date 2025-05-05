@@ -45,12 +45,12 @@ class CardContentView: UIView {
 		containerView.addSubview(spinner)
 		
 		NSLayoutConstraint.activate([
-			containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
-			containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
+			containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 25),
+			containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -25),
 			containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 100),
-			containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -60),
-			containerView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -80),
-			containerView.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -160)
+			containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30),
+			containerView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -50),
+			containerView.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -130)
 		])
 		
 		NSLayoutConstraint.activate([

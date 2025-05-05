@@ -18,6 +18,7 @@ class ViewController: UIViewController {
 	private let photosController = PhotosController()
 	private var cards = [PhotoCard]()
 	private var toDelete = [PhotoCard]()
+	private var loadingBatch = true
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -38,27 +39,7 @@ class ViewController: UIViewController {
 	}
 
 	private func configureNavigationBar() {
-		UIBarButtonItem.appearance().setTitleTextAttributes([
-			.font: UIFont(name: "LoosExtended-Bold", size: 18)!
-		], for: .normal)
-
-		let backButton = UIBarButtonItem(title: "Back",
-																		 style: .plain,
-																		 target: self,
-																		 action: #selector(handleShift))
-		backButton.tag = 1
-		backButton.tintColor = .lightGray
-		navigationItem.leftBarButtonItem = backButton
-
-		let forwardButton = UIBarButtonItem(title: "Forward",
-																				style: .plain,
-																				target: self,
-																				action: #selector(handleShift))
-		forwardButton.tag = 2
-		forwardButton.tintColor = .lightGray
-		navigationItem.rightBarButtonItem = forwardButton
-
-		navigationController?.navigationBar.layer.zPosition = -1
+		navigationController?.setNavigationBarHidden(true, animated: false)
 	}
 
 	private func layoutButtonStackView() {
@@ -87,18 +68,17 @@ class ViewController: UIViewController {
 	}
 	
 	private func layoutBehindView() {
+		behindView.alpha = 0
 		view.addSubview(behindView)
 		behindView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
 											left: view.safeAreaLayoutGuide.leftAnchor,
 											bottom: buttonStackView.topAnchor,
 											right: view.safeAreaLayoutGuide.rightAnchor)
 	}
-
-	@objc private func handleShift(_ sender: UIButton) {
-		cardStack.shift(withDistance: sender.tag == 1 ? -1 : 1, animated: true)
-	}
 	
 	private func loadBatch() {
+		loadingBatch = true
+
 		for _ in 0..<20 {
 			let card = PhotoCard()
 
@@ -106,6 +86,11 @@ class ViewController: UIViewController {
 				card.id = self.cards.count
 				self.cards.append(card)
 				self.cardStack.appendCards(atIndices: [card.id])
+				
+				if self.loadingBatch {
+					self.loadingBatch = false
+					self.infoView.card = card
+				}
 			}
 		}
 	}
@@ -165,6 +150,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		buttonStackView.isUserInteractionEnabled = false
 		
 		UIView.animate(withDuration: 0.3) {
+			self.infoView.alpha = 0
+			self.behindView.alpha = 1
 			self.buttonStackView.alpha = 0
 		}
 	}
@@ -201,14 +188,13 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		photo.swipeDate = Date()
 		DatabaseController.shared.addPhoto(photo: photo)
 		
-		if cards.count > index {
+		if index < cards.count - 1 {
 			infoView.card = cards[index + 1]
 		}
 	}
 
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
 		print("Card tapped")
-		infoView.card = cards[index]
 	}
 
 	func didTapButton(action: ButtonStackView.Action) {
@@ -263,6 +249,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		buttonStackView.isUserInteractionEnabled = true
 		
 		UIView.animate(withDuration: 0.3) {
+			self.infoView.alpha = 1
+			self.behindView.alpha = 0
 			self.buttonStackView.alpha = 1
 		}
 	}
