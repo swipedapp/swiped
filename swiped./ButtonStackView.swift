@@ -37,7 +37,6 @@ class ButtonStackView: UIStackView {
 	}
 
 	private func configureButtons() {
-		undoButton.setImage(UIImage(systemName: "arrow.uturn.backward.circle"), for: .normal)
 		undoButton.setText(text: "Undo")
 		undoButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		undoButton.tag = Action.undo.rawValue

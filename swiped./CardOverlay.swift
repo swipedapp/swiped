@@ -40,7 +40,7 @@ class CardOverlay: UIView {
   }
 
   private func createUpOverlay() {
-    let upTextView = CardOverlayLabelView(withTitle: "SKIP",
+    let upTextView = CardOverlayLabelView(withTitle: "SHARE",
 																					color: .sampleBlue,
 																					rotation: -CGFloat.pi / 20)
     addSubview(upTextView)

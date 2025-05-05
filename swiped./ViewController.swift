@@ -7,6 +7,8 @@
 
 import UIKit
 import Shuffle
+import QuickLook
+import StoreKit
 
 class ViewController: UIViewController {
 
@@ -19,6 +21,9 @@ class ViewController: UIViewController {
 	private var cards = [PhotoCard]()
 	private var toDelete = [PhotoCard]()
 	private var loadingBatch = true
+	private var batchesLoaded = 0
+	
+	private var previewItem: URL?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -78,6 +83,7 @@ class ViewController: UIViewController {
 	
 	private func loadBatch() {
 		loadingBatch = true
+		batchesLoaded += 1
 
 		for _ in 0..<20 {
 			let card = PhotoCard()
@@ -188,6 +194,13 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		photo.swipeDate = Date()
 		DatabaseController.shared.addPhoto(photo: photo)
 		
+		if direction == .up {
+			if let image = card.fullImage ?? card.thumbnail {
+				let shareSheet = UIActivityViewController(activityItems: [image], applicationActivities: [])
+				present(shareSheet, animated: true)
+			}
+		}
+		
 		if index < cards.count - 1 {
 			infoView.card = cards[index + 1]
 		}
@@ -195,6 +208,22 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
 		print("Card tapped")
+		
+		do {
+			let card = cards[index]
+			if let data = card.fullImage?.pngData() {
+				let temp = FileManager.default.temporaryDirectory.appendingPathComponent("image.png")
+				try data.write(to: temp)
+				previewItem = temp
+			}
+			
+			let quickLook = QLPreviewController()
+			quickLook.delegate = self
+			quickLook.dataSource = self
+			present(quickLook, animated: true)
+		} catch {
+			print("Error in quick look \(error.localizedDescription)")
+		}
 	}
 
 	func didTapButton(action: ButtonStackView.Action) {
@@ -214,9 +243,16 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 
 			self.cardStack.isUserInteractionEnabled = true
 			self.buttonStackView.isUserInteractionEnabled = true
-
+			
 			UIView.animate(withDuration: 0.3) {
+				self.infoView.alpha = 1
+				self.behindView.alpha = 0
 				self.buttonStackView.alpha = 1
+			}
+			
+			if self.batchesLoaded == 4 && !UserDefaults.standard.bool(forKey: "requestedReview") {
+				UserDefaults.standard.set(true, forKey: "requestedReview")
+				AppStore.requestReview(in: self.view.window!.windowScene!)
 			}
 		}
 
@@ -244,15 +280,23 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		cardStack.deleteCards(atIndices: indices)
 
 		loadBatch()
-		
-		cardStack.isUserInteractionEnabled = true
-		buttonStackView.isUserInteractionEnabled = true
-		
-		UIView.animate(withDuration: 0.3) {
-			self.infoView.alpha = 1
-			self.behindView.alpha = 0
-			self.buttonStackView.alpha = 1
-		}
 	}
 	
+}
+
+extension ViewController: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
+	func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+		return 1
+	}
+	
+	func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> any QLPreviewItem {
+		return previewItem! as QLPreviewItem
+	}
+	
+	func previewControllerWillDismiss(_ controller: QLPreviewController) {
+		if let previewItem = previewItem {
+			try? FileManager.default.removeItem(at: previewItem)
+			self.previewItem = nil
+		}
+	}
 }
