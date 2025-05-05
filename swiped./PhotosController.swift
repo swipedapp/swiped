@@ -45,12 +45,11 @@ class PhotosController {
 		// Create fetch options
 		let fetchOptions = PHFetchOptions()
 		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
-		fetchOptions.predicate = NSPredicate(format: "isHidden == NO")
-		fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-		
+		fetchOptions.predicate = NSPredicate(format: "isHidden == NO AND (mediaType == %d OR mediaType == %d)", PHAssetMediaType.image.rawValue, PHAssetMediaType.video.rawValue)
+
 		// Fetch all photos
-		let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
-		
+		let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
+
 		guard fetchResult.count > 0 else {
 			DispatchQueue.main.async {
 				self.delegate?.didFail(error: .noPhotosAvailable)
