@@ -126,7 +126,25 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 	}
 	
 	func didFail(error: PhotosController.PhotoError) {
-		print("oh poop \(error)")
+		print("Photo controller error: \(error.localizedDescription)")
+
+		switch error {
+		case .noAccessToPhotoLibrary, .noPhotosAvailable:
+			let alert = UIAlertController(title: "No Photos!", message: "Your Photos library is empty, or you limited access.", preferredStyle: .alert)
+			alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { _ in
+				UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+			}))
+			present(alert, animated: true)
+
+		case .failedToDelete:
+			let alert = UIAlertController(title: "Failed to delete photo", message: nil, preferredStyle: .alert)
+			alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+			present(alert, animated: true)
+
+		case .failedToFetchPhoto:
+			// No alert
+			break
+		}
 	}
 }
 
@@ -212,15 +230,15 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		do {
 			let card = cards[index]
 			if let data = card.fullImage?.pngData() {
-				let temp = FileManager.default.temporaryDirectory.appendingPathComponent("image.png")
+				let temp = FileManager.default.temporaryDirectory.appendingPathComponent("Photo.png")
 				try data.write(to: temp)
 				previewItem = temp
+
+				let quickLook = QLPreviewController()
+				quickLook.delegate = self
+				quickLook.dataSource = self
+				present(quickLook, animated: true)
 			}
-			
-			let quickLook = QLPreviewController()
-			quickLook.delegate = self
-			quickLook.dataSource = self
-			present(quickLook, animated: true)
 		} catch {
 			print("Error in quick look \(error.localizedDescription)")
 		}

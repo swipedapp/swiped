@@ -191,6 +191,8 @@ class CardInfoView: UIView {
 
 				if fileName.starts(with: "telegram-") {
 					types.append("Saved from Telegram")
+				} else if !fileName.starts(with: "IMG_") {
+					types.append("Imported")
 				}
 			}
 
