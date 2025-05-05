@@ -12,6 +12,7 @@ class CardContentView: UIView {
 	private let shadowView = UIView()
 	private let containerView = UIView()
 	private let imageView = UIImageView()
+	private let playImageView = UIImageView()
 	private let spinner = UIActivityIndicatorView(style: .medium)
 	
 	let card: PhotoCard
@@ -37,6 +38,11 @@ class CardContentView: UIView {
 		imageView.layer.minificationFilter = .trilinear
 		imageView.layer.magnificationFilter = .trilinear
 		containerView.addSubview(imageView)
+		
+		playImageView.translatesAutoresizingMaskIntoConstraints = false
+		playImageView.image = UIImage(systemName: "play.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 48))
+		playImageView.tintColor = .white
+		containerView.addSubview(playImageView)
 		
 		spinner.translatesAutoresizingMaskIntoConstraints = false
 		spinner.color = .white
@@ -70,6 +76,11 @@ class CardContentView: UIView {
 		])
 		
 		NSLayoutConstraint.activate([
+			imageView.centerXAnchor.constraint(equalTo: playImageView.centerXAnchor),
+			imageView.centerYAnchor.constraint(equalTo: playImageView.centerYAnchor),
+		])
+		
+		NSLayoutConstraint.activate([
 			spinner.widthAnchor.constraint(equalToConstant: 24),
 			spinner.heightAnchor.constraint(equalToConstant: 24),
 			spinner.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
@@ -99,6 +110,13 @@ class CardContentView: UIView {
 		
 		let isLandscape = image.size.width > image.size.height
 		imageView.contentMode = isLandscape ? .scaleAspectFit : .scaleAspectFill
+		
+		guard let asset = card.asset else {
+			playImageView.isHidden = true
+			return
+		}
+
+		playImageView.isHidden = asset.mediaType != .video
 	}
 	
 }

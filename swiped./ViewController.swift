@@ -9,6 +9,7 @@ import UIKit
 import Shuffle
 import QuickLook
 import StoreKit
+import AVKit
 
 class ViewController: UIViewController {
 
@@ -230,15 +231,27 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		
 		do {
 			let card = cards[index]
-			if let data = card.fullImage?.pngData() {
-				let temp = FileManager.default.temporaryDirectory.appendingPathComponent("Photo.png")
-				try data.write(to: temp)
-				previewItem = temp
-
-				let quickLook = QLPreviewController()
-				quickLook.delegate = self
-				quickLook.dataSource = self
-				present(quickLook, animated: true)
+			if let asset = card.asset {
+				if asset.mediaType == .video {
+					let playerViewController = AVPlayerViewController()
+					present(playerViewController, animated: true)
+					photosController.getVideoPlayer(asset: asset) { player in
+						playerViewController.player = player
+						try? AVAudioSession.sharedInstance().setCategory(.playback)
+						player.play()
+					}
+				} else {
+					if let data = card.fullImage?.pngData() {
+						let temp = FileManager.default.temporaryDirectory.appendingPathComponent("Photo.png")
+						try data.write(to: temp)
+						previewItem = temp
+						
+						let quickLook = QLPreviewController()
+						quickLook.delegate = self
+						quickLook.dataSource = self
+						present(quickLook, animated: true)
+					}
+				}
 			}
 		} catch {
 			print("Error in quick look \(error.localizedDescription)")

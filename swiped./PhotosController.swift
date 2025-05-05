@@ -151,4 +151,16 @@ class PhotosController {
 			}
 		}
 	}
+	
+	func getVideoPlayer(asset: PHAsset, callback: @escaping (AVPlayer) -> Void) {
+		let fullVideoOptions = PHVideoRequestOptions()
+		fullVideoOptions.deliveryMode = .automatic
+		fullVideoOptions.isNetworkAccessAllowed = true
+
+		PHCachingImageManager().requestPlayerItem(forVideo: asset, options: fullVideoOptions) { playerItem, args in
+			DispatchQueue.main.async {
+				callback(AVPlayer(playerItem: playerItem))
+			}
+		}
+	}
 }
