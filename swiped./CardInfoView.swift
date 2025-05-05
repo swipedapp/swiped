@@ -133,8 +133,8 @@ class CardInfoView: UIView {
 				types.append("Panorama")
 			}
 			if asset.mediaSubtypes.contains(.photoDepthEffect) {
-				types.append("Portrait")
-				icon = "person.crop.square"
+				types.append("Depth Effect")
+				icon = "person.and.background.dotted"
 			}
 			if asset.mediaSubtypes.contains(.spatialMedia) {
 				types.append("Spatial Media")
@@ -191,7 +191,7 @@ class CardInfoView: UIView {
 
 				if fileName.starts(with: "telegram-") {
 					types.append("Saved from Telegram")
-				} else if !fileName.starts(with: "IMG_") {
+				} else if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
 					types.append("Imported")
 				}
 			}
