@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Photos
 
 class Photo {
 	enum Choice: Int {
@@ -16,8 +17,10 @@ class Photo {
 	}
 
 	let id: String
+	var type: PHAssetMediaType = .unknown
 	var size: Double = 0
 	var choice: Choice = .none
+	var creationDate: Date?
 	var swipeDate: Date?
 	
 	init(id: String) {

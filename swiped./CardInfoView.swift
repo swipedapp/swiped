@@ -11,15 +11,25 @@ import UniformTypeIdentifiers
 
 class CardInfoView: UIView {
 	
+	protocol Delegate: AnyObject {
+		func share()
+	}
+	
+	weak var delegate: Delegate?
+	
 	private static let dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateStyle = .medium
 		return dateFormatter
 	}()
+	
+	private static let fileSizeFormatter = ByteCountFormatter()
 
 	private let infoView = UIStackView()
 	private let dateLabel = UILabel()
 	private let subLabel = UILabel()
+	
+	private let shareButton = UIButton()
 
 	private let typeIcon = UIImageView()
 	private let editedIcon = UIImageView()
@@ -40,10 +50,25 @@ class CardInfoView: UIView {
 		infoView.distribution = .fill
 		addSubview(infoView)
 		
+		let titleView = UIStackView()
+		titleView.translatesAutoresizingMaskIntoConstraints = false
+		titleView.spacing = 8
+		titleView.axis = .horizontal
+		titleView.distribution = .fill
+		titleView.alignment = .lastBaseline
+		infoView.addArrangedSubview(titleView)
+		
 		dateLabel.translatesAutoresizingMaskIntoConstraints = false
 		dateLabel.font = UIFont(name: "LoosExtended-Bold", size: 24)
 		dateLabel.textColor = .white
-		infoView.addArrangedSubview(dateLabel)
+		titleView.addArrangedSubview(dateLabel)
+		
+		var buttonConfig = UIButton.Configuration.plain()
+		buttonConfig.image = UIImage(systemName: "square.and.arrow.up", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18, weight: .bold)))
+		shareButton.configuration = buttonConfig
+		shareButton.accessibilityLabel = "Share"
+		shareButton.addTarget(self, action: #selector(share), for: .touchUpInside)
+		titleView.addArrangedSubview(shareButton)
 
 		let subView = UIStackView()
 		subView.translatesAutoresizingMaskIntoConstraints = false
@@ -78,12 +103,15 @@ class CardInfoView: UIView {
 			infoView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
 			infoView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
 			infoView.topAnchor.constraint(equalTo: self.topAnchor, constant: 18),
+			infoView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 18),
 			infoView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -40),
-
+			
+			shareButton.heightAnchor.constraint(equalToConstant: 44),
 			typeIcon.heightAnchor.constraint(equalToConstant: 20),
 			editedIcon.heightAnchor.constraint(equalToConstant: 20),
 			heartIcon.heightAnchor.constraint(equalToConstant: 20),
 
+			shareButton.widthAnchor.constraint(equalTo: shareButton.heightAnchor),
 			typeIcon.widthAnchor.constraint(equalTo: typeIcon.heightAnchor),
 			editedIcon.widthAnchor.constraint(equalTo: editedIcon.heightAnchor),
 			heartIcon.widthAnchor.constraint(equalTo: heartIcon.heightAnchor),
@@ -195,12 +223,18 @@ class CardInfoView: UIView {
 					types.append("Imported")
 				}
 			}
+			
+			types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(card.photo?.size ?? 0)))
 
 			subLabel.text = types.joined(separator: ", ")
 			typeIcon.image = UIImage(systemName: icon)
 			editedIcon.isHidden = !asset.hasAdjustments
 			heartIcon.isHidden = !asset.isFavorite
 		}
+	}
+	
+	@objc func share() {
+		delegate?.share()
 	}
 
 }

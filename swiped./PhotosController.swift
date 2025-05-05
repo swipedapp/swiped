@@ -80,8 +80,18 @@ class PhotosController {
 		card.asset = asset
 		
 		let photo = Photo(id: asset.localIdentifier)
-		//photo.size = asset
+		photo.creationDate = asset.creationDate
+		photo.type = asset.mediaType
+
 		card.photo = photo
+		
+		let resources = PHAssetResource.assetResources(for: asset)
+		var size = 0.0
+		for resource in resources {
+			size += resource.value(forKey: "fileSize") as? Double ?? 0
+		}
+		
+		photo.size = size
 		
 		// Create thumbnail options
 		let thumbnailOptions = PHImageRequestOptions()

@@ -32,6 +32,7 @@ class ViewController: UIViewController {
 		cardStack.delegate = self
 		cardStack.dataSource = self
 		buttonStackView.delegate = self
+		infoView.delegate = self
 		behindView.delegate = self
 		photosController.delegate = self
 
@@ -60,7 +61,7 @@ class ViewController: UIViewController {
 
 	private func layoutCardStackView() {
 		view.addSubview(cardStack)
-		cardStack.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+		cardStack.anchor(top: infoView.bottomAnchor,
 										 left: view.safeAreaLayoutGuide.leftAnchor,
 										 bottom: buttonStackView.topAnchor,
 										 right: view.safeAreaLayoutGuide.rightAnchor)
@@ -96,10 +97,15 @@ class ViewController: UIViewController {
 				
 				if self.loadingBatch {
 					self.loadingBatch = false
-					self.infoView.card = card
+					self.updateCurrentItem()
 				}
 			}
 		}
+	}
+	
+	private func updateCurrentItem() {
+		let index = cardStack.topCardIndex ?? 0
+		infoView.card = cards[index]
 	}
 }
 
@@ -150,12 +156,12 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 	}
 }
 
-extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, ButtonStackView.Delegate, BehindView.Delegate {
+extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, ButtonStackView.Delegate, BehindView.Delegate, CardInfoView.Delegate {
 
 	func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
 		let card = SwipeCard()
 		card.footerHeight = 80
-		card.swipeDirections = [.left, .up, .right]
+		card.swipeDirections = [.left, .right]
 		for direction in card.swipeDirections {
 			card.setOverlay(CardOverlay(direction: direction), forDirection: direction)
 		}
@@ -184,6 +190,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 
 	func cardStack(_ cardStack: SwipeCardStack, didUndoCardAt index: Int, from direction: SwipeDirection) {
 		print("Undo")
+		updateCurrentItem()
 	}
 
 	func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
@@ -221,9 +228,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			}
 		}
 		
-		if index < cards.count - 1 {
-			infoView.card = cards[index + 1]
-		}
+		updateCurrentItem()
 	}
 
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
@@ -312,6 +317,16 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		cardStack.deleteCards(atIndices: indices)
 
 		loadBatch()
+	}
+	
+	func share() {
+		print("Share")
+		let card = cards[cardStack.topCardIndex ?? 0]
+		
+		if let image = card.fullImage ?? card.thumbnail {
+			let shareSheet = UIActivityViewController(activityItems: [image], applicationActivities: [])
+			present(shareSheet, animated: true)
+		}
 	}
 	
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import SQLite
+import Photos
 
 class DatabaseController {
 
@@ -17,8 +18,10 @@ class DatabaseController {
 	private let photos = Table("photos")
 	
 	private let id = SQLite.Expression<String>("id")
+	private let type = SQLite.Expression<Int>("type")
 	private let size = SQLite.Expression<Double>("size")
 	private let choice = SQLite.Expression<Int>("choice")
+	private let creationDate = SQLite.Expression<TimeInterval>("creationDate")
 	private let swipeDate = SQLite.Expression<TimeInterval>("swipeDate")
 
 	private init() {
@@ -29,8 +32,10 @@ class DatabaseController {
 			
 			try db.run(photos.create(ifNotExists: true) { t in
 				t.column(id, primaryKey: true)
+				t.column(type)
 				t.column(size)
 				t.column(choice)
+				t.column(creationDate)
 				t.column(swipeDate)
 			})
 		} catch {
@@ -42,8 +47,10 @@ class DatabaseController {
 		try! db.run(photos.insert(
 			or: .replace,
 			id <- photo.id,
+			type <- photo.type.rawValue,
 			size <- photo.size,
 			choice <- photo.choice.rawValue,
+			creationDate <- photo.creationDate?.timeIntervalSince1970 ?? 0,
 			swipeDate <- photo.swipeDate?.timeIntervalSince1970 ?? 0
 		))
 	}
@@ -58,8 +65,10 @@ class DatabaseController {
 		}
 		
 		let photo = Photo(id: row[id])
+		photo.type = PHAssetMediaType(rawValue: row[type]) ?? .unknown
 		photo.size = row[size]
 		photo.choice = Photo.Choice(rawValue: row[choice])!
+		photo.creationDate = Date(timeIntervalSince1970: row[creationDate])
 		photo.swipeDate = Date(timeIntervalSince1970: row[swipeDate])
 		return photo
 	}

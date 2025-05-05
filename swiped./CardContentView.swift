@@ -53,10 +53,10 @@ class CardContentView: UIView {
 		NSLayoutConstraint.activate([
 			containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 25),
 			containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -25),
-			containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 100),
+			containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 30),
 			containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30),
 			containerView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -50),
-			containerView.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -130)
+			containerView.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -60)
 		])
 		
 		NSLayoutConstraint.activate([
