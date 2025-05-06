@@ -149,8 +149,20 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 			present(alert, animated: true)
 
 		case .failedToFetchPhoto:
-			let alert = UIAlertController(title: "Oh Bugger!🪲", message: "We couldn't load your photo library. Please try again later.", preferredStyle: .alert)
-			present(alert, animated: true)
+			let idiom = UIDevice.current.userInterfaceIdiom
+			
+			if idiom == .phone {
+				let alert = UIAlertController(title: "Oh Bugger!🪲", message: "We couldn't load your photo library. Please try again later.", preferredStyle: .alert)
+				present(alert, animated: true)
+			} else if idiom == .pad {
+				let alert = UIAlertController(title: "swiped is not yet supported on this device.", message: "", preferredStyle: .alert)
+				present(alert, animated: true)
+			} else {
+				// It's something else
+			}
+			/*
+
+			 */
 			break
 		}
 	}

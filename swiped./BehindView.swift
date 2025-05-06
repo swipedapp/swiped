@@ -37,7 +37,7 @@ class BehindView: UIView {
 //		continueButton.setText(text: "Keep going")
 //		continueButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 //		continueButton.tag = Action.continue.rawValue
-		titleLabel.text = "Ready to delete photos?"
+		//titleLabel.text = "Ready to delete photos?"
 		deleteButton.translatesAutoresizingMaskIntoConstraints = false
 		deleteButton.setText(text: "Delete")
 		deleteButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
