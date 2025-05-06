@@ -41,7 +41,7 @@ class CardInfoView: UIView {
 
 	init() {
 		super.init(frame: .zero)
-
+		dateLabel.text = "SWIPED."
 		tintColor = .white
 
 		infoView.translatesAutoresizingMaskIntoConstraints = false
