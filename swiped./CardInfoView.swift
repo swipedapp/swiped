@@ -41,7 +41,7 @@ class CardInfoView: UIView {
 
 	init() {
 		super.init(frame: .zero)
-		setSwipedText()
+		setSwipedText(summary: false)
 		tintColor = .white
 
 		infoView.translatesAutoresizingMaskIntoConstraints = false
@@ -122,7 +122,7 @@ class CardInfoView: UIView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func setSwipedText() {
+	func setSwipedText(summary: Bool) {
 		let fullText = "SWIPED."
 		let attributedString = NSMutableAttributedString(string: fullText)
 		let mainTextRange = NSRange(location: 0, length: fullText.count - 1)
@@ -131,8 +131,8 @@ class CardInfoView: UIView {
 		attributedString.addAttribute(.foregroundColor, value: UIColor.green, range: periodRange)
 		dateLabel.attributedText = attributedString
 
-		subLabel.text = ""
-		typeIcon.image = nil
+		subLabel.text = summary ? "Summary" : ""
+		typeIcon.isHidden = true
 		editedIcon.isHidden = true
 		heartIcon.isHidden = true
 		shareButton.isHidden = true
@@ -246,6 +246,7 @@ class CardInfoView: UIView {
 			editedIcon.isHidden = !asset.hasAdjustments
 			heartIcon.isHidden = !asset.isFavorite
 			shareButton.isHidden = false
+			typeIcon.isHidden = false
 		}
 	}
 	

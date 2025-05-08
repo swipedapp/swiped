@@ -238,7 +238,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		
 		cardStack.isUserInteractionEnabled = false
 		buttonStackView.isUserInteractionEnabled = false
-		infoView.setSwipedText()
+		infoView.setSwipedText(summary: true)
 		behindView.updateCount()
 		
 		UIView.animate(withDuration: 0.3) {
