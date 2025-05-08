@@ -121,7 +121,8 @@ class CardInfoView: UIView {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	private func setSwipedText() {
+	
+	func setSwipedText() {
 		let fullText = "SWIPED."
 		let attributedString = NSMutableAttributedString(string: fullText)
 		let mainTextRange = NSRange(location: 0, length: fullText.count - 1)
@@ -130,6 +131,7 @@ class CardInfoView: UIView {
 		attributedString.addAttribute(.foregroundColor, value: UIColor.green, range: periodRange)
 		dateLabel.attributedText = attributedString
 	}
+	
 	func updateCard() {
 		guard let card = card else {
 			return
