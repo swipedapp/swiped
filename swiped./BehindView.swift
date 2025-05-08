@@ -19,6 +19,8 @@ class BehindView: UIView {
 		func didTapBehindButton(action: Action)
 	}
 	
+	private static let fileSizeFormatter = ByteCountFormatter()
+	
 	weak var delegate: Delegate?
 
 	private let keepLabel = UILabel()
@@ -44,7 +46,7 @@ class BehindView: UIView {
 		savedLabel.textAlignment = .center
 		
 		deleteButton.translatesAutoresizingMaskIntoConstraints = false
-		deleteButton.setText(text: "Continue", color: .sampleGreen)
+		deleteButton.setText(text: "Continue", color: .green)
 		deleteButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		deleteButton.tag = Action.delete.rawValue
 		
@@ -78,9 +80,9 @@ class BehindView: UIView {
 
 	func updateCount() {
 		let db = DatabaseController.shared
-		keepLabel.text = "Kept: \(db.getTotalKept()) photos"
-		deletedLabel.text = "Deleted: \(db.getTotalDeleted()) photos"
-		savedLabel.text = "Space saved: 69.6 MB"
+		keepLabel.text = "Kept: \(db.getTotalKept().formatted()) photos"
+		deletedLabel.text = "Deleted: \(db.getTotalDeleted().formatted()) photos"
+		savedLabel.text = "Space saved: \(Self.fileSizeFormatter.string(fromByteCount: Int64(db.getSpaceSaved())))"
 	}
 
 }
