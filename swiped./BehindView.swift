@@ -39,7 +39,7 @@ class BehindView: UIView {
 //		continueButton.tag = Action.continue.rawValue
 		//titleLabel.text = "Ready to delete photos?"
 		deleteButton.translatesAutoresizingMaskIntoConstraints = false
-		deleteButton.setText(text: "Delete")
+		deleteButton.setText(text: "Continue")
 		deleteButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		deleteButton.tag = Action.delete.rawValue
 		

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "SWIPED.jpg",
+      "filename" : "swiped_app_v2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "swiped_app_dark.png",
+      "filename" : "swiped_app_dark_v2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

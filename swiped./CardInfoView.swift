@@ -41,7 +41,7 @@ class CardInfoView: UIView {
 
 	init() {
 		super.init(frame: .zero)
-		dateLabel.text = "SWIPED."
+		setSwipedText()
 		tintColor = .white
 
 		infoView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +60,7 @@ class CardInfoView: UIView {
 		
 		dateLabel.translatesAutoresizingMaskIntoConstraints = false
 		dateLabel.font = UIFont(name: "LoosExtended-Bold", size: 24)
-		dateLabel.textColor = .white
+		//dateLabel.textColor = .white
 		titleView.addArrangedSubview(dateLabel)
 		
 		var buttonConfig = UIButton.Configuration.plain()
@@ -121,18 +121,25 @@ class CardInfoView: UIView {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
+	private func setSwipedText() {
+		let fullText = "SWIPED."
+		let attributedString = NSMutableAttributedString(string: fullText)
+		let mainTextRange = NSRange(location: 0, length: fullText.count - 1)
+		attributedString.addAttribute(.foregroundColor, value: UIColor.white, range: mainTextRange)
+		let periodRange = NSRange(location: fullText.count - 1, length: 1)
+		attributedString.addAttribute(.foregroundColor, value: UIColor.green, range: periodRange)
+		dateLabel.attributedText = attributedString
+	}
 	func updateCard() {
 		guard let card = card else {
 			return
 		}
-
+		
 		if let asset = card.asset {
 			dateLabel.text = Self.dateFormatter.string(from: asset.creationDate ?? .distantPast)
-			
 			var types = [String]()
 			var icon: String
-
+			
 			switch asset.mediaType {
 			case .image:
 				icon = "photo"
@@ -145,7 +152,7 @@ class CardInfoView: UIView {
 			@unknown default:
 				icon = "questionmark.circle"
 			}
-
+			
 			if asset.mediaSubtypes.contains(.photoScreenshot) {
 				types.append("Screenshot")
 				icon = "camera.viewfinder"
@@ -192,7 +199,7 @@ class CardInfoView: UIView {
 				types.append("Burst Photo")
 				icon = "square.stack.3d.down.forward"
 			}
-
+			
 			if types.isEmpty {
 				switch asset.mediaType {
 				case .image:
@@ -207,16 +214,16 @@ class CardInfoView: UIView {
 					types.append("Unknown")
 				}
 			}
-
+			
 			let resources = PHAssetResource.assetResources(for: asset)
-
+			
 			if resources.contains(where: { UTType($0.uniformTypeIdentifier)?.conforms(to: UTType.rawImage) == true }) {
 				types.append("RAW")
 			}
-
+			
 			if let resource = resources.first {
 				let fileName = resource.originalFilename
-
+				
 				if fileName.starts(with: "telegram-") {
 					types.append("Saved from Telegram")
 				} else if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
@@ -225,7 +232,7 @@ class CardInfoView: UIView {
 			}
 			
 			types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(card.photo?.size ?? 0)))
-
+			
 			subLabel.text = types.joined(separator: ", ")
 			typeIcon.image = UIImage(systemName: icon)
 			editedIcon.isHidden = !asset.hasAdjustments

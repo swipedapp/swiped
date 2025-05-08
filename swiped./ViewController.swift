@@ -28,6 +28,7 @@ class ViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		fetchAlert()
 		view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
@@ -107,6 +108,52 @@ class ViewController: UIViewController {
 		let index = cardStack.topCardIndex ?? 0
 		infoView.card = cards[index]
 	}
+
+	private func fetchAlert() {
+		let url = URL(string: "https://swiped.missaustraliana.net/conf.json")!
+
+		let task = URLSession.shared.dataTask(with: url) { data, response, error in
+			if let error = error {
+				print("Error: \(error.localizedDescription)")
+				return
+			}
+			
+			guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+				print("Server error: Invalid response")
+				return
+			}
+			
+			guard let data = data else {
+				print("Error: No data received")
+				return
+			}
+			
+			guard let json = try? JSONDecoder().decode(SettingsJson.self, from: data) else {
+				print("Error: JSON decode failed")
+				return
+			}
+			
+			if !json.isAlertEnabled {
+				return
+			}
+			
+			DispatchQueue.main.async {
+				let alert = UIAlertController(title: json.alertTitle, message: json.alertContents, preferredStyle: .alert)
+				
+				if let buttonText = json.alertButtonText {
+					alert.addAction(UIAlertAction(title: buttonText, style: .default, handler: { _ in
+						if let buttonURL = json.alertButtonURL,
+							 let url = URL(string: buttonURL) {
+							UIApplication.shared.open(url)
+						}
+					}))
+				}
+				
+				self.present(alert, animated: true)
+			}
+		}
+		task.resume()
+	}
 }
 
 // MARK: Data Source + Delegates
@@ -167,7 +214,6 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 		}
 	}
 }
-
 extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, ButtonStackView.Delegate, BehindView.Delegate, CardInfoView.Delegate {
 
 	func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
