@@ -130,6 +130,12 @@ class CardInfoView: UIView {
 		let periodRange = NSRange(location: fullText.count - 1, length: 1)
 		attributedString.addAttribute(.foregroundColor, value: UIColor.green, range: periodRange)
 		dateLabel.attributedText = attributedString
+
+		subLabel.text = ""
+		typeIcon.image = nil
+		editedIcon.isHidden = true
+		heartIcon.isHidden = true
+		shareButton.isHidden = true
 	}
 	
 	func updateCard() {
@@ -239,6 +245,7 @@ class CardInfoView: UIView {
 			typeIcon.image = UIImage(systemName: icon)
 			editedIcon.isHidden = !asset.hasAdjustments
 			heartIcon.isHidden = !asset.isFavorite
+			shareButton.isHidden = false
 		}
 	}
 	
