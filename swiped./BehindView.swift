@@ -21,29 +21,34 @@ class BehindView: UIView {
 	
 	weak var delegate: Delegate?
 
-	private let titleLabel = UILabel()
-	private let continueButton = ActionButton()
+	private let keepLabel = UILabel()
+	private let deletedLabel = UILabel()
+	private let savedLabel = UILabel()
 	private let deleteButton = ActionButton()
 
 	override init(frame: CGRect) {
 		super.init(frame: .zero)
 		
 		translatesAutoresizingMaskIntoConstraints = false
-
-		titleLabel.translatesAutoresizingMaskIntoConstraints = false
-		titleLabel.font = UIFont(name: "LoosExtended-Bold", size: 16)!
 		
-//		continueButton.translatesAutoresizingMaskIntoConstraints = false
-//		continueButton.setText(text: "Keep going")
-//		continueButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
-//		continueButton.tag = Action.continue.rawValue
-		//titleLabel.text = "Ready to delete photos?"
+		keepLabel.translatesAutoresizingMaskIntoConstraints = false
+		keepLabel.font = UIFont(name: "LoosExtended-Bold", size: 16)!
+		keepLabel.textAlignment = .center
+		
+		deletedLabel.translatesAutoresizingMaskIntoConstraints = false
+		deletedLabel.font = UIFont(name: "LoosExtended-Bold", size: 16)!
+		deletedLabel.textAlignment = .center
+		
+		savedLabel.translatesAutoresizingMaskIntoConstraints = false
+		savedLabel.font = UIFont(name: "LoosExtended-Bold", size: 16)!
+		savedLabel.textAlignment = .center
+		
 		deleteButton.translatesAutoresizingMaskIntoConstraints = false
-		deleteButton.setText(text: "Continue")
+		deleteButton.setText(text: "Continue", color: .sampleGreen)
 		deleteButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		deleteButton.tag = Action.delete.rawValue
 		
-		let stackView = UIStackView(arrangedSubviews: [titleLabel, continueButton, deleteButton])
+		let stackView = UIStackView(arrangedSubviews: [keepLabel, deletedLabel, savedLabel, deleteButton])
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 		stackView.axis = .vertical
 		stackView.alignment = .fill
@@ -56,7 +61,7 @@ class BehindView: UIView {
 			stackView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
 		])
 		
-		for button in [continueButton, deleteButton] {
+		for button in [deleteButton] {
 			NSLayoutConstraint.activate([
 				button.heightAnchor.constraint(equalToConstant: 44)
 			])
@@ -71,8 +76,11 @@ class BehindView: UIView {
 		delegate?.didTapBehindButton(action: Action(rawValue: button.tag)!)
 	}
 
-	func updateCount(count: Int) {
-		titleLabel.text = "Ready to delete \(count) photos?"
+	func updateCount() {
+		let db = DatabaseController.shared
+		keepLabel.text = "Kept: \(db.getTotalKept()) photos"
+		deletedLabel.text = "Deleted: \(db.getTotalDeleted()) photos"
+		savedLabel.text = "Space saved: 69.6 MB"
 	}
 
 }

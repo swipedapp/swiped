@@ -73,4 +73,25 @@ class DatabaseController {
 		return photo
 	}
 	
+	func getTotalKept() -> Int {
+		let query = photos
+			.filter(choice == Photo.Choice.keep.rawValue)
+			.count
+		return try! db.scalar(query)
+	}
+	
+	func getTotalDeleted() -> Int {
+		let query = photos
+			.filter(choice == Photo.Choice.delete.rawValue)
+			.count
+		return try! db.scalar(query)
+	}
+	
+//	func getSpaceSaved() -> Double {
+//		let query = photos
+//			.filter(choice == Photo.Choice.delete.rawValue)
+//			.select(size.total)
+//		return try! db.scalar(query)
+//	}
+	
 }
