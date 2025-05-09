@@ -80,9 +80,9 @@ class BehindView: UIView {
 
 	func updateCount() {
 		let db = DatabaseController.shared
-		keepLabel.text = "Kept: \(db.getTotalKept().formatted()) photos"
-		deletedLabel.text = "Deleted: \(db.getTotalDeleted().formatted()) photos"
-		savedLabel.text = "Space saved: \(Self.fileSizeFormatter.string(fromByteCount: Int64(db.getSpaceSaved())))"
+		keepLabel.text = "\(db.getTotalKept().formatted()) kept"
+		deletedLabel.text = "\(db.getTotalDeleted().formatted()) deleted"
+		savedLabel.text = "\(Self.fileSizeFormatter.string(fromByteCount: Int64(db.getSpaceSaved()))) saved"
 	}
 
 }
