@@ -26,6 +26,7 @@ class BehindView: UIView {
 	private let keepLabel = UILabel()
 	private let deletedLabel = UILabel()
 	private let savedLabel = UILabel()
+	private let scoreLabel = UILabel()
 	private let deleteButton = ActionButton()
 
 	override init(frame: CGRect) {
@@ -45,12 +46,16 @@ class BehindView: UIView {
 		savedLabel.font = UIFont(name: "LoosExtended-Bold", size: 16)!
 		savedLabel.textAlignment = .center
 		
+		scoreLabel.translatesAutoresizingMaskIntoConstraints = false
+		scoreLabel.font = UIFont(name: "LoosExtended-Bold", size: 16)!
+		scoreLabel.textAlignment = .center
+		
 		deleteButton.translatesAutoresizingMaskIntoConstraints = false
 		deleteButton.setText(text: "Continue", color: .green)
 		deleteButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		deleteButton.tag = Action.delete.rawValue
 		
-		let stackView = UIStackView(arrangedSubviews: [keepLabel, deletedLabel, savedLabel, deleteButton])
+		let stackView = UIStackView(arrangedSubviews: [keepLabel, deletedLabel, savedLabel, scoreLabel, deleteButton])
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 		stackView.axis = .vertical
 		stackView.alignment = .fill
@@ -83,6 +88,7 @@ class BehindView: UIView {
 		keepLabel.text = "\(db.getTotalKept().formatted()) kept"
 		deletedLabel.text = "\(db.getTotalDeleted().formatted()) deleted"
 		savedLabel.text = "\(Self.fileSizeFormatter.string(fromByteCount: Int64(db.getSpaceSaved()))) saved"
+		scoreLabel.text = "SwipeScore: \(db.calcSwipeScore().formatted())"
 	}
 
 }

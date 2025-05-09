@@ -10,11 +10,11 @@ import SQLite
 import Photos
 
 class DatabaseController {
-
+	
 	static let shared = DatabaseController()
-
+	
 	private let db: Connection
-
+	
 	private let photos = Table("photos")
 	
 	private let id = SQLite.Expression<String>("id")
@@ -23,7 +23,7 @@ class DatabaseController {
 	private let choice = SQLite.Expression<Int>("choice")
 	private let creationDate = SQLite.Expression<TimeInterval>("creationDate")
 	private let swipeDate = SQLite.Expression<TimeInterval>("swipeDate")
-
+	
 	private init() {
 		do {
 			let documents = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
@@ -59,7 +59,7 @@ class DatabaseController {
 		let query = photos.select(*)
 			.where(id == photoID)
 			.limit(1)
-
+		
 		guard let row = try! db.pluck(query) else {
 			return nil
 		}
@@ -84,11 +84,28 @@ class DatabaseController {
 			.filter(choice == Photo.Choice.delete.rawValue)
 			.count)
 	}
+	func getTotalPhoto() -> Int {
+		return try! db.scalar(photos
+			.filter(type == PHAssetMediaType.image.rawValue)
+			.count)
+	}
+	func getTotalVideo() -> Int {
+		return try! db.scalar(photos
+			.filter(type == PHAssetMediaType.video.rawValue)
+			.count)
+	}
 	
 	func getSpaceSaved() -> Double {
 		return try! db.scalar(photos
 			.select(size.total)
 			.filter(choice == Photo.Choice.delete.rawValue))
 	}
-	
+	func calcSwipeScore() -> Int {
+		let totalKept = getTotalKept()
+		let totalDL = getTotalDeleted() * 2
+		let totalVideo = getTotalVideo() * 2
+		let totalIMG = getTotalPhoto()
+		let totalSpaceMB = Int(getSpaceSaved()) / 1024 / 1024
+		return totalIMG + totalDL + totalKept + totalVideo + totalSpaceMB
+	}
 }
