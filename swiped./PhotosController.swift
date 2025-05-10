@@ -19,20 +19,38 @@ class PhotosController {
 	enum PhotoError: Error {
 		case noAccessToPhotoLibrary
 		case noPhotosAvailable
+		case noPhotosLeft
 		case failedToFetchPhoto
 		case failedToDelete
 	}
 		
 	weak var delegate: PhotoLoadDelegate?
 		
-	func loadRandomPhoto(for card: PhotoCard, callback: @escaping (UIImage) -> Void) {
+	func loadRandomPhotos(for cards: [PhotoCard], callback: @escaping () -> Void) {
 		// Request permission to access photo library
-		PHPhotoLibrary.requestAuthorization { [weak self] status in
-			guard let self = self else { return }
-			
+		PHPhotoLibrary.requestAuthorization { status in
 			switch status {
 			case .authorized, .limited:
-				self.fetchRandomPhoto(for: card, callback: callback)
+				Task {
+					do {
+						for card in cards {
+							try await self.fetchRandomPhoto(for: card)
+						}
+
+						await MainActor.run {
+							callback()
+						}
+					} catch {
+						print("error loading photos for cards: \(error)")
+
+						await MainActor.run {
+							if let error = error as? PhotoError {
+								self.delegate?.didFail(error: error)
+							}
+						}
+					}
+				}
+
 			default:
 				DispatchQueue.main.async {
 					self.delegate?.didFail(error: .noAccessToPhotoLibrary)
@@ -41,7 +59,7 @@ class PhotosController {
 		}
 	}
 		
-	private func fetchRandomPhoto(for card: PhotoCard, callback: @escaping (UIImage) -> Void) {
+	private func fetchRandomPhoto(for card: PhotoCard) async throws {
 		// Create fetch options
 		let fetchOptions = PHFetchOptions()
 		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
@@ -52,13 +70,14 @@ class PhotosController {
 		// Fetch all photos
 		let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
 
-		guard fetchResult.count > 0 else {
-			DispatchQueue.main.async {
-				self.delegate?.didFail(error: .noPhotosAvailable)
-			}
-			return
+		if fetchResult.count == 0 {
+			throw PhotoError.noPhotosAvailable
 		}
-		
+
+		if fetchResult.count == DatabaseController.shared.getTotalKept() {
+			throw PhotoError.noPhotosLeft
+		}
+
 		// Pick a random photo
 		var asset: PHAsset!
 		while true {
@@ -115,12 +134,10 @@ class PhotosController {
 		) { thumbnailImage, thumbnailInfo in
 			DispatchQueue.main.async {
 				guard let thumbnailImage = thumbnailImage else {
-					self.delegate?.didFail(error: .failedToFetchPhoto)
 					return
 				}
 				
 				self.delegate?.didLoadThumbnail(for: card, image: thumbnailImage)
-				callback(thumbnailImage)
 			}
 		}
 		
@@ -133,7 +150,6 @@ class PhotosController {
 		) { fullImage, fullImageInfo in
 			DispatchQueue.main.async {
 				guard let fullImage = fullImage else {
-					self.delegate?.didFail(error: .failedToFetchPhoto)
 					return
 				}
 				

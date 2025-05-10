@@ -40,8 +40,8 @@ class ViewController: UIViewController {
 
 		configureNavigationBar()
 		layoutButtonStackView()
-		layoutInfoView()
 		layoutBehindView()
+		layoutInfoView()
 		layoutCardStackView()
 		
 		loadBatch()
@@ -93,18 +93,21 @@ class ViewController: UIViewController {
 		loadingBatch = true
 		batchesLoaded += 1
 
+		var newCards = [PhotoCard]()
 		for _ in 0..<20 {
-			let card = PhotoCard()
+			newCards.append(PhotoCard())
+		}
 
-			photosController.loadRandomPhoto(for: card) { image in
+		photosController.loadRandomPhotos(for: newCards) {
+			for card in newCards {
 				card.id = self.cards.count
 				self.cards.append(card)
 				self.cardStack.appendCards(atIndices: [card.id])
-				
-				if self.loadingBatch {
-					self.loadingBatch = false
-					self.updateCurrentItem()
-				}
+			}
+
+			if self.loadingBatch {
+				self.loadingBatch = false
+				self.updateCurrentItem()
 			}
 		}
 	}
@@ -194,6 +197,13 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 				UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
 			}))
 			present(alert, animated: true)
+
+		case .noPhotosLeft:
+			let alert = UIAlertController(title: "You’ve swiped all your photos", message: "Come back later when you need to clean up!", preferredStyle: .alert)
+			alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+			present(alert, animated: true)
+
+			didSwipeAllCards(cardStack)
 
 		case .failedToDelete:
 			let alert = UIAlertController(title: "Failed to delete photo", message: nil, preferredStyle: .alert)
@@ -386,14 +396,16 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 
 		// Release all but the last card from memory
 		let oldCount = cards.count
-		let allButLast = 0..<oldCount - 1
-		cards.removeSubrange(allButLast)
-		
-		var indices = [Int]()
-		for i in allButLast {
-			indices.append(i)
+		if oldCount != 0 {
+			let allButLast = 0..<oldCount - 1
+			cards.removeSubrange(allButLast)
+			
+			var indices = [Int]()
+			for i in allButLast {
+				indices.append(i)
+			}
+			cardStack.deleteCards(atIndices: indices)
 		}
-		cardStack.deleteCards(atIndices: indices)
 
 		loadBatch()
 	}

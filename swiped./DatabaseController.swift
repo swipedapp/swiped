@@ -72,7 +72,11 @@ class DatabaseController {
 		photo.swipeDate = Date(timeIntervalSince1970: row[swipeDate])
 		return photo
 	}
-	
+
+	func getTotal() -> Int {
+		return try! db.scalar(photos.count)
+	}
+
 	func getTotalKept() -> Int {
 		return try! db.scalar(photos
 			.filter(choice == Photo.Choice.keep.rawValue)
