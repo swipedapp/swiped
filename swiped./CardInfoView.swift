@@ -13,6 +13,7 @@ class CardInfoView: UIView {
 	
 	protocol Delegate: AnyObject {
 		func share()
+		func settings()
 	}
 	
 	weak var delegate: Delegate?
@@ -28,7 +29,8 @@ class CardInfoView: UIView {
 	private let infoView = UIStackView()
 	private let dateLabel = UILabel()
 	private let subLabel = UILabel()
-	
+
+	private let settingsButton = UIButton()
 	private let shareButton = UIButton()
 
 	private let typeIcon = UIImageView()
@@ -52,7 +54,7 @@ class CardInfoView: UIView {
 		
 		let titleView = UIStackView()
 		titleView.translatesAutoresizingMaskIntoConstraints = false
-		titleView.spacing = 8
+		titleView.spacing = 0
 		titleView.axis = .horizontal
 		titleView.distribution = .fill
 		titleView.alignment = .lastBaseline
@@ -62,13 +64,20 @@ class CardInfoView: UIView {
 		dateLabel.font = UIFont(name: "LoosExtended-Bold", size: 24)
 		//dateLabel.textColor = .white
 		titleView.addArrangedSubview(dateLabel)
-		
+
 		var buttonConfig = UIButton.Configuration.plain()
 		buttonConfig.image = UIImage(systemName: "square.and.arrow.up", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18, weight: .bold)))
 		shareButton.configuration = buttonConfig
 		shareButton.accessibilityLabel = "Share"
 		shareButton.addTarget(self, action: #selector(share), for: .touchUpInside)
 		titleView.addArrangedSubview(shareButton)
+
+		buttonConfig = UIButton.Configuration.plain()
+		buttonConfig.image = UIImage(systemName: "gear", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18, weight: .bold)))
+		settingsButton.configuration = buttonConfig
+		settingsButton.accessibilityLabel = "Settings"
+		settingsButton.addTarget(self, action: #selector(settings), for: .touchUpInside)
+		titleView.addArrangedSubview(settingsButton)
 
 		let subView = UIStackView()
 		subView.translatesAutoresizingMaskIntoConstraints = false
@@ -105,12 +114,14 @@ class CardInfoView: UIView {
 			infoView.topAnchor.constraint(equalTo: self.topAnchor, constant: 18),
 			infoView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 18),
 			infoView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -40),
-			
+
+			settingsButton.heightAnchor.constraint(equalToConstant: 44),
 			shareButton.heightAnchor.constraint(equalToConstant: 44),
 			typeIcon.heightAnchor.constraint(equalToConstant: 20),
 			editedIcon.heightAnchor.constraint(equalToConstant: 20),
 			heartIcon.heightAnchor.constraint(equalToConstant: 20),
 
+			settingsButton.widthAnchor.constraint(equalTo: shareButton.heightAnchor),
 			shareButton.widthAnchor.constraint(equalTo: shareButton.heightAnchor),
 			typeIcon.widthAnchor.constraint(equalTo: typeIcon.heightAnchor),
 			editedIcon.widthAnchor.constraint(equalTo: editedIcon.heightAnchor),
@@ -249,9 +260,13 @@ class CardInfoView: UIView {
 			typeIcon.isHidden = false
 		}
 	}
-	
+
 	@objc func share() {
 		delegate?.share()
+	}
+
+	@objc func settings() {
+		delegate?.settings()
 	}
 
 }

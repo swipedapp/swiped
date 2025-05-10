@@ -10,6 +10,7 @@ import Shuffle
 import QuickLook
 import StoreKit
 import AVKit
+import SwiftUI
 
 class ViewController: UIViewController {
 
@@ -406,7 +407,13 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			present(shareSheet, animated: true)
 		}
 	}
-	
+
+	func settings() {
+		print("Settings")
+		let vc = UIHostingController(rootView: SettingsView())
+		present(vc, animated: true)
+	}
+
 }
 
 extension ViewController: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
