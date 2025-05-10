@@ -89,8 +89,9 @@ class DatabaseController {
 			.filter(type == PHAssetMediaType.image.rawValue)
 			.count)
 	}
-	func getTotalVideo() -> Int {
+	func getTotalVideoDeleted() -> Int {
 		return try! db.scalar(photos
+			.filter(choice == Photo.Choice.delete.rawValue)
 			.filter(type == PHAssetMediaType.video.rawValue)
 			.count)
 	}
@@ -103,7 +104,7 @@ class DatabaseController {
 	func calcSwipeScore() -> Int {
 		let totalKept = getTotalKept()
 		let totalDL = getTotalDeleted() * 2
-		let totalVideo = getTotalVideo() * 2
+		let totalVideo = getTotalVideoDeleted() * 2
 		let totalIMG = getTotalPhoto()
 		let totalSpaceMB = Int(getSpaceSaved()) / 1024 / 1024
 		return totalIMG + totalDL + totalKept + totalVideo + totalSpaceMB
