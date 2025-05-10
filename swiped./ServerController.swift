@@ -26,8 +26,7 @@ class ServerController: NSObject {
 
 	static let shared = ServerController()
 
-//	static let server = URL(string: "https://swiped.missaustraliana.net")!
-	static let server = URL(string: "http://100.117.202.63:1313")!
+	static let server = URL(string: "https://swiped.missaustraliana.net")!
 
 	func getReceipt() async -> String? {
 		guard let result = try? await AppTransaction.shared else {
