@@ -142,7 +142,7 @@ class PhotosController {
 		}
 	}
 	
-	func delete(cards: [PhotoCard], callback: @escaping () -> Void) {
+	func delete(cards: [PhotoCard], callback: @escaping (Bool) -> Void) {
 		let assets = cards.compactMap { $0.asset }
 
 		PHPhotoLibrary.shared().performChanges {
@@ -157,7 +157,7 @@ class PhotosController {
 					self.delegate?.didFail(error: .failedToDelete)
 				}
 
-				callback()
+				callback(success)
 			}
 		}
 	}

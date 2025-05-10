@@ -239,9 +239,20 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 
 	func didSwipeAllCards(_ cardStack: SwipeCardStack) {
 		print("Swiped all cards!")
-		photosController.delete(cards: toDelete) {
+
+		photosController.delete(cards: toDelete) { success in
+			if !success {
+				for card in self.toDelete {
+					if let photo = card.photo {
+						photo.choice = .skip
+						DatabaseController.shared.addPhoto(photo: photo)
+					}
+				}
+			}
+
 			self.toDelete.removeAll()
 		}
+
 		cardStack.isUserInteractionEnabled = false
 		buttonStackView.isUserInteractionEnabled = false
 		infoView.setSwipedText(summary: true)
@@ -274,7 +285,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			
 		case .right:
 			choice = .keep
-			
+			toDelete.removeAll(where: { $0.id == card.id })
+
 		case .up:
 			choice = .skip
 
