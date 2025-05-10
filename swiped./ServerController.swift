@@ -29,20 +29,30 @@ class ServerController: NSObject {
 	static let server = URL(string: "https://swiped.missaustraliana.net")!
 
 	func getReceipt() async -> String? {
-		guard let result = try? await AppTransaction.shared else {
-			return nil
+		var result: VerificationResult<AppTransaction>?
+		do {
+			result = try await AppTransaction.shared
+		} catch {
+			do {
+				result = try await AppTransaction.refresh()
+			} catch {
+				print("Transaction error: \(error)")
+				return nil
+			}
 		}
 
 		switch result {
 		case .verified(_):
-			print("VERIFIED!!!")
 			break
 
 		case .unverified(_, let verificationError):
 			print("Receipt error: \(verificationError)")
+
+		case .none:
+			return nil
 		}
 
-		return result.jwsRepresentation
+		return result?.jwsRepresentation
 	}
 
 	func doRegister() async {
