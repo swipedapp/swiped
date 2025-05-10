@@ -84,8 +84,9 @@ class DatabaseController {
 			.filter(choice == Photo.Choice.delete.rawValue)
 			.count)
 	}
-	func getTotalPhoto() -> Int {
+	func getTotalPhotoDeleted() -> Int {
 		return try! db.scalar(photos
+			.filter(choice == Photo.Choice.delete.rawValue)
 			.filter(type == PHAssetMediaType.image.rawValue)
 			.count)
 	}
@@ -105,7 +106,7 @@ class DatabaseController {
 		let totalKept = getTotalKept()
 		let totalDL = getTotalDeleted() * 2
 		let totalVideo = getTotalVideoDeleted() * 2
-		let totalIMG = getTotalPhoto()
+		let totalIMG = getTotalPhotoDeleted()
 		let totalSpaceMB = Int(getSpaceSaved()) / 1024 / 1024
 		return totalIMG + totalDL + totalKept + totalVideo + totalSpaceMB
 	}

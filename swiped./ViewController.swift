@@ -44,6 +44,10 @@ class ViewController: UIViewController {
 		layoutCardStackView()
 		
 		loadBatch()
+
+		Task {
+			await ServerController.shared.doRegister()
+		}
 	}
 
 	private func configureNavigationBar() {
@@ -242,7 +246,11 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		buttonStackView.isUserInteractionEnabled = false
 		infoView.setSwipedText(summary: true)
 		behindView.updateCount()
-		
+
+		Task {
+			await ServerController.shared.doSync()
+		}
+
 		UIView.animate(withDuration: 0.3) {
 			self.behindView.alpha = 1
 			self.buttonStackView.alpha = 0
