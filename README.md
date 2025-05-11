@@ -12,8 +12,8 @@
 
 ---
 #### Thanks to
-Adam Demasi (kirb)
-Toby Kohlhagen (missaustraliana)
-Shuffle Swift Library
-SQLite Swift Library
-TestFlight Testers 💞
+- Adam Demasi (kirb)
+- Toby Kohlhagen (missaustraliana)
+- [Shuffle Library](https://github.com/mac-gallagher/Shuffle)
+- SQLite Swift Library
+- TestFlight Testers 💞
