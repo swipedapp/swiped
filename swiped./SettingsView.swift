@@ -53,11 +53,11 @@ struct SettingsView: View {
 //					}
 //				}
 
-				Section {
-					NavigationLink("Icon") {
-						SettingsIconView()
-					}
-				}
+//				Section {
+//					NavigationLink("Icon") {
+//						SettingsIconView()
+//					}
+//				}
 
 				Section {
 					Button(action: {
