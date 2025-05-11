@@ -410,12 +410,13 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		loadBatch()
 	}
 	
-	func share() {
+	func share(sender: UIButton) {
 		print("Share")
 		let card = cards[cardStack.topCardIndex ?? 0]
 		
 		if let image = card.fullImage ?? card.thumbnail {
 			let shareSheet = UIActivityViewController(activityItems: [image], applicationActivities: [])
+			shareSheet.popoverPresentationController?.sourceView = sender
 			present(shareSheet, animated: true)
 		}
 	}

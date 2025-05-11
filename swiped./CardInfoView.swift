@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 class CardInfoView: UIView {
 	
 	protocol Delegate: AnyObject {
-		func share()
+		func share(sender: UIButton)
 		func settings()
 	}
 	
@@ -256,13 +256,13 @@ class CardInfoView: UIView {
 			typeIcon.image = UIImage(systemName: icon)
 			editedIcon.isHidden = !asset.hasAdjustments
 			heartIcon.isHidden = !asset.isFavorite
-			shareButton.isHidden = false
+			shareButton.isHidden = asset.mediaType != .image
 			typeIcon.isHidden = false
 		}
 	}
 
 	@objc func share() {
-		delegate?.share()
+		delegate?.share(sender: shareButton)
 	}
 
 	@objc func settings() {
