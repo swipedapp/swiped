@@ -33,9 +33,7 @@ class PhotosController {
 			case .authorized, .limited:
 				Task {
 					do {
-						for card in cards {
-							try await self.fetchRandomPhoto(for: card)
-						}
+						try await self.fetchRandomPhotos(for: cards)
 
 						await MainActor.run {
 							callback()
@@ -59,7 +57,7 @@ class PhotosController {
 		}
 	}
 		
-	private func fetchRandomPhoto(for card: PhotoCard) async throws {
+	private func fetchRandomPhotos(for cards: [PhotoCard]) async throws {
 		// Create fetch options
 		let fetchOptions = PHFetchOptions()
 		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
@@ -78,82 +76,84 @@ class PhotosController {
 			throw PhotoError.noPhotosLeft
 		}
 
-		// Pick a random photo
-		var asset: PHAsset!
-		while true {
-			let randomIndex = Int.random(in: 0..<fetchResult.count)
-			asset = fetchResult.object(at: randomIndex) as PHAsset
-			
-			if asset.sourceType.contains(.typeCloudShared) || asset.sourceType.contains(.typeiTunesSynced) {
-				continue
-			}
-			
-			if let oldPhoto = DatabaseController.shared.getPhoto(id: asset.localIdentifier),
-				 oldPhoto.choice != .skip {
-				continue
-			}
-			
-			break
-		}
-		
-		card.asset = asset
-		
-		let photo = Photo(id: asset.localIdentifier)
-		photo.creationDate = asset.creationDate
-		photo.type = asset.mediaType
+		for card in cards {
+			// Pick a random photo
+			var asset: PHAsset!
+			while true {
+				let randomIndex = Int.random(in: 0..<fetchResult.count)
+				asset = fetchResult.object(at: randomIndex) as PHAsset
 
-		card.photo = photo
-		
-		let resources = PHAssetResource.assetResources(for: asset)
-		var size = 0.0
-		for resource in resources {
-			size += resource.value(forKey: "fileSize") as? Double ?? 0
-		}
-		
-		photo.size = size
-		
-		// Create thumbnail options
-		let thumbnailOptions = PHImageRequestOptions()
-		thumbnailOptions.deliveryMode = .fastFormat
-		thumbnailOptions.resizeMode = .fast
-		thumbnailOptions.isSynchronous = true
-		
-		// Create full image options
-		let fullImageOptions = PHImageRequestOptions()
-		fullImageOptions.deliveryMode = .highQualityFormat
-		fullImageOptions.resizeMode = .fast
-		fullImageOptions.isSynchronous = false
-		fullImageOptions.isNetworkAccessAllowed = true
-		
-		// Request thumbnail
-		PHImageManager.default().requestImage(
-			for: asset,
-			targetSize: CGSize(width: 200, height: 200),
-			contentMode: .aspectFill,
-			options: thumbnailOptions
-		) { thumbnailImage, thumbnailInfo in
-			DispatchQueue.main.async {
-				guard let thumbnailImage = thumbnailImage else {
-					return
+				if asset.sourceType.contains(.typeCloudShared) || asset.sourceType.contains(.typeiTunesSynced) {
+					continue
 				}
-				
-				self.delegate?.didLoadThumbnail(for: card, image: thumbnailImage)
+
+				if let oldPhoto = DatabaseController.shared.getPhoto(id: asset.localIdentifier),
+					 oldPhoto.choice != .skip {
+					continue
+				}
+
+				break
 			}
-		}
-		
-		// Request full quality image asynchronously
-		PHImageManager.default().requestImage(
-			for: asset,
-			targetSize: PHImageManagerMaximumSize,
-			contentMode: .aspectFit,
-			options: fullImageOptions
-		) { fullImage, fullImageInfo in
-			DispatchQueue.main.async {
-				guard let fullImage = fullImage else {
-					return
+
+			card.asset = asset
+
+			let photo = Photo(id: asset.localIdentifier)
+			photo.creationDate = asset.creationDate
+			photo.type = asset.mediaType
+
+			card.photo = photo
+
+			let resources = PHAssetResource.assetResources(for: asset)
+			var size = 0.0
+			for resource in resources {
+				size += resource.value(forKey: "fileSize") as? Double ?? 0
+			}
+
+			photo.size = size
+
+			// Create thumbnail options
+			let thumbnailOptions = PHImageRequestOptions()
+			thumbnailOptions.deliveryMode = .fastFormat
+			thumbnailOptions.resizeMode = .fast
+			thumbnailOptions.isSynchronous = true
+
+			// Create full image options
+			let fullImageOptions = PHImageRequestOptions()
+			fullImageOptions.deliveryMode = .highQualityFormat
+			fullImageOptions.resizeMode = .fast
+			fullImageOptions.isSynchronous = false
+			fullImageOptions.isNetworkAccessAllowed = true
+
+			// Request thumbnail
+			PHImageManager.default().requestImage(
+				for: asset,
+				targetSize: CGSize(width: 200, height: 200),
+				contentMode: .aspectFill,
+				options: thumbnailOptions
+			) { thumbnailImage, thumbnailInfo in
+				DispatchQueue.main.async {
+					guard let thumbnailImage = thumbnailImage else {
+						return
+					}
+
+					self.delegate?.didLoadThumbnail(for: card, image: thumbnailImage)
 				}
-				
-				self.delegate?.didLoadFullImage(for: card, image: fullImage)
+			}
+
+			// Request full quality image asynchronously
+			PHImageManager.default().requestImage(
+				for: asset,
+				targetSize: PHImageManagerMaximumSize,
+				contentMode: .aspectFit,
+				options: fullImageOptions
+			) { fullImage, fullImageInfo in
+				DispatchQueue.main.async {
+					guard let fullImage = fullImage else {
+						return
+					}
+
+					self.delegate?.didLoadFullImage(for: card, image: fullImage)
+				}
 			}
 		}
 	}
