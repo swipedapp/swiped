@@ -33,12 +33,7 @@ class ServerController: NSObject {
 		do {
 			result = try await AppTransaction.shared
 		} catch {
-			do {
-				result = try await AppTransaction.refresh()
-			} catch {
-				print("Transaction error: \(error)")
-				return nil
-			}
+			print("Transaction error: \(error)")
 		}
 
 		switch result {
