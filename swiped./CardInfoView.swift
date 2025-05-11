@@ -30,8 +30,8 @@ class CardInfoView: UIView {
 	private let dateLabel = UILabel()
 	private let subLabel = UILabel()
 
-	private let settingsButton = UIButton()
-	private let shareButton = UIButton()
+	private let settingsButton = ActionButton(frame: .zero)
+	private let shareButton = ActionButton(frame: .zero)
 
 	private let typeIcon = UIImageView()
 	private let editedIcon = UIImageView()
@@ -62,19 +62,14 @@ class CardInfoView: UIView {
 		
 		dateLabel.translatesAutoresizingMaskIntoConstraints = false
 		dateLabel.font = UIFont(name: "LoosExtended-Bold", size: 24)
-		//dateLabel.textColor = .white
 		titleView.addArrangedSubview(dateLabel)
 
-		var buttonConfig = UIButton.Configuration.plain()
-		buttonConfig.image = UIImage(systemName: "square.and.arrow.up", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18, weight: .bold)))
-		shareButton.configuration = buttonConfig
+		shareButton.setText(text: nil, image: UIImage(systemName: "square.and.arrow.up", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18, weight: .bold))))
 		shareButton.accessibilityLabel = "Share"
 		shareButton.addTarget(self, action: #selector(share), for: .touchUpInside)
 		titleView.addArrangedSubview(shareButton)
 
-		buttonConfig = UIButton.Configuration.plain()
-		buttonConfig.image = UIImage(systemName: "gear", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18, weight: .bold)))
-		settingsButton.configuration = buttonConfig
+		settingsButton.setText(text: nil, image: UIImage(systemName: "gear", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18, weight: .bold))))
 		settingsButton.accessibilityLabel = "Settings"
 		settingsButton.addTarget(self, action: #selector(settings), for: .touchUpInside)
 		titleView.addArrangedSubview(settingsButton)

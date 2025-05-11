@@ -17,13 +17,24 @@ class ActionButton: UIButton {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	func setText(text: String, color: UIColor = .white) {
+	func setText(text: String?, image: UIImage? = nil, color: UIColor = .white) {
 		var config = UIButton.Configuration.plain()
 		config.baseForegroundColor = color
-		var container = AttributeContainer()
-		container.font = UIFont(name: "LoosExtended-Bold", size: 18)
-		config.attributedTitle = AttributedString(text, attributes: container)
+		config.image = image
+
+		if let text = text {
+			var container = AttributeContainer()
+			container.font = UIFont(name: "LoosExtended-Bold", size: 18)
+			config.attributedTitle = AttributedString(text, attributes: container)
+		}
+
 		configuration = config
+
+		configurationUpdateHandler = { update in
+			UIView.animate(withDuration: 0.1) {
+				self.alpha = update.isHighlighted ? 0.5 : 1
+			}
+		}
 	}
 
 }
