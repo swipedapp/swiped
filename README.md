@@ -4,3 +4,8 @@
 
 # Roadtrip
 - [ ] Publish to App Store
+- [ ] Visual Statistics
+- [x] Statistics
+- [ ] App Icon customisation
+- [ ] Sync between devices
+- [ ] Sharable Statistics in photo form
