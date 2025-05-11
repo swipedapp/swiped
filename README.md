@@ -9,3 +9,11 @@
 - [ ] App Icon customisation
 - [ ] Sync between devices
 - [ ] Sharable Statistics in photo form
+
+---
+#### Thanks to
+Adam Demasi (kirb)
+Toby Kohlhagen (missaustraliana)
+Shuffle Swift Library
+SQLite Swift Library
+TestFlight Testers 💞
