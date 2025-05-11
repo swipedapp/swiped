@@ -132,11 +132,7 @@ class PhotosController {
 				options: thumbnailOptions
 			) { thumbnailImage, thumbnailInfo in
 				DispatchQueue.main.async {
-					guard let thumbnailImage = thumbnailImage else {
-						return
-					}
-
-					self.delegate?.didLoadThumbnail(for: card, image: thumbnailImage)
+					self.delegate?.didLoadThumbnail(for: card, image: thumbnailImage ?? UIImage())
 				}
 			}
 
@@ -148,11 +144,7 @@ class PhotosController {
 				options: fullImageOptions
 			) { fullImage, fullImageInfo in
 				DispatchQueue.main.async {
-					guard let fullImage = fullImage else {
-						return
-					}
-
-					self.delegate?.didLoadFullImage(for: card, image: fullImage)
+					self.delegate?.didLoadFullImage(for: card, image: fullImage ?? UIImage())
 				}
 			}
 		}
