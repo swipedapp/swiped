@@ -3,4 +3,4 @@
 ## The open source photo library cleaning app.
 
 # Roadtrip
-[ ] Publish to App Store
+- [] Publish to App Store
