@@ -19,7 +19,7 @@ struct SyncRequest: Codable {
 	let totalPhotoDeleted: Int
 	let totalVideoDeleted: Int
 	let spaceSaved: Int
-	let swipeScore: Int
+	let swipeScore: Int64
 }
 
 class ServerController: NSObject {

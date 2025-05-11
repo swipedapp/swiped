@@ -110,12 +110,12 @@ class DatabaseController {
 			.select(size.total)
 			.filter(choice == Photo.Choice.delete.rawValue))
 	}
-	func calcSwipeScore() -> Int {
+	func calcSwipeScore() -> Int64 {
 		let totalKept = getTotalKept()
 		let totalDL = getTotalDeleted() * 2
 		let totalVideo = getTotalVideoDeleted() * 2
 		let totalIMG = getTotalPhotoDeleted()
-		let totalSpaceMB = Int(getSpaceSaved()) / 1024 / 1024
-		return totalIMG + totalDL + totalKept + totalVideo + totalSpaceMB
+		let totalSpaceMB = Int64(getSpaceSaved()) / 1024 / 1024
+		return Int64(totalIMG + totalDL + totalKept + totalVideo) + totalSpaceMB
 	}
 }
