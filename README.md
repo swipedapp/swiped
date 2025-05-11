@@ -9,11 +9,13 @@
 - [ ] App Icon customisation
 - [ ] Sync between devices
 - [ ] Sharable Statistics in photo form
+- [ ] Live Photos
+- [ ] Sharable Videos
 
 ---
 #### Thanks to
 - Adam Demasi (kirb)
 - Toby Kohlhagen (missaustraliana)
-- [Shuffle Library](https://github.com/mac-gallagher/Shuffle)
-- SQLite Swift Library
+- [Shuffle](https://github.com/mac-gallagher/Shuffle) by [Mac Gallagher](https://github.com/mac-gallagher)
+- [SQLite.swift](https://github.com/stephencelis/SQLite.swift) by [Stephen Celis](https://github.com/stephencelis)
 - TestFlight Testers 💞
