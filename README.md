@@ -11,7 +11,16 @@
 - [ ] Sharable Statistics in photo form
 - [ ] Live Photos
 - [ ] Sharable Videos
-
+- [ ] Light Mode Support
+- [x] Sync
+- [x] Dates
+- [x] Image Quick Look
+- [x] Video Quick Look
+- [x] Sharing Images
+- [ ] Sharing Videos
+- [ ] Relative Time Stamps
+- [ ] Selective App Icons
+- [x] App Info View
 ---
 #### Thanks to
 - Adam Demasi (kirb)
