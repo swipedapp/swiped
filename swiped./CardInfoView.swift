@@ -85,6 +85,8 @@ struct CardInfoView: View {
 			icon = "square.stack.3d.down.forward"
 		}
 
+		print("icon = \(icon)")
+
 		return icon
 	}
 
@@ -207,17 +209,17 @@ struct CardInfoView: View {
 				Text("Summary")
 			} else if let asset = cardInfo.card?.asset {
 				HStack(alignment: .center, spacing: 8) {
-					Image(icon)
+					Image(systemName: icon)
 						.frame(width: 20, height: 20, alignment: .center)
 
 					if asset.isFavorite {
-						Image("heart.fill")
+						Image(systemName: "heart.fill")
 							.accessibilityLabel("Favorite")
 							.frame(width: 20, height: 20, alignment: .center)
 					}
 
 					if asset.hasAdjustments {
-						Image("pencil")
+						Image(systemName: "pencil")
 							.accessibilityLabel("Edited")
 							.frame(width: 20, height: 20, alignment: .center)
 					}
