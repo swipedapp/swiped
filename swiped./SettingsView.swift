@@ -38,7 +38,7 @@ struct SettingsView: View {
 							Text(".")
 								.foregroundColor(.accentColor)
 								.font(.custom("LoosExtended-Bold", size: 40))
-							Text("TESTING v\(version)")
+							Text("Build \(build)")
 								.font(.custom("LoosExtended-Medium", size: 18))
 							#else
 							Text("SWIPED")
