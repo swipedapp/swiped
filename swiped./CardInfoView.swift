@@ -176,16 +176,18 @@ struct CardInfoView: View {
 		return types.joined(separator: ", ")
 	}
 	
-	var title: Text {
+	var title: some View {
 		if let asset = cardInfo.card?.asset {
 			return Text(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast))
+				.contentTransition(.numericText())
 		} else {
 			return Text("SWIPED") + Text(".")
 				.foregroundColor(.accentColor)
+				.contentTransition(.numericText())
 		}
 	}
 	
-	var subhead: AnyView {
+	var subhead: some View {
 		if cardInfo.summary {
 			return AnyView(HStack(alignment: .center, spacing: 8) {
 				Text("Summary")
