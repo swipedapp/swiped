@@ -24,16 +24,16 @@ struct SettingsIconView: View {
 	var body: some View {
 		ScrollView {
 			LazyVStack {
-					ForEach(icons, id: \.self) { icon in
+					ForEach(icons, id: \.name) { icon in
 						Button(action: {
-							if icon == "AppIcon" {
+							if icon.name == "AppIcon" {
 								UIApplication.shared.setAlternateIconName(nil)
 							} else {
-								UIApplication.shared.setAlternateIconName(icon)
+								UIApplication.shared.setAlternateIconName(icon.name)
 							}
 						}, label: {
 							HStack {
-								Image(uiImage: UIImage(named: "\(icon)-Preview") ?? UIImage(systemName: "questionmark")!)
+								Image(uiImage: UIImage(named: "\(icon.name)-Preview") ?? UIImage(systemName: "questionmark")!)
 									.frame(width: 60, height: 60)
 									.background(Color(UIColor.secondarySystemBackground))
 									.cornerRadius(12)
@@ -41,8 +41,11 @@ struct SettingsIconView: View {
 										RoundedRectangle(cornerRadius: 12)
 											.stroke(Color(UIColor.separator), lineWidth: 1)
 									)
-							})
-							.padding(5)
+								
+								Text(icon.title)
+							}
+								.padding(5)
+						})
 					}
 				}
 		}
