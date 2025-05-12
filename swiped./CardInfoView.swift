@@ -184,6 +184,7 @@ struct CardInfoView: View {
 				if let asset = cardInfo.card?.asset {
 					Text(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast))
 						.font(.custom("LoosExtended-Bold", size: 24))
+						.contentTransition(.numericText())
 						
 				} else {
 					Text("SWIPED")
