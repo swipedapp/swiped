@@ -187,7 +187,10 @@ struct CardInfoView: View {
 	
 	var subhead: AnyView {
 		if cardInfo.summary {
-			return AnyView(Text("Summary"))
+			return AnyView(HStack(alignment: .center, spacing: 8) {
+				Text("Summary")
+					.contentTransition(.numericText())
+			})
 		} else if let asset = cardInfo.card?.asset {
 			return AnyView(HStack(alignment: .center, spacing: 8) {
 				Image(systemName: icon)
@@ -206,6 +209,7 @@ struct CardInfoView: View {
 				}
 				
 				Text(type)
+					.contentTransition(.numericText())
 			})
 		}
 		
