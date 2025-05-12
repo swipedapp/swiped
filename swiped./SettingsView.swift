@@ -134,6 +134,8 @@ struct SettingsView: View {
 						.foregroundColor(.red)
 				}
 			}
+				.scrollContentBackground(.hidden)
+				.background(Color.black)
 				.alert("You will lose all statistics you have collected so far.", isPresented: $showResetAlert, actions: {
 					Button("Reset", role: .destructive) {
 						DatabaseController.shared.reset()
@@ -142,9 +144,10 @@ struct SettingsView: View {
 				})
 		}
 		Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
+			
 	}
-		.backgroundColor = .black
 }
+
 
 #Preview {
 	SettingsView()
