@@ -34,7 +34,7 @@ struct CardInfoView: View {
 	@ObservedObject var cardInfo: CardInfo
 
 	var body: any View {
-		
+		Color.red
 	}
 
 }
