@@ -9,7 +9,10 @@ import SwiftUI
 
 struct SettingsView: View {
 	let commitInfo = Bundle.main.infoDictionary?["GitCommitHash"] as? String ?? "Unknown"
-
+	
+	@AppStorage("timestamps")
+	var timestamps: Bool = false
+	
 	var version: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 	}
@@ -81,7 +84,10 @@ struct SettingsView: View {
 				
 				#endif
 				// Production flags
-				
+				Toggle(isOn: $timestamps) {
+					Text("Show relative timestamps")
+						.font(.custom("LoosExtended-Regular", size: 16))
+				}
 				
 				#if INTERNAL
 				Section {
