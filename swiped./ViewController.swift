@@ -17,6 +17,7 @@ class ViewController: UIViewController {
 	private let cardStack = SwipeCardStack()
 	private let buttonStackView = ButtonStackView()
 	private var infoView: CardInfoView!
+	private var infoHostingController: UIHostingController<AnyView>!
 	private let behindView = BehindView()
 
 	private let photosController = PhotosController()
@@ -70,7 +71,7 @@ class ViewController: UIViewController {
 
 	private func layoutCardStackView() {
 		view.addSubview(cardStack)
-		cardStack.anchor(top: infoView.bottomAnchor,
+		cardStack.anchor(top: hostingView.view.bottomAnchor,
 										 left: view.safeAreaLayoutGuide.leftAnchor,
 										 bottom: buttonStackView.topAnchor,
 										 right: view.safeAreaLayoutGuide.rightAnchor)
@@ -78,10 +79,11 @@ class ViewController: UIViewController {
 	
 	private func layoutInfoView() {
 		let hostingView = UIHostingController(rootView: infoView.environmentObject(cardInfo))
+		hostingView.willMove(toParent: self)
 		view.addSubview(hostingView.view)
-		infoView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-										left: view.safeAreaLayoutGuide.leftAnchor,
-										right: view.safeAreaLayoutGuide.rightAnchor)
+		hostingView.view.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+														left: view.safeAreaLayoutGuide.leftAnchor,
+														right: view.safeAreaLayoutGuide.rightAnchor)
 	}
 	
 	private func layoutBehindView() {
