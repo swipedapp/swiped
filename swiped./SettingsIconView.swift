@@ -18,7 +18,7 @@ struct SettingsIconView: View {
 		Icon(name: "AppIcon", title: "Classic"),
 		Icon(name: "SFIcon", title: "SF"),
 		Icon(name: "ghostedIcon", title: "ghosted"),
-		Icon(name: "flightIcon" title: "Flight")
+		Icon(name: "flightIcon", title: "Flight")
 	]
 
 	var body: some View {
@@ -32,7 +32,7 @@ struct SettingsIconView: View {
 								UIApplication.shared.setAlternateIconName(icon.name)
 							}
 						}, label: {
-							HStack {
+							HStack(alignment: .center) {
 								Image(uiImage: UIImage(named: "\(icon.name)-Preview") ?? UIImage(systemName: "questionmark")!)
 									.frame(width: 60, height: 60)
 									.background(Color(UIColor.secondarySystemBackground))
@@ -43,6 +43,7 @@ struct SettingsIconView: View {
 									)
 								
 								Text(icon.title)
+									.font(.custom("LoosExtended-Regular", size: 16))
 							}
 								.padding(5)
 						})
