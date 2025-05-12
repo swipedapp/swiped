@@ -16,7 +16,7 @@ class ViewController: UIViewController {
 
 	private let cardStack = SwipeCardStack()
 	private let buttonStackView = ButtonStackView()
-	private let infoView = CardInfoView()
+//	private let infoView = CardInfoView()
 	private let behindView = BehindView()
 
 	private let photosController = PhotosController()
@@ -34,7 +34,7 @@ class ViewController: UIViewController {
 		cardStack.delegate = self
 		cardStack.dataSource = self
 		buttonStackView.delegate = self
-		infoView.delegate = self
+//		infoView.delegate = self
 		behindView.delegate = self
 		photosController.delegate = self
 
