@@ -24,7 +24,7 @@ class ActionButton: UIButton {
 
 		if let text = text {
 			var container = AttributeContainer()
-			container.font = UIFont(name: "LoosExtended-Bold", size: 18)
+			container.font = UIFont(name: "LoosExtended-Medium", size: 18)
 			config.attributedTitle = AttributedString(text, attributes: container)
 		}
 

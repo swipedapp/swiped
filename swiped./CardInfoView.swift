@@ -99,7 +99,7 @@ class CardInfoView: UIView {
 		subView.addArrangedSubview(heartIcon)
 
 		subLabel.translatesAutoresizingMaskIntoConstraints = false
-		subLabel.font = UIFont(name: "LoosExtended-Bold", size: 18)
+		subLabel.font = UIFont(name: "LoosExtended-Regular", size: 18)
 		subLabel.textColor = .white
 		subView.addArrangedSubview(subLabel)
 
