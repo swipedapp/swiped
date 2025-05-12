@@ -225,7 +225,8 @@ struct CardInfoView: View {
 					 asset.mediaType == .image {
 					ShareLink(
 						item: Image(uiImage: card.fullImage ?? card.thumbnail ?? UIImage()),
-						preview: SharePreview("", image: Image(uiImage: card.thumbnail ?? UIImage()))
+						preview: SharePreview(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast),
+																	image: Image(uiImage: card.thumbnail ?? UIImage()))
 					) {
 						Image(systemName: "square.and.arrow.up")
 					}
