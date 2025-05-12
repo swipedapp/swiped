@@ -83,11 +83,6 @@ struct SettingsView: View {
 				}
 				
 				#endif
-				// Production flags
-				Toggle(isOn: $timestamps) {
-					Text("Show relative timestamps")
-						.font(.custom("LoosExtended-Regular", size: 16))
-				}
 				
 				#if INTERNAL
 				Section {
@@ -118,7 +113,11 @@ struct SettingsView: View {
 				
 				
 				#endif
-
+				// Production flags
+				Toggle(isOn: $timestamps) {
+					Text("Show relative timestamps")
+						.font(.custom("LoosExtended-Regular", size: 16))
+				}
 
 
 				Section {
