@@ -92,8 +92,6 @@ struct CardInfoView: View {
 			icon = "square.stack.3d.down.forward"
 		}
 
-		print("icon = \(icon)")
-
 		return icon
 	}
 
@@ -186,13 +184,37 @@ struct CardInfoView: View {
 				.foregroundColor(.accentColor)
 		}
 	}
+	
+	var subhead: AnyView {
+		if cardInfo.summary {
+			return AnyView(Text("Summary"))
+		} else if let asset = cardInfo.card?.asset {
+			return AnyView(HStack(alignment: .center, spacing: 8) {
+				Image(systemName: icon)
+					.frame(width: 20, height: 20, alignment: .center)
+				
+				if asset.isFavorite {
+					Image(systemName: "heart.fill")
+						.accessibilityLabel("Favorite")
+						.frame(width: 20, height: 20, alignment: .center)
+				}
+				
+				if asset.hasAdjustments {
+					Image(systemName: "pencil")
+						.accessibilityLabel("Edited")
+						.frame(width: 20, height: 20, alignment: .center)
+				}
+				
+				Text(type)
+			})
+		}
+	}
 
 	var body: some View {
 		VStack(alignment: .leading, spacing: 4) {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
 				title
 					.font(.custom("LoosExtended-Bold", size: 24))
-					.contentTransition(.numericText())
 
 				Spacer()
 
@@ -213,30 +235,9 @@ struct CardInfoView: View {
 					.frame(width: 40, height: 40, alignment: .center)
 			}
 
-			if cardInfo.summary {
-				Text("Summary")
-					.font(.custom("LoosExtended-Regular", size: 18))
-			} else if let asset = cardInfo.card?.asset {
-				HStack(alignment: .center, spacing: 8) {
-					Image(systemName: icon)
-						.frame(width: 20, height: 20, alignment: .center)
-
-					if asset.isFavorite {
-						Image(systemName: "heart.fill")
-							.accessibilityLabel("Favorite")
-							.frame(width: 20, height: 20, alignment: .center)
-					}
-
-					if asset.hasAdjustments {
-						Image(systemName: "pencil")
-							.accessibilityLabel("Edited")
-							.frame(width: 20, height: 20, alignment: .center)
-					}
-
-					Text(type)
-						.font(.custom("LoosExtended-Regular", size: 18))
-				}
-			}
+			subhead
+				.font(.custom("LoosExtended-Regular", size: 18))
+				.contentTransition(.numericText())
 		}
 			.padding(.horizontal, 20)
 			.padding(.vertical, 18)
