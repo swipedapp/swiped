@@ -121,8 +121,10 @@ class ViewController: UIViewController {
 	}
 	
 	private func updateCurrentItem() {
-		let index = cardStack.topCardIndex ?? 0
-		cardInfo.setCard(cards[index], summary: false)
+		if cards.count > 0 {
+			let index = cardStack.topCardIndex ?? 0
+			cardInfo.setCard(cards[index], summary: false)
+		}
 	}
 
 	private func fetchAlert() {

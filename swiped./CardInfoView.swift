@@ -36,6 +36,9 @@ struct CardInfoView: View {
 
 	@State var showSettings = false
 
+	@AppStorage("timestamps")
+	var timestamps = false
+
 	var icon: String {
 		guard let asset = cardInfo.card?.asset else {
 			return ""
@@ -170,11 +173,19 @@ struct CardInfoView: View {
 
 		return types.joined(separator: ", ")
 	}
-	
+
 	var title: AnyView {
 		if let asset = cardInfo.card?.asset {
-			return AnyView(Text(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast))
-				.contentTransition(.numericText()))
+			let date = asset.creationDate ?? .distantPast
+			if timestamps {
+				return AnyView(Text(date, format: Date.RelativeFormatStyle(presentation: .numeric, unitsStyle: .wide))
+					.textCase(.uppercase)
+					.contentTransition(.numericText()))
+			} else {
+				return AnyView(Text(date, style: .date)
+					.textCase(.uppercase)
+					.contentTransition(.numericText()))
+			}
 		} else {
 			return AnyView(Text("SWIPED") + Text(".")
 				.foregroundColor(.accentColor))
@@ -217,6 +228,9 @@ struct CardInfoView: View {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
 				title
 					.font(.custom("LoosExtended-Bold", size: 24))
+					.onTapGesture {
+						timestamps = !timestamps
+					}
 
 				Spacer()
 
