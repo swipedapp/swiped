@@ -96,9 +96,12 @@ struct SettingsView: View {
 				 .font(.custom("LoosExtended-Bold", size: 16))
 				 }
 				 }*/
-				
+				Toggle(isOn: $sync) {
+					Text("Show relative timestamps")
+						.font(.custom("LoosExtended-Bold", size: 16))
+				}
 				Section {
-					NavigationLink("Change App Icon") {
+					NavigationLink("App Icons") {
 						SettingsIconView()
 					}
 				}
