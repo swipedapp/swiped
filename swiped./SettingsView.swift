@@ -60,6 +60,17 @@ struct SettingsView: View {
 //				}
 
 				Section {
+					HStack {
+						Text("Sync status")
+							.font(.custom("LoosExtended-Bold", size: 16))
+						Spacer()
+						Text(ServerController.shared.syncFailed ? "Error" : "Syncing")
+							.font(.custom("LoosExtended-Bold", size: 16))
+							.foregroundColor(ServerController.shared.syncFailed ? .red : .primary)
+					}
+				}
+
+				Section {
 					Button(action: {
 						showResetAlert = true
 					}, label: {

@@ -28,12 +28,15 @@ class ServerController: NSObject {
 
 	static let server = URL(string: "https://swiped.missaustraliana.net")!
 
+	var syncFailed = false
+
 	func getReceipt() async -> String? {
 		var result: VerificationResult<AppTransaction>?
 		do {
 			result = try await AppTransaction.shared
 		} catch {
 			print("Transaction error: \(error)")
+			syncFailed = false
 		}
 
 		switch result {
@@ -47,6 +50,7 @@ class ServerController: NSObject {
 			return nil
 		}
 
+		syncFailed = result == nil
 		return result?.jwsRepresentation
 	}
 
@@ -62,9 +66,6 @@ class ServerController: NSObject {
 		guard let (data, res) = try? await URLSession.shared.data(for: request) else {
 			return
 		}
-
-		print(data)
-		print(res)
 	}
 
 	func doSync() async {
@@ -86,9 +87,6 @@ class ServerController: NSObject {
 		guard let (data, res) = try? await URLSession.shared.data(for: request) else {
 			return
 		}
-
-		print(data)
-		print(res)
 	}
 
 }
