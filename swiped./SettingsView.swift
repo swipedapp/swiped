@@ -39,8 +39,6 @@ struct SettingsView: View {
 							Text(".")
 								.foregroundColor(.accentColor)
 								.font(.custom("LoosExtended-Bold", size: 40))
-							Text("Build \(build)")
-								.font(.custom("LoosExtended-Medium", size: 18))
 							#elseif DEBUG
 							Text("CANDIDATE")
 								.foregroundColor(.white)
