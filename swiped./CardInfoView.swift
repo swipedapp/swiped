@@ -49,6 +49,14 @@ struct CardInfoView: View {
 				Button(action: {
 
 				}, label: {
+					Image(systemName: "square.and.arrow.up")
+						.font(.custom("LoosExtended-Bold", size: 18))
+						.foregroundColor(.white)
+				})
+
+				Button(action: {
+					delegate?.settings(sender: UIButton(frame: .zero))
+				}, label: {
 					Image(systemName: "gear")
 						.font(.custom("LoosExtended-Bold", size: 18))
 						.foregroundColor(.white)
