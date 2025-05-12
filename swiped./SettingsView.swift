@@ -78,6 +78,7 @@ struct SettingsView: View {
 							Text(ServerController.shared.syncFailed ? "Could not verify signature." : "Connected.")
 								.font(.custom("LoosExtended-Regular", size: 16))
 								.foregroundColor(ServerController.shared.syncFailed ? .yellow : .accentColor)
+							
 								
 						}
 					}
