@@ -16,7 +16,7 @@ class ViewController: UIViewController {
 
 	private let cardStack = SwipeCardStack()
 	private let buttonStackView = ButtonStackView()
-//	private let infoView = CardInfoView()
+	private var infoView: CardInfoView!
 	private let behindView = BehindView()
 
 	private let photosController = PhotosController()
@@ -24,7 +24,9 @@ class ViewController: UIViewController {
 	private var toDelete = [PhotoCard]()
 	private var loadingBatch = true
 	private var batchesLoaded = 0
-	
+
+	private let cardInfo = CardInfo()
+
 	private var previewItem: URL?
 
 	override func viewDidLoad() {
@@ -34,7 +36,8 @@ class ViewController: UIViewController {
 		cardStack.delegate = self
 		cardStack.dataSource = self
 		buttonStackView.delegate = self
-//		infoView.delegate = self
+		infoView = CardInfoView()
+		infoView.delegate = self
 		behindView.delegate = self
 		photosController.delegate = self
 

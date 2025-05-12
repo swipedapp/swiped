@@ -224,7 +224,7 @@ struct CardInfoView: View {
 
 					Text(type)
 				}
-				.font(.custom("LoosExtended-Regular", size: 18))
+					.font(.custom("LoosExtended-Regular", size: 18))
 			}
 		}
 			.padding(.horizontal, 20)
