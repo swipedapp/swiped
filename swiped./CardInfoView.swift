@@ -42,7 +42,8 @@ struct CardInfoView: View {
 #Preview {
 	let cardInfo = CardInfo()
 	cardInfo.card = PhotoCard()
-	CardInfoView(cardInfo: cardInfo)
+
+	return CardInfoView(cardInfo: cardInfo)
 }
 
 class CardInfoView2: UIView {
