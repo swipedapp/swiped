@@ -11,6 +11,7 @@ import Photos
 import UniformTypeIdentifiers
 
 class CardInfo: ObservableObject {
+	@Published var summary: Bool = false
 	@Published var card: PhotoCard?
 }
 
