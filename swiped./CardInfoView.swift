@@ -225,6 +225,13 @@ struct CardInfoView: View {
 
 				Spacer()
 
+				ShareLink(
+					"",
+					item: "foo",
+					preview: SharePreview("Export poop")
+				)
+					.font(.custom("LoosExtended-Bold", size: 20))
+
 				if let asset = cardInfo.card?.asset,
 					 asset.mediaType == .image {
 					Button(action: {
