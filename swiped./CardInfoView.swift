@@ -31,7 +31,7 @@ struct CardInfoView: View {
 
 	private static let fileSizeFormatter = ByteCountFormatter()
 
-
+	
 
 	var body: any View {
 		
