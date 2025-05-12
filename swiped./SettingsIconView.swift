@@ -32,7 +32,7 @@ struct SettingsIconView: View {
 								UIApplication.shared.setAlternateIconName(icon.name)
 							}
 						}, label: {
-							HStack(alignment: .center) {
+							HStack(alignment: .center, spacing: 10) {
 								Image(uiImage: UIImage(named: "\(icon.name)-Preview") ?? UIImage(systemName: "questionmark")!)
 									.frame(width: 60, height: 60)
 									.background(Color(UIColor.secondarySystemBackground))
@@ -44,9 +44,15 @@ struct SettingsIconView: View {
 								
 								Text(icon.title)
 									.font(.custom("LoosExtended-Regular", size: 16))
+									.foregroundColor(.white)
+								
+								Spacer()
 							}
-								.padding(5)
+								.padding(15)
 						})
+						
+						Divider()
+							.background(.gray)
 					}
 				}
 		}
