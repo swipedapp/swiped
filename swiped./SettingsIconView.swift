@@ -56,7 +56,7 @@ struct SettingsIconView: View {
 					}
 				}
 		}
-			.navigationTitle("Icons")
+			//.navigationTitle("Icons")
 	}
 }
 
