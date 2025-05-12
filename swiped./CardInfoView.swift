@@ -24,13 +24,6 @@ class CardInfo: ObservableObject {
 
 struct CardInfoView: View {
 
-	protocol Delegate: AnyObject {
-		func share(sender: UIButton)
-		func settings()
-	}
-
-	weak var delegate: Delegate?
-
 	private static let dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateStyle = .medium
