@@ -193,6 +193,8 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 			 let contentView = swipeCard.content as? CardContentView {
 			contentView.updateCard()
 		}
+
+		updateCurrentItem()
 	}
 	
 	func didFail(error: PhotosController.PhotoError) {
