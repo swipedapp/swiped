@@ -220,19 +220,18 @@ struct CardInfoView: View {
 
 				Spacer()
 
-
-				if let asset = cardInfo.card?.asset,
+				if let card = cardInfo.card,
+					 let asset = card.asset,
 					 asset.mediaType == .image {
 					ShareLink(
-						item: Image(uiImage: cardInfo.card?.fullImage ?? UIImage()),
-						preview: SharePreview("", image: Image(uiImage: cardInfo.card?.thumbnail ?? UIImage()))
+						item: Image(uiImage: card.fullImage ?? card.thumbnail ?? UIImage()),
+						preview: SharePreview("", image: Image(uiImage: card.thumbnail ?? UIImage()))
 					) {
 						Image(systemName: "square.and.arrow.up")
 					}
 						.font(.custom("LoosExtended-Bold", size: 20))
 						.frame(width: 40, height: 40, alignment: .center)
 				}
-
 
 				Button(action: {
 					showSettings = true
