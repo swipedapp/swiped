@@ -129,9 +129,11 @@ struct CardInfoView: View {
 					.frame(width: 40, height: 40, alignment: .center)
 			}
 
-			HStack(alignment: .center, spacing: 8) {
-				Image(icon)
-					.frame(width: 20, height: 20, alignment: .center)
+			if let asset = cardInfo.card?.asset {
+				HStack(alignment: .center, spacing: 8) {
+					Image(icon)
+						.frame(width: 20, height: 20, alignment: .center)
+				}
 			}
 		}
 			.padding(.horizontal, 20)
