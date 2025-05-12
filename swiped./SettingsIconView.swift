@@ -11,7 +11,9 @@ struct SettingsIconView: View {
 
 	let icons = [
 		"DefaultIcon",
-		"SFIcon"
+		"SFIcon",
+		"ghostedIcon",
+		"flightIcon"
 	]
 
 	var body: some View {

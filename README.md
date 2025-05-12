@@ -18,7 +18,7 @@
 - [x] Video Quick Look
 - [x] Sharing Images
 - [ ] Sharing Videos
-- [ ] Relative Time Stamps
+- [x] Relative Time Stamps
 - [ ] Selective App Icons
 - [x] App Info View
 ---
