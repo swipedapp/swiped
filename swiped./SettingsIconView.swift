@@ -34,7 +34,7 @@ struct SettingsIconView: View {
 								UIApplication.shared.setAlternateIconName(icon)
 							}
 						}, label: {
-							Image(uiImage: UIImage(named: icon) ?? UIImage(systemName: "questionmark")!)
+							Image(uiImage: UIImage(named: "\(icon)-Preview") ?? UIImage(systemName: "questionmark")!)
 								.frame(width: 60, height: 60)
 								.background(Color(UIColor.secondarySystemBackground))
 								.cornerRadius(12)
