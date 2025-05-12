@@ -20,8 +20,7 @@ struct SettingsView: View {
 
 	@State
 	var sync: Bool = false
-	@State
-	var timestamps: Bool = false
+	
 
 	@State
 	var showResetAlert: Bool = false
@@ -103,21 +102,18 @@ struct SettingsView: View {
 				 }
 				 }*/
 				// INTERNAL FLAGS
-				Toggle(isOn: $timestamps) {
-					Text("Show relative timestamps")
-						.font(.custom("LoosExtended-Regular", size: 16))
-				}
 				
-				Section {
-					NavigationLink("Internal Flags") {
-						InternalView()
-					}
-				}
 				Section {
 					NavigationLink("App Icons") {
 						SettingsIconView()
 					}
 				}
+				Section {
+					NavigationLink("Internal") {
+						InternalView()
+					}
+				}
+				
 				
 				#endif
 

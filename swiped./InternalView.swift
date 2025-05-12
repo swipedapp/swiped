@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct InternalView: View {
+	@AppStorage("timestamps")
+	var timestamps: Bool = false
 	var body: some View {
-		Text("hi")
+		Toggle(isOn: $timestamps) {
+			Text("Show relative timestamps")
+				.font(.custom("LoosExtended-Regular", size: 16))
+		}
 	}
 }
 #Preview {
