@@ -61,10 +61,10 @@ struct SettingsView: View {
 
 				Section {
 					HStack {
-						Text("Sync status")
+						Text("SYNC.")
 							.font(.custom("LoosExtended-Bold", size: 16))
 						Spacer()
-						Text(ServerController.shared.syncFailed ? "Error" : "Syncing")
+						Text(ServerController.shared.syncFailed ? "Failed" : "Connected")
 							.font(.custom("LoosExtended-Bold", size: 16))
 							.foregroundColor(ServerController.shared.syncFailed ? .red : .primary)
 					}
