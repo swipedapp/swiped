@@ -11,13 +11,13 @@ if [ -n "$added" ]; then
 fi
 if [ -n "$modified" ]; then
   if [ -n "$message" ]; then
-    message="${message}\n"
+    message="${message}"
   fi
   message="${message}Modified: ${modified}"
 fi
 if [ -n "$deleted" ]; then
   if [ -n "$message" ]; then
-    message="${message}\n"
+    message="${message}"
   fi
   message="${message}Deleted: ${deleted}"
 fi
