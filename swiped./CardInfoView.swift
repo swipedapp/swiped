@@ -44,13 +44,19 @@ struct CardInfoView: View {
 					.foregroundColor(.accentColor)
 					.font(.custom("LoosExtended-Bold", size: 24))
 
+				Spacer()
+
 				Button(action: {
 
 				}, label: {
-
+					Image(systemName: "gear")
+						.font(.custom("LoosExtended-Bold", size: 18))
+						.foregroundColor(.white)
 				})
 			}
 		}
+			.padding(.horizontal, 20)
+			.padding(.vertical, 18)
 	}
 
 }
@@ -60,6 +66,7 @@ struct CardInfoView: View {
 	cardInfo.card = PhotoCard()
 
 	return CardInfoView(cardInfo: cardInfo)
+		.previewLayout(.fixed(width: 414, height: 100))
 }
 
 class CardInfoView2: UIView {
