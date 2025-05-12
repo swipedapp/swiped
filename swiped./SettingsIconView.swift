@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsIconView: View {
 
 	let icons = [
-		"DefaultIcon",
+		"AppIcon",
 		"SFIcon",
 		"ghostedIcon",
 		"flightIcon"
@@ -28,7 +28,7 @@ struct SettingsIconView: View {
 				alignment: .center) {
 					ForEach(icons, id: \.self) { icon in
 						Button(action: {
-							if icon == "DefaultIcon" {
+							if icon == "AppIcon" {
 								UIApplication.shared.setAlternateIconName(nil)
 							} else {
 								UIApplication.shared.setAlternateIconName(icon)
