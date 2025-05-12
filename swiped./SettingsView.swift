@@ -103,11 +103,7 @@ struct SettingsView: View {
 				 }*/
 				// INTERNAL FLAGS
 				
-				Section {
-					NavigationLink("App Icons") {
-						SettingsIconView()
-					}
-				}
+				
 				Section {
 					NavigationLink("Internal") {
 						InternalView()
