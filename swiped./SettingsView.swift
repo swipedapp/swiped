@@ -78,9 +78,10 @@ struct SettingsView: View {
 							Text(ServerController.shared.syncFailed ? "Could not verify signature." : "Connected.")
 								.font(.custom("LoosExtended-Regular", size: 16))
 								.foregroundColor(ServerController.shared.syncFailed ? .yellow : .accentColor)
-							
+								
 						}
 					}
+					.listRowBackground(Color.black)
 					
 #endif
 					
@@ -96,6 +97,7 @@ struct SettingsView: View {
 							
 						}
 					}
+					.listRowBackground(Color.black)
 					/*								Section {
 					 Toggle(isOn: $sync) {
 					 Text("Sync")
@@ -110,15 +112,18 @@ struct SettingsView: View {
 							InternalView()
 						}
 							.font(.custom("LoosExtended-Regular", size: 16))
+							.listRowBackground(Color(red: 15 / 255, green: 15 / 255, blue: 15 / 255))
 					}
 					
 					
 #endif
 					// Production flags
 					Toggle(isOn: $timestamps) {
+						
 						Text("Show relative timestamps")
 							.font(.custom("LoosExtended-Regular", size: 16))
-					}
+							
+					}.listRowBackground(Color(red: 15 / 255, green: 15 / 255, blue: 15 / 255))
 					
 					
 					Section {
@@ -133,6 +138,7 @@ struct SettingsView: View {
 							}
 						})
 						.foregroundColor(.red)
+						.listRowBackground(Color(red: 15 / 255, green: 15 / 255, blue: 15 / 255))
 					}
 				}
 					.scrollContentBackground(.hidden)
