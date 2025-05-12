@@ -68,7 +68,7 @@ struct SettingsView: View {
 							}
 							Spacer()
 						}
-							.padding(.vertical, 30)
+						.padding(.vertical, 30)
 					})
 #if RELEASE || DEBUG
 					Section {
@@ -110,6 +110,7 @@ struct SettingsView: View {
 						NavigationLink("Internal") {
 							InternalView()
 						}
+							.font(.custom("LoosExtended-Regular", size: 16))
 					}
 					
 					
@@ -132,7 +133,7 @@ struct SettingsView: View {
 								Spacer()
 							}
 						})
-							.foregroundColor(.red)
+						.foregroundColor(.red)
 					}
 				}
 					.scrollContentBackground(.hidden)
@@ -148,8 +149,8 @@ struct SettingsView: View {
 				
 				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 			}
-				.background(Color.black)
 		}
+			.background(Color.black)
 	}
 }
 
