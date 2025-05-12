@@ -125,7 +125,9 @@ struct SettingsView: View {
 							.font(.custom("LoosExtended-Regular", size: 16))
 							
 					}.listRowBackground(Color(red: 15 / 255, green: 15 / 255, blue: 15 / 255))
-					
+					NavigationLink("App Icons") {
+						SettingsIconView()
+					}.listRowBackground(Color(red: 15 / 255, green: 15 / 255, blue: 15 / 255)).font(.custom("LoosExtended-Regular", size: 16))
 					
 					Section {
 						Button(action: {
