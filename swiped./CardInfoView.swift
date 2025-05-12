@@ -163,9 +163,9 @@ struct CardInfoView: View {
 			}
 		}
 
-		types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(photo?.size ?? 0)))
+		types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(photo.size)))
 
-		subLabel.text = types.joined(separator: ", ")
+		return types.joined(separator: ", ")
 	}
 
 	var body: some View {
@@ -173,11 +173,9 @@ struct CardInfoView: View {
 			HStack(alignment: .center, spacing: 0) {
 				if let asset = cardInfo.card?.asset {
 					Text(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast))
-						.foregroundColor(.white)
 						.font(.custom("LoosExtended-Bold", size: 24))
 				} else {
 					Text("SWIPED")
-						.foregroundColor(.white)
 						.font(.custom("LoosExtended-Bold", size: 24))
 					+
 					Text(".")
@@ -192,7 +190,6 @@ struct CardInfoView: View {
 				}, label: {
 					Image(systemName: "square.and.arrow.up")
 						.font(.custom("LoosExtended-Bold", size: 18))
-						.foregroundColor(.white)
 				})
 					.frame(width: 40, height: 40, alignment: .center)
 
@@ -201,7 +198,6 @@ struct CardInfoView: View {
 				}, label: {
 					Image(systemName: "gear")
 						.font(.custom("LoosExtended-Bold", size: 18))
-						.foregroundColor(.white)
 				})
 					.frame(width: 40, height: 40, alignment: .center)
 			}
@@ -210,11 +206,27 @@ struct CardInfoView: View {
 				HStack(alignment: .center, spacing: 8) {
 					Image(icon)
 						.frame(width: 20, height: 20, alignment: .center)
+
+					if asset.isFavorite {
+						Image("heart.fill")
+							.accessibilityLabel("Favorite")
+							.frame(width: 20, height: 20, alignment: .center)
+					}
+
+					if asset.hasAdjustments {
+						Image("pencil")
+							.accessibilityLabel("Edited")
+							.frame(width: 20, height: 20, alignment: .center)
+					}
+
+					Text(type)
+						.font(.custom("LoosExtended-Regular", size: 18))
 				}
 			}
 		}
 			.padding(.horizontal, 20)
 			.padding(.vertical, 18)
+			.foregroundColor(.white)
 	}
 
 }
