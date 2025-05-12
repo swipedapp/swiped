@@ -39,7 +39,7 @@ struct SettingsView: View {
 								.font(.custom("LoosExtended-Bold", size: 50))
 
 							Text("Version \(version) (\(build))")
-								.font(.custom("LoosExtended-Bold", size: 18))
+								.font(.custom("LoosExtended-Medium", size: 18))
 						}
 						Spacer()
 					}
@@ -65,7 +65,7 @@ struct SettingsView: View {
 							.font(.custom("LoosExtended-Bold", size: 16))
 						Spacer()
 						Text(ServerController.shared.syncFailed ? "Failed" : "Connected")
-							.font(.custom("LoosExtended-Bold", size: 16))
+							.font(.custom("LoosExtended-Regular", size: 16))
 							.foregroundColor(ServerController.shared.syncFailed ? .red : .primary)
 					}
 				}

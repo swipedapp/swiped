@@ -4,6 +4,8 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>loos_reg.ttf</string>
+		<string>loos_md.ttf</string>
 		<string>loos_bold.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
