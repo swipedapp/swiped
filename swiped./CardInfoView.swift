@@ -33,15 +33,16 @@ struct CardInfoView: View {
 
 	@ObservedObject var cardInfo: CardInfo
 
-	var body: any View {
+	var body: some View {
 		Color.red
 	}
 
 }
 
 #Preview {
-	let cardInfo = 
-	CardInfoView()
+	let cardInfo = CardInfo()
+	cardInfo.card = PhotoCard()
+	CardInfoView(cardInfo: cardInfo)
 }
 
 class CardInfoView2: UIView {
