@@ -32,7 +32,7 @@ struct CardInfoView: View {
 
 	private static let fileSizeFormatter = ByteCountFormatter()
 
-	@EnvironmentObject var cardInfo: CardInfo?
+	@EnvironmentObject var cardInfo: CardInfo
 
 	var icon: String {
 		guard let asset = cardInfo.card?.asset else {
