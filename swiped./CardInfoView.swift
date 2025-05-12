@@ -183,7 +183,7 @@ struct CardInfoView: View {
 		} else {
 			return AnyView(Text("SWIPED") + Text(".")
 				.foregroundColor(.accentColor)
-				.contentTransition(.numericText()))
+				.contentTransition(.numericText())
 		}
 	}
 	
