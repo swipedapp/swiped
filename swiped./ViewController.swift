@@ -123,7 +123,7 @@ class ViewController: UIViewController {
 	
 	private func updateCurrentItem() {
 		let index = cardStack.topCardIndex ?? 0
-//		infoView.card = cards[index]
+		cardInfo.card = cards[index]
 	}
 
 	private func fetchAlert() {
@@ -275,7 +275,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 
 		cardStack.isUserInteractionEnabled = false
 		buttonStackView.isUserInteractionEnabled = false
-//		infoView.setSwipedText(summary: true)
+		cardInfo.summary = true
+		cardInfo.card = nil
 		behindView.updateCount()
 
 		Task {
@@ -383,7 +384,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			self.buttonStackView.isUserInteractionEnabled = true
 			
 			UIView.animate(withDuration: 0.3) {
-//				self.infoView.alpha = 1
+				self.infoHostingController.view.alpha = 1
 				self.behindView.alpha = 0
 				self.buttonStackView.alpha = 1
 			}
