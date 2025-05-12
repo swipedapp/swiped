@@ -38,7 +38,6 @@ class ViewController: UIViewController {
 		cardStack.dataSource = self
 		buttonStackView.delegate = self
 		infoView = CardInfoView()
-		infoView.delegate = self
 		behindView.delegate = self
 		photosController.delegate = self
 
