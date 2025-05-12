@@ -47,20 +47,22 @@ struct CardInfoView: View {
 				Spacer()
 
 				Button(action: {
-
+					delegate?.share(sender: UIButton())
 				}, label: {
 					Image(systemName: "square.and.arrow.up")
 						.font(.custom("LoosExtended-Bold", size: 18))
 						.foregroundColor(.white)
 				})
+					.frame(width: 44, height: 44, alignment: .center)
 
 				Button(action: {
-					delegate?.settings(sender: UIButton(frame: .zero))
+					delegate?.settings()
 				}, label: {
 					Image(systemName: "gear")
 						.font(.custom("LoosExtended-Bold", size: 18))
 						.foregroundColor(.white)
 				})
+					.frame(width: 44, height: 44, alignment: .center)
 			}
 		}
 			.padding(.horizontal, 20)
