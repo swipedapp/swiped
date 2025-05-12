@@ -66,7 +66,6 @@ struct CardInfoView: View {
 	cardInfo.card = PhotoCard()
 
 	return CardInfoView(cardInfo: cardInfo)
-		.previewLayout(.fixed(width: 414, height: 100))
 }
 
 class CardInfoView2: UIView {
