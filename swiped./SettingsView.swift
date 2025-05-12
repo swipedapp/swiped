@@ -20,6 +20,8 @@ struct SettingsView: View {
 
 	@State
 	var sync: Bool = false
+	@State
+	var timestamps: Bool = false
 
 	@State
 	var showResetAlert: Bool = false
@@ -96,9 +98,9 @@ struct SettingsView: View {
 				 .font(.custom("LoosExtended-Bold", size: 16))
 				 }
 				 }*/
-				Toggle(isOn: $sync) {
+				Toggle(isOn: $timestamps) {
 					Text("Show relative timestamps")
-						.font(.custom("LoosExtended-Bold", size: 16))
+						.font(.custom("LoosExtended-Regular", size: 16))
 				}
 				Section {
 					NavigationLink("App Icons") {
