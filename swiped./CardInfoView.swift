@@ -88,7 +88,88 @@ struct CardInfoView: View {
 	}
 
 	var type: String {
+		var types = [String]()
 
+		if asset.mediaSubtypes.contains(.photoScreenshot) {
+			types.append("Screenshot")
+		}
+		if asset.mediaSubtypes.contains(.photoHDR) {
+			types.append("HDR Photo")
+		}
+		if asset.mediaSubtypes.contains(.photoLive) {
+			types.append("Live Photo")
+			icon = "livephoto"
+		}
+		if asset.mediaSubtypes.contains(.photoPanorama) {
+			types.append("Panorama")
+		}
+		if asset.mediaSubtypes.contains(.photoDepthEffect) {
+			types.append("Depth Effect")
+			icon = "person.and.background.dotted"
+		}
+		if asset.mediaSubtypes.contains(.spatialMedia) {
+			types.append("Spatial Media")
+			icon = "video"
+		}
+		if asset.mediaSubtypes.contains(.videoCinematic) {
+			types.append("Cinematic Video")
+			icon = "video"
+		}
+		if asset.mediaSubtypes.contains(.videoHighFrameRate) {
+			types.append("High Frame Rate Video")
+			icon = "video"
+		}
+		if asset.mediaSubtypes.contains(.videoStreamed) {
+			types.append("Streamed Video")
+			icon = "video"
+		}
+		if asset.mediaSubtypes.contains(.videoTimelapse) {
+			types.append("Time Lapse")
+			icon = "timelapse"
+		}
+		if asset.mediaSubtypes.contains(.screenRecording) {
+			types.append("Screen Recording")
+			icon = "record.circle"
+		}
+		if asset.burstIdentifier != nil {
+			types.append("Burst Photo")
+			icon = "square.stack.3d.down.forward"
+		}
+
+		if types.isEmpty {
+			switch asset.mediaType {
+			case .image:
+				types.append("Photo")
+			case .video:
+				types.append("Video")
+			case .audio:
+				types.append("Audio")
+			case .unknown:
+				types.append("Unknown")
+			@unknown default:
+				types.append("Unknown")
+			}
+		}
+
+		let resources = PHAssetResource.assetResources(for: asset)
+
+		if resources.contains(where: { UTType($0.uniformTypeIdentifier)?.conforms(to: UTType.rawImage) == true }) {
+			types.append("RAW")
+		}
+
+		if let resource = resources.first {
+			let fileName = resource.originalFilename
+
+			if fileName.starts(with: "telegram-") {
+				types.append("Saved from Telegram")
+			} else if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
+				types.append("Imported")
+			}
+		}
+
+		types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(card.photo?.size ?? 0)))
+
+		subLabel.text = types.joined(separator: ", ")
 	}
 
 	var body: some View {
