@@ -40,6 +40,16 @@ struct SettingsView: View {
 								.font(.custom("LoosExtended-Bold", size: 40))
 							Text("Build \(build)")
 								.font(.custom("LoosExtended-Medium", size: 18))
+							#elseif DEBUG
+							Text("CANDIDATE")
+								.foregroundColor(.white)
+								.font(.custom("LoosExtended-Bold", size: 35))
+							+
+							Text(".")
+								.foregroundColor(.accentColor)
+								.font(.custom("LoosExtended-Bold", size: 35))
+							Text("Build \(build)")
+								.font(.custom("LoosExtended-Medium", size: 18))
 							#else
 							Text("SWIPED")
 								.foregroundColor(.white)
@@ -56,7 +66,20 @@ struct SettingsView: View {
 					}
 						.padding(.vertical, 30)
 				})
-				#if INTERNAL
+				#if RELEASE || DEBUG
+				Section {
+					HStack {
+						Text("SYNC.")
+							.font(.custom("LoosExtended-Bold", size: 16))
+						Spacer()
+						Text(ServerController.shared.syncFailed ? "Could not verify signature." : "Connected.")
+							.font(.custom("LoosExtended-Regular", size: 16))
+							.foregroundColor(ServerController.shared.syncFailed ? .yellow : .accentColor)
+						
+					}
+				}
+				
+				#else
 				Section {
 					HStack {
 						Text("SYNC.")
@@ -68,28 +91,16 @@ struct SettingsView: View {
 						
 					}
 				}
-/*								Section {
-									Toggle(isOn: $sync) {
-										Text("Sync")
-											.font(.custom("LoosExtended-Bold", size: 16))
-									}
-								}*/
+				/*								Section {
+				 Toggle(isOn: $sync) {
+				 Text("Sync")
+				 .font(.custom("LoosExtended-Bold", size: 16))
+				 }
+				 }*/
 				
-								Section {
-									NavigationLink("Change App Icon") {
-										SettingsIconView()
-									}
-								}
-				#else
 				Section {
-					HStack {
-						Text("SYNC.")
-							.font(.custom("LoosExtended-Bold", size: 16))
-						Spacer()
-						Text(ServerController.shared.syncFailed ? "Could not verify signature." : "Connected.")
-							.font(.custom("LoosExtended-Regular", size: 16))
-							.foregroundColor(ServerController.shared.syncFailed ? .yellow : .accentColor)
-						
+					NavigationLink("Change App Icon") {
+						SettingsIconView()
 					}
 				}
 				#endif
