@@ -177,23 +177,22 @@ struct CardInfoView: View {
 
 		return types.joined(separator: ", ")
 	}
+	
+	var title: Text {
+		if let asset = cardInfo.card?.asset {
+			return Text(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast))
+		} else {
+			return Text("SWIPED") + Text(".")
+				.foregroundColor(.accentColor)
+		}
+	}
 
 	var body: some View {
 		VStack(alignment: .leading, spacing: 4) {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
-				if let asset = cardInfo.card?.asset {
-					Text(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast))
-						.font(.custom("LoosExtended-Bold", size: 24))
-						.contentTransition(.numericText())
-						
-				} else {
-					Text("SWIPED")
-						.font(.custom("LoosExtended-Bold", size: 24))
-					+
-					Text(".")
-						.foregroundColor(.accentColor)
-						.font(.custom("LoosExtended-Bold", size: 24))
-				}
+				title
+					.font(.custom("LoosExtended-Bold", size: 24))
+					.contentTransition(.numericText())
 
 				Spacer()
 
