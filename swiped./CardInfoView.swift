@@ -34,7 +34,13 @@ struct CardInfoView: View {
 	@ObservedObject var cardInfo: CardInfo
 
 	var body: some View {
-		Text("SWIPED.")
+		Text("SWIPED")
+			.foregroundColor(.white)
+			.font(.custom("LoosExtended-Bold", size: 50))
+		+
+		Text(".")
+			.foregroundColor(.accentColor)
+			.font(.custom("LoosExtended-Bold", size: 50))
 	}
 
 }
