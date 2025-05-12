@@ -29,8 +29,8 @@ struct SettingsView: View {
 	var showResetAlert: Bool = false
 
 	var body: some View {
-		NavigationView {
-			VStack {
+		VStack {
+			NavigationView {
 				Form {
 					Section(content: {}, header: {
 						HStack {
