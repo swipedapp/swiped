@@ -131,7 +131,7 @@ struct CardInfoView: View {
 
 			HStack(alignment: .center, spacing: 8) {
 				Image(icon)
-					.wid
+					.frame(width: 20, height: 20, alignment: .center)
 			}
 		}
 			.padding(.horizontal, 20)
