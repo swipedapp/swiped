@@ -10,30 +10,40 @@ import SwiftUI
 import Photos
 import UniformTypeIdentifiers
 
-struct CardInfoView: View {
-
-	var body: any View {
-
-	}
-
+class CardInfo: ObservableObject {
+	@Published var card: PhotoCard!
 }
 
-class CardInfoView2: UIView {
+struct CardInfoView: View {
 
 	protocol Delegate: AnyObject {
 		func share(sender: UIButton)
 		func settings()
 	}
-	
+
 	weak var delegate: Delegate?
-	
+
 	private static let dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateStyle = .medium
 		return dateFormatter
 	}()
-	
+
 	private static let fileSizeFormatter = ByteCountFormatter()
+
+
+
+	var body: any View {
+		
+	}
+
+}
+
+#Preview {
+	CardInfoView()
+}
+
+class CardInfoView2: UIView {
 
 	private let infoView = UIStackView()
 	private let dateLabel = UILabel()
