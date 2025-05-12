@@ -147,6 +147,7 @@ struct SettingsView: View {
 			.background(Color.black)
 			
 	}
+		.background(Color.black)
 }
 
 
