@@ -8,24 +8,22 @@
 import SwiftUI
 
 struct SettingsIconView: View {
+	
+	struct Icon {
+		var name: String
+		var title: String
+	}
 
 	let icons = [
-		"AppIcon",
-		"SFIcon",
-		"ghostedIcon",
-		"flightIcon"
+		Icon(name: "AppIcon", title: "Classic"),
+		Icon(name: "SFIcon", title: "SF"),
+		Icon(name: "ghostedIcon", title: "ghosted"),
+		Icon(name: "flightIcon" title: "Flight")
 	]
 
 	var body: some View {
 		ScrollView {
-			LazyVGrid(
-				columns: [
-					GridItem(.fixed(70), alignment: .center),
-					GridItem(.fixed(70), alignment: .center),
-					GridItem(.fixed(70), alignment: .center),
-					GridItem(.fixed(70), alignment: .center)
-				],
-				alignment: .center) {
+			LazyVStack {
 					ForEach(icons, id: \.self) { icon in
 						Button(action: {
 							if icon == "AppIcon" {
@@ -34,15 +32,16 @@ struct SettingsIconView: View {
 								UIApplication.shared.setAlternateIconName(icon)
 							}
 						}, label: {
-							Image(uiImage: UIImage(named: "\(icon)-Preview") ?? UIImage(systemName: "questionmark")!)
-								.frame(width: 60, height: 60)
-								.background(Color(UIColor.secondarySystemBackground))
-								.cornerRadius(12)
-								.overlay(
-									RoundedRectangle(cornerRadius: 12)
-										.stroke(Color(UIColor.separator), lineWidth: 1)
-								)
-						})
+							HStack {
+								Image(uiImage: UIImage(named: "\(icon)-Preview") ?? UIImage(systemName: "questionmark")!)
+									.frame(width: 60, height: 60)
+									.background(Color(UIColor.secondarySystemBackground))
+									.cornerRadius(12)
+									.overlay(
+										RoundedRectangle(cornerRadius: 12)
+											.stroke(Color(UIColor.separator), lineWidth: 1)
+									)
+							})
 							.padding(5)
 					}
 				}
