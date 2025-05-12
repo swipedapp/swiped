@@ -64,9 +64,9 @@ struct SettingsView: View {
 						Text("SYNC.")
 							.font(.custom("LoosExtended-Bold", size: 16))
 						Spacer()
-						Text(ServerController.shared.syncFailed ? "Failed" : "Connected")
+						Text(ServerController.shared.syncFailed ? "Could not verify signature." : "Connected.")
 							.font(.custom("LoosExtended-Regular", size: 16))
-							.foregroundColor(ServerController.shared.syncFailed ? .red : .primary)
+							.foregroundColor(ServerController.shared.syncFailed ? .yellow : .green)
 					}
 				}
 
@@ -77,7 +77,7 @@ struct SettingsView: View {
 						HStack {
 							Spacer()
 							Label("Reset Database", systemImage: "xmark.bin")
-								.font(.custom("LoosExtended-Bold", size: 16))
+								.font(.custom("LoosExtended-Medium", size: 16))
 							Spacer()
 						}
 					})
@@ -98,3 +98,4 @@ struct SettingsView: View {
 #Preview {
 	SettingsView()
 }
+
