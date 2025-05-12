@@ -130,7 +130,7 @@ struct SettingsView: View {
 					Button("Cancel", role: .cancel) {}
 				})
 		}
-		Text(commitInfo).opacity(0.5)
+		Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 	}
 
 }
