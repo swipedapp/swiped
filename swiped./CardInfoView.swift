@@ -203,7 +203,9 @@ struct CardInfoView: View {
 					.frame(width: 40, height: 40, alignment: .center)
 			}
 
-			if let asset = cardInfo.card?.asset {
+			if cardInfo.summary {
+				Text("Summary")
+			} else if let asset = cardInfo.card?.asset {
 				HStack(alignment: .center, spacing: 8) {
 					Image(icon)
 						.frame(width: 20, height: 20, alignment: .center)
@@ -221,8 +223,8 @@ struct CardInfoView: View {
 					}
 
 					Text(type)
-						.font(.custom("LoosExtended-Regular", size: 18))
 				}
+				.font(.custom("LoosExtended-Regular", size: 18))
 			}
 		}
 			.padding(.horizontal, 20)
