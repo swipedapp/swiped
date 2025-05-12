@@ -48,6 +48,21 @@ struct CardInfoView: View {
 
 class CardInfoView2: UIView {
 
+	protocol Delegate: AnyObject {
+		func share(sender: UIButton)
+		func settings()
+	}
+
+	weak var delegate: Delegate?
+
+	private static let dateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateStyle = .medium
+		return dateFormatter
+	}()
+
+	private static let fileSizeFormatter = ByteCountFormatter()
+
 	private let infoView = UIStackView()
 	private let dateLabel = UILabel()
 	private let subLabel = UILabel()
