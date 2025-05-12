@@ -238,5 +238,6 @@ struct CardInfoView: View {
 	let cardInfo = CardInfo()
 	cardInfo.card = PhotoCard()
 
-	return CardInfoView(cardInfo: cardInfo)
+	return CardInfoView()
+		.environmentObject(cardInfo)
 }
