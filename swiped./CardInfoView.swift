@@ -88,6 +88,10 @@ struct CardInfoView: View {
 	}
 
 	var type: String {
+		guard let asset = cardInfo.card?.asset else {
+			return ""
+		}
+
 		var types = [String]()
 
 		if asset.mediaSubtypes.contains(.photoScreenshot) {
@@ -98,26 +102,21 @@ struct CardInfoView: View {
 		}
 		if asset.mediaSubtypes.contains(.photoLive) {
 			types.append("Live Photo")
-			icon = "livephoto"
 		}
 		if asset.mediaSubtypes.contains(.photoPanorama) {
 			types.append("Panorama")
 		}
 		if asset.mediaSubtypes.contains(.photoDepthEffect) {
 			types.append("Depth Effect")
-			icon = "person.and.background.dotted"
 		}
 		if asset.mediaSubtypes.contains(.spatialMedia) {
 			types.append("Spatial Media")
-			icon = "video"
 		}
 		if asset.mediaSubtypes.contains(.videoCinematic) {
 			types.append("Cinematic Video")
-			icon = "video"
 		}
 		if asset.mediaSubtypes.contains(.videoHighFrameRate) {
 			types.append("High Frame Rate Video")
-			icon = "video"
 		}
 		if asset.mediaSubtypes.contains(.videoStreamed) {
 			types.append("Streamed Video")
