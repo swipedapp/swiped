@@ -30,6 +30,17 @@ struct SettingsView: View {
 					HStack {
 						Spacer()
 						VStack(alignment: .center) {
+							#if INTERNAL
+							Text("INTERNAL")
+								.foregroundColor(.white)
+								.font(.custom("LoosExtended-Bold", size: 40))
+							+
+							Text(".")
+								.foregroundColor(.accentColor)
+								.font(.custom("LoosExtended-Bold", size: 40))
+							Text("TESTING v\(version)")
+								.font(.custom("LoosExtended-Medium", size: 18))
+							#else
 							Text("SWIPED")
 								.foregroundColor(.white)
 								.font(.custom("LoosExtended-Bold", size: 50))
@@ -37,28 +48,39 @@ struct SettingsView: View {
 							Text(".")
 								.foregroundColor(.accentColor)
 								.font(.custom("LoosExtended-Bold", size: 50))
-
 							Text("Version \(version) (\(build))")
 								.font(.custom("LoosExtended-Medium", size: 18))
+							#endif
 						}
 						Spacer()
 					}
 						.padding(.vertical, 30)
 				})
-
-//				Section {
-//					Toggle(isOn: $sync) {
-//						Text("Sync")
-//							.font(.custom("LoosExtended-Bold", size: 16))
-//					}
-//				}
-
-//				Section {
-//					NavigationLink("Icon") {
-//						SettingsIconView()
-//					}
-//				}
-
+				#if INTERNAL
+				Section {
+					HStack {
+						Text("SYNC.")
+							.font(.custom("LoosExtended-Bold", size: 16))
+						Spacer()
+						Text("Unsupported")
+							.font(.custom("LoosExtended-Regular", size: 16))
+							.foregroundColor(.gray)
+						
+					}
+				}
+/*								Section {
+									Toggle(isOn: $sync) {
+										Text("Sync")
+											.font(.custom("LoosExtended-Bold", size: 16))
+									}
+								}*/
+				
+								Section {
+									NavigationLink("Change App Icon") {
+										SettingsIconView()
+									}
+								}
+				#else
 				Section {
 					HStack {
 						Text("SYNC.")
@@ -66,9 +88,13 @@ struct SettingsView: View {
 						Spacer()
 						Text(ServerController.shared.syncFailed ? "Could not verify signature." : "Connected.")
 							.font(.custom("LoosExtended-Regular", size: 16))
-							.foregroundColor(ServerController.shared.syncFailed ? .yellow : .green)
+							.foregroundColor(ServerController.shared.syncFailed ? .yellow : .accentColor)
+						
 					}
 				}
+				#endif
+
+
 
 				Section {
 					Button(action: {
