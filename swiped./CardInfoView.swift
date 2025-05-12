@@ -231,7 +231,7 @@ struct CardInfoView: View {
 						delegate?.share(sender: UIButton())
 					}, label: {
 						Image(systemName: "square.and.arrow.up")
-							.font(.custom("LoosExtended-Bold", size: 18))
+							.font(.custom("LoosExtended-Bold", size: 20))
 					})
 						.frame(width: 40, height: 40, alignment: .center)
 				}
@@ -240,7 +240,7 @@ struct CardInfoView: View {
 					delegate?.settings()
 				}, label: {
 					Image(systemName: "gear")
-						.font(.custom("LoosExtended-Bold", size: 18))
+						.font(.custom("LoosExtended-Bold", size: 20))
 				})
 					.frame(width: 40, height: 40, alignment: .center)
 			}
