@@ -13,8 +13,11 @@ struct InternalView: View {
 	var sync: Bool = false
 	var body: some View {
 		Spacer()
-		Text("Be careful what you wish for!").font(.custom("LoosExtended-Bold", size: 16))
-		Text("Things in here are experimental, and could fail.").font(.custom("LoosExtended-Regular", size: 16))
+		VStack {
+			Text("Be careful what you wish for!").font(.custom("LoosExtended-Bold", size: 16))
+			Text("Things in here are experimental, and could fail.").font(.custom("LoosExtended-Regular", size: 16))
+		}
+
 		Form {
 			Section {
 				NavigationLink("App Icons") {
