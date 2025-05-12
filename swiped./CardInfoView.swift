@@ -34,13 +34,19 @@ struct CardInfoView: View {
 	@ObservedObject var cardInfo: CardInfo
 
 	var body: some View {
-		Text("SWIPED")
-			.foregroundColor(.white)
-			.font(.custom("LoosExtended-Bold", size: 50))
-		+
-		Text(".")
-			.foregroundColor(.accentColor)
-			.font(.custom("LoosExtended-Bold", size: 50))
+		VStack(alignment: .leading, spacing: 4) {
+			HStack(alignment: .center, spacing: 0) {
+				Text("SWIPED")
+					.foregroundColor(.white)
+					.font(.custom("LoosExtended-Bold", size: 24))
+				+
+				Text(".")
+					.foregroundColor(.accentColor)
+					.font(.custom("LoosExtended-Bold", size: 24))
+
+				Button(
+			}
+		}
 	}
 
 }
