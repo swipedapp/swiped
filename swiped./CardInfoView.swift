@@ -6,11 +6,20 @@
 //
 
 import UIKit
+import SwiftUI
 import Photos
 import UniformTypeIdentifiers
 
-class CardInfoView: UIView {
-	
+struct CardInfoView: View {
+
+	var body: any View {
+
+	}
+
+}
+
+class CardInfoView2: UIView {
+
 	protocol Delegate: AnyObject {
 		func share(sender: UIButton)
 		func settings()
