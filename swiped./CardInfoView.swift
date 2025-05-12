@@ -40,6 +40,7 @@ struct CardInfoView: View {
 }
 
 #Preview {
+	let cardInfo = 
 	CardInfoView()
 }
 
