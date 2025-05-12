@@ -29,8 +29,8 @@ struct SettingsView: View {
 	var showResetAlert: Bool = false
 
 	var body: some View {
-		VStack {
-			NavigationView {
+		NavigationView {
+			VStack {
 				Form {
 					Section(content: {}, header: {
 						HStack {
@@ -149,8 +149,8 @@ struct SettingsView: View {
 				
 				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 			}
+				.background(Color.black)
 		}
-			.background(Color.black)
 	}
 }
 
