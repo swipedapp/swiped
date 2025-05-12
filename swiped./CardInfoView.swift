@@ -208,6 +208,8 @@ struct CardInfoView: View {
 				Text(type)
 			})
 		}
+		
+		return AnyView(EmptyView())
 	}
 
 	var body: some View {
