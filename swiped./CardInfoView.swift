@@ -175,8 +175,9 @@ struct CardInfoView: View {
 		VStack(alignment: .leading, spacing: 4) {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
 				if let asset = cardInfo.card?.asset {
-					Text(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast)).contentTransition(.numericText())
+					Text(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast))
 						.font(.custom("LoosExtended-Bold", size: 24))
+						.contentTransition(.numericText())
 				} else {
 					Text("SWIPED")
 						.font(.custom("LoosExtended-Bold", size: 24))
