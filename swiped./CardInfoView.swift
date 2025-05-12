@@ -120,19 +120,15 @@ struct CardInfoView: View {
 		}
 		if asset.mediaSubtypes.contains(.videoStreamed) {
 			types.append("Streamed Video")
-			icon = "video"
 		}
 		if asset.mediaSubtypes.contains(.videoTimelapse) {
 			types.append("Time Lapse")
-			icon = "timelapse"
 		}
 		if asset.mediaSubtypes.contains(.screenRecording) {
 			types.append("Screen Recording")
-			icon = "record.circle"
 		}
 		if asset.burstIdentifier != nil {
 			types.append("Burst Photo")
-			icon = "square.stack.3d.down.forward"
 		}
 
 		if types.isEmpty {
