@@ -226,11 +226,13 @@ struct CardInfoView: View {
 				Spacer()
 
 				ShareLink(
-					"",
-					item: "foo",
-					preview: SharePreview("Export poop")
-				)
+					item: Image(uiImage: cardInfo.card?.fullImage ?? UIImage()),
+					preview: SharePreview("", image: Image(uiImage: cardInfo.card?.thumbnail ?? UIImage()))
+				) {
+					Image(systemName: "square.and.arrow.up")
+				}
 					.font(.custom("LoosExtended-Bold", size: 20))
+					.frame(width: 40, height: 40, alignment: .center)
 
 				if let asset = cardInfo.card?.asset,
 					 asset.mediaType == .image {
