@@ -11,7 +11,7 @@ import Photos
 import UniformTypeIdentifiers
 
 class CardInfo: ObservableObject {
-	@Published var card: PhotoCard!
+	@Published var card: PhotoCard?
 }
 
 struct CardInfoView: View {
@@ -34,7 +34,7 @@ struct CardInfoView: View {
 	@ObservedObject var cardInfo: CardInfo
 
 	var body: some View {
-		Color.red
+		Text("SWIPED.")
 	}
 
 }
