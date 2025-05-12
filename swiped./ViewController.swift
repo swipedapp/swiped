@@ -70,17 +70,18 @@ class ViewController: UIViewController {
 
 	private func layoutCardStackView() {
 		view.addSubview(cardStack)
-//		cardStack.anchor(top: infoView.bottomAnchor,
-//										 left: view.safeAreaLayoutGuide.leftAnchor,
-//										 bottom: buttonStackView.topAnchor,
-//										 right: view.safeAreaLayoutGuide.rightAnchor)
+		cardStack.anchor(top: infoView.bottomAnchor,
+										 left: view.safeAreaLayoutGuide.leftAnchor,
+										 bottom: buttonStackView.topAnchor,
+										 right: view.safeAreaLayoutGuide.rightAnchor)
 	}
 	
 	private func layoutInfoView() {
-//		view.addSubview(infoView)
-//		infoView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-//										left: view.safeAreaLayoutGuide.leftAnchor,
-//										right: view.safeAreaLayoutGuide.rightAnchor)
+		let hostingView = UIHostingController(rootView: infoView.environmentObject(cardInfo))
+		view.addSubview(hostingView.view)
+		infoView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+										left: view.safeAreaLayoutGuide.leftAnchor,
+										right: view.safeAreaLayoutGuide.rightAnchor)
 	}
 	
 	private func layoutBehindView() {
