@@ -56,6 +56,7 @@ struct SettingsIconView: View {
 					}
 				}
 		}
+			.background(Color.black)
 			//.navigationTitle("Icons")
 	}
 }
