@@ -63,11 +63,15 @@ class ServerController: NSObject {
 		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 		request.httpBody = try? JSONEncoder().encode(data)
 
-		guard let (data, res) = try? await URLSession.shared.data(for: request) else {
+		guard let (_, res) = try? await URLSession.shared.data(for: request) else {
 			return
 		}
 
-		syncFailed = false
+		guard let res = res as? HTTPURLResponse else {
+			return
+		}
+
+		syncFailed = res.statusCode != 200
 	}
 
 	func doSync() async {
@@ -86,11 +90,15 @@ class ServerController: NSObject {
 		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 		request.httpBody = try? JSONEncoder().encode(data)
 
-		guard let (data, res) = try? await URLSession.shared.data(for: request) else {
+		guard let (_, res) = try? await URLSession.shared.data(for: request) else {
 			return
 		}
 
-		syncFailed = false
+		guard let res = res as? HTTPURLResponse else {
+			return
+		}
+
+		syncFailed = res.statusCode != 200
 	}
 
 }
