@@ -114,7 +114,7 @@ class ViewController: UIViewController {
 	
 	private func updateCurrentItem() {
 		let index = cardStack.topCardIndex ?? 0
-		infoView.card = cards[index]
+//		infoView.card = cards[index]
 	}
 
 	private func fetchAlert() {
