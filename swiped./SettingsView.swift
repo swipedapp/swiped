@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+	let commitInfo = Bundle.main.infoDictionary?["GitCommitHash"] as? String ?? "Unknown"
 
 	var version: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
@@ -103,6 +104,7 @@ struct SettingsView: View {
 						SettingsIconView()
 					}
 				}
+				
 				#endif
 
 
@@ -128,6 +130,7 @@ struct SettingsView: View {
 					Button("Cancel", role: .cancel) {}
 				})
 		}
+		Text(commitInfo).opacity(0.5)
 	}
 
 }
