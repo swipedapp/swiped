@@ -80,7 +80,11 @@ struct SettingsView: View {
 					}
 				}
 				
-				#else
+				#endif
+				// Production flags
+				
+				
+				#if INTERNAL
 				Section {
 					HStack {
 						Text("SYNC.")
@@ -98,9 +102,16 @@ struct SettingsView: View {
 				 .font(.custom("LoosExtended-Bold", size: 16))
 				 }
 				 }*/
+				// INTERNAL FLAGS
 				Toggle(isOn: $timestamps) {
 					Text("Show relative timestamps")
 						.font(.custom("LoosExtended-Regular", size: 16))
+				}
+				
+				Section {
+					NavigationLink("Internal Flags") {
+						InternalView()
+					}
 				}
 				Section {
 					NavigationLink("App Icons") {
