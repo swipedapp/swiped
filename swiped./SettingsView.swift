@@ -143,7 +143,7 @@ struct SettingsView: View {
 		}
 		Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 	}
-		.backgroundColor(.black)
+		.backgroundColor = .black
 }
 
 #Preview {
