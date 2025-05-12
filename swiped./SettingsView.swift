@@ -143,11 +143,14 @@ struct SettingsView: View {
 					Button("Cancel", role: .cancel) {}
 				})
 		}
-		Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
+		
+		HStack {
+			Spacer()
+			Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
+			Spacer()
+		}
 			.background(Color.black)
-			
 	}
-		.background(Color.black)
 }
 
 
