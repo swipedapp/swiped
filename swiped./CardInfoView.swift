@@ -13,6 +13,13 @@ import UniformTypeIdentifiers
 class CardInfo: ObservableObject {
 	@Published var summary = false
 	@Published var card: PhotoCard?
+	
+	func setCard(_ card: PhotoCard?, summary: Bool) {
+		withAnimation {
+			self.card = card
+			self.summary = summary
+		}
+	}
 }
 
 struct CardInfoView: View {
@@ -177,7 +184,7 @@ struct CardInfoView: View {
 				if let asset = cardInfo.card?.asset {
 					Text(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast))
 						.font(.custom("LoosExtended-Bold", size: 24))
-						.contentTransition(.numericText())
+						
 				} else {
 					Text("SWIPED")
 						.font(.custom("LoosExtended-Bold", size: 24))
