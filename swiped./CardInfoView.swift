@@ -44,7 +44,11 @@ struct CardInfoView: View {
 					.foregroundColor(.accentColor)
 					.font(.custom("LoosExtended-Bold", size: 24))
 
-				Button(
+				Button(action: {
+
+				}, label: {
+
+				})
 			}
 		}
 	}
