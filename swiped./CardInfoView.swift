@@ -41,6 +41,8 @@ struct CardInfoView: View {
 
 	@EnvironmentObject var cardInfo: CardInfo
 
+	@State var showSettings = false
+
 	var icon: String {
 		guard let asset = cardInfo.card?.asset else {
 			return ""
@@ -240,7 +242,7 @@ struct CardInfoView: View {
 
 
 				Button(action: {
-					delegate?.settings()
+					showSettings = true
 				}, label: {
 					Image(systemName: "gear")
 						.font(.custom("LoosExtended-Bold", size: 20))
@@ -255,6 +257,9 @@ struct CardInfoView: View {
 			.padding(.horizontal, 20)
 			.padding(.vertical, 18)
 			.foregroundColor(.white)
+			.sheet(isPresented: $showSettings) {
+				SettingsView()
+			}
 	}
 
 }

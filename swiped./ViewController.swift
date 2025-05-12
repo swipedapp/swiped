@@ -238,7 +238,7 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 		}
 	}
 }
-extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, ButtonStackView.Delegate, BehindView.Delegate, CardInfoView.Delegate {
+extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, ButtonStackView.Delegate, BehindView.Delegate {
 
 	func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
 		let card = SwipeCard()
@@ -417,23 +417,6 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		}
 
 		loadBatch()
-	}
-	
-	func share(sender: UIButton) {
-		print("Share")
-		let card = cards[cardStack.topCardIndex ?? 0]
-		
-		if let image = card.fullImage ?? card.thumbnail {
-			let shareSheet = UIActivityViewController(activityItems: [image], applicationActivities: [])
-			shareSheet.popoverPresentationController?.sourceView = sender
-			present(shareSheet, animated: true)
-		}
-	}
-
-	func settings() {
-		print("Settings")
-		let vc = UIHostingController(rootView: SettingsView())
-		present(vc, animated: true)
 	}
 
 }
