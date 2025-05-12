@@ -33,16 +33,80 @@ struct CardInfoView: View {
 
 	@ObservedObject var cardInfo: CardInfo
 
+	var icon: String {
+		guard let asset = cardInfo.card?.asset else {
+			return ""
+		}
+
+		var icon = ""
+
+		switch asset.mediaType {
+		case .image:
+			icon = "photo"
+		case .video:
+			icon = "video"
+		case .audio:
+			icon = "audio"
+		case .unknown:
+			icon = "questionmark.circle"
+		@unknown default:
+			icon = "questionmark.circle"
+		}
+
+		if asset.mediaSubtypes.contains(.photoScreenshot) {
+			icon = "camera.viewfinder"
+		}
+		if asset.mediaSubtypes.contains(.photoLive) {
+			icon = "livephoto"
+		}
+		if asset.mediaSubtypes.contains(.photoDepthEffect) {
+			icon = "person.and.background.dotted"
+		}
+		if asset.mediaSubtypes.contains(.spatialMedia) {
+			icon = "video"
+		}
+		if asset.mediaSubtypes.contains(.videoCinematic) {
+			icon = "video"
+		}
+		if asset.mediaSubtypes.contains(.videoHighFrameRate) {
+			icon = "video"
+		}
+		if asset.mediaSubtypes.contains(.videoStreamed) {
+			icon = "video"
+		}
+		if asset.mediaSubtypes.contains(.videoTimelapse) {
+			icon = "timelapse"
+		}
+		if asset.mediaSubtypes.contains(.screenRecording) {
+			icon = "record.circle"
+		}
+		if asset.burstIdentifier != nil {
+			icon = "square.stack.3d.down.forward"
+		}
+
+		return icon
+	}
+
+	var type: String {
+
+	}
+
 	var body: some View {
 		VStack(alignment: .leading, spacing: 4) {
 			HStack(alignment: .center, spacing: 0) {
-				Text("SWIPED")
-					.foregroundColor(.white)
-					.font(.custom("LoosExtended-Bold", size: 24))
-				+
-				Text(".")
-					.foregroundColor(.accentColor)
-					.font(.custom("LoosExtended-Bold", size: 24))
+				if let asset = cardInfo.card?.asset {
+					Text(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast))
+						.foregroundColor(.white)
+						.font(.custom("LoosExtended-Bold", size: 24))
+				} else {
+					Text("SWIPED")
+						.foregroundColor(.white)
+						.font(.custom("LoosExtended-Bold", size: 24))
+					+
+					Text(".")
+						.foregroundColor(.accentColor)
+						.font(.custom("LoosExtended-Bold", size: 24))
+				}
 
 				Spacer()
 
@@ -53,7 +117,7 @@ struct CardInfoView: View {
 						.font(.custom("LoosExtended-Bold", size: 18))
 						.foregroundColor(.white)
 				})
-					.frame(width: 44, height: 44, alignment: .center)
+					.frame(width: 40, height: 40, alignment: .center)
 
 				Button(action: {
 					delegate?.settings()
@@ -62,7 +126,12 @@ struct CardInfoView: View {
 						.font(.custom("LoosExtended-Bold", size: 18))
 						.foregroundColor(.white)
 				})
-					.frame(width: 44, height: 44, alignment: .center)
+					.frame(width: 40, height: 40, alignment: .center)
+			}
+
+			HStack(alignment: .center, spacing: 8) {
+				Image(icon)
+					.wid
 			}
 		}
 			.padding(.horizontal, 20)
