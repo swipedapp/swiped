@@ -84,7 +84,7 @@ struct SettingsView: View {
 						Text("SYNC.")
 							.font(.custom("LoosExtended-Bold", size: 16))
 						Spacer()
-						Text("Unsupported")
+						Text("Unavailable")
 							.font(.custom("LoosExtended-Regular", size: 16))
 							.foregroundColor(.gray)
 						

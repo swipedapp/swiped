@@ -1,4 +1,6 @@
 #!/bin/bash
+cd $WORKSPACE_PATH
+cd ../../
 git add .
 added=$(git diff --cached --name-only --diff-filter=A | tr '\n' ' ')
 modified=$(git diff --cached --name-only --diff-filter=M | tr '\n' ' ')
