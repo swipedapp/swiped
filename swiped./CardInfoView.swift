@@ -88,7 +88,8 @@ struct CardInfoView: View {
 	}
 
 	var type: String {
-		guard let asset = cardInfo.card?.asset else {
+		guard let photo = cardInfo.card?.photo,
+					let asset = cardInfo.card?.asset else {
 			return ""
 		}
 
@@ -162,7 +163,7 @@ struct CardInfoView: View {
 			}
 		}
 
-		types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(card.photo?.size ?? 0)))
+		types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(photo?.size ?? 0)))
 
 		subLabel.text = types.joined(separator: ", ")
 	}
