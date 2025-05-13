@@ -49,7 +49,7 @@ class ServerController: NSObject {
 	
 	static let shared = ServerController()
 	
-	static let server = URL(string: "https://swiped.missaustraliana.net")!
+	static let server = URL(string: "https://swiped.pics")!
 	
 	var syncFailed = true
 	

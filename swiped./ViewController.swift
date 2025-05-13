@@ -128,7 +128,7 @@ class ViewController: UIViewController {
 	}
 
 	private func fetchAlert() {
-		let url = URL(string: "https://swiped.missaustraliana.net/conf.json")!
+		let url = URL(string: "https://swiped.pics/beta/conf.json")!
 
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
 			if let error = error {
