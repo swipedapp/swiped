@@ -44,7 +44,7 @@ struct SettingsIconView: View {
 								
 								Text(icon.title)
 									.font(.custom("LoosExtended-Regular", size: 16))
-									.foregroundColor(.white)
+									.foregroundColor(.primary)
 								
 								Spacer()
 							}
@@ -56,7 +56,7 @@ struct SettingsIconView: View {
 					}
 				}
 		}
-			.background(Color.black)
+		.background(Color(uiColor: .systemBackground))
 			//.navigationTitle("Icons")
 	}
 }

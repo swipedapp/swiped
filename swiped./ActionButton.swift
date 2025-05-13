@@ -17,7 +17,7 @@ class ActionButton: UIButton {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	func setText(text: String?, image: UIImage? = nil, color: UIColor = .white) {
+	func setText(text: String?, image: UIImage? = nil, color: UIColor = .label) {
 		var config = UIButton.Configuration.plain()
 		config.baseForegroundColor = color
 		config.image = image

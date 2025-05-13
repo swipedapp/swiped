@@ -37,29 +37,29 @@ struct SettingsView: View {
 							VStack(alignment: .center) {
 #if INTERNAL
 								Text("INTERNAL")
-									.foregroundColor(.white)
+									.foregroundColor(.primary)
 									.font(.custom("LoosExtended-Bold", size: 40))
 								+
 								Text(".")
-									.foregroundColor(.accentColor)
+									.foregroundColor(Color("brandGreen"))
 									.font(.custom("LoosExtended-Bold", size: 40))
 #elseif DEBUG
 								Text("CANDIDATE")
-									.foregroundColor(.white)
+									.foregroundColor(.primary)
 									.font(.custom("LoosExtended-Bold", size: 35))
 								+
 								Text(".")
-									.foregroundColor(.accentColor)
+									.foregroundColor(Color("brandGreen"))
 									.font(.custom("LoosExtended-Bold", size: 35))
 								Text("Build \(build)")
 									.font(.custom("LoosExtended-Medium", size: 18))
 #else
 								Text("SWIPED")
-									.foregroundColor(.white)
+									.foregroundColor(.primary)
 									.font(.custom("LoosExtended-Bold", size: 50))
 								+
 								Text(".")
-									.foregroundColor(.accentColor)
+									.foregroundColor(Color("brandGreen"))
 									.font(.custom("LoosExtended-Bold", size: 50))
 								Text("Version \(version) (\(build))")
 									.font(.custom("LoosExtended-Medium", size: 18))
@@ -77,12 +77,12 @@ struct SettingsView: View {
 							Spacer()
 							Text(ServerController.shared.syncFailed ? "Could not verify signature." : "Connected.")
 								.font(.custom("LoosExtended-Regular", size: 16))
-								.foregroundColor(ServerController.shared.syncFailed ? .yellow : .accentColor)
+								.foregroundColor(ServerController.shared.syncFailed ? .yellow : Color("brandGreen"))
 							
 								
 						}
 					}
-					.listRowBackground(Color.black)
+					.listRowBackground(Color("listRowBackground"))
 					
 #endif
 					
@@ -98,7 +98,7 @@ struct SettingsView: View {
 							
 						}
 					}
-					.listRowBackground(Color.black)
+					.listRowBackground(Color("listRowBackground"))
 					/*								Section {
 					 Toggle(isOn: $sync) {
 					 Text("Sync")
@@ -113,7 +113,7 @@ struct SettingsView: View {
 							InternalView()
 						}
 							.font(.custom("LoosExtended-Regular", size: 16))
-							.listRowBackground(Color(red: 15 / 255, green: 15 / 255, blue: 15 / 255))
+							.listRowBackground(Color("listRowBackground"))
 					}
 					
 					
@@ -124,10 +124,10 @@ struct SettingsView: View {
 						Text("Show relative timestamps")
 							.font(.custom("LoosExtended-Regular", size: 16))
 							
-					}.listRowBackground(Color(red: 15 / 255, green: 15 / 255, blue: 15 / 255))
+					}.listRowBackground(Color("listRowBackground"))
 					NavigationLink("App Icons") {
 						SettingsIconView()
-					}.listRowBackground(Color(red: 15 / 255, green: 15 / 255, blue: 15 / 255)).font(.custom("LoosExtended-Regular", size: 16))
+					}.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
 					
 					Section {
 						Button(action: {
@@ -141,11 +141,11 @@ struct SettingsView: View {
 							}
 						})
 						.foregroundColor(.red)
-						.listRowBackground(Color(red: 15 / 255, green: 15 / 255, blue: 15 / 255))
+						.listRowBackground(Color("listRowBackground"))
 					}
 				}
 					.scrollContentBackground(.hidden)
-					.background(Color.black)
+					.background(Color(uiColor: .systemBackground))
 					.alert("You will lose all statistics you have collected so far. Are you sure you want to do this?", isPresented: $showResetAlert, actions: {
 						Button("Continue", role: .destructive) {
 							DatabaseController.shared.reset()
@@ -157,7 +157,7 @@ struct SettingsView: View {
 				
 				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 			}
-				.background(Color.black)
+				.background(Color(uiColor: .systemBackground))
 		}
 	}
 }

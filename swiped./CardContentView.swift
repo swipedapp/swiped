@@ -29,7 +29,7 @@ class CardContentView: UIView {
 		addSubview(shadowView)
 		
 		containerView.translatesAutoresizingMaskIntoConstraints = false
-		containerView.backgroundColor = .black
+		//containerView.backgroundColor = .black
 		containerView.clipsToBounds = true
 		containerView.layer.cornerRadius = 8
 		addSubview(containerView)

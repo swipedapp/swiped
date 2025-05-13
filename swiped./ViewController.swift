@@ -33,7 +33,7 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		fetchAlert()
-		view.backgroundColor = UIColor.black
+		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
 		buttonStackView.delegate = self

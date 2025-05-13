@@ -177,18 +177,25 @@ struct CardInfoView: View {
 	var title: AnyView {
 		if let asset = cardInfo.card?.asset {
 			let date = asset.creationDate ?? .distantPast
+			let view: AnyView
 			if timestamps {
-				return AnyView(Text(date, format: Date.RelativeFormatStyle(presentation: .numeric, unitsStyle: .wide))
-					.textCase(.uppercase)
-					.contentTransition(.numericText()))
+				view = AnyView(Text(date, format: Date.RelativeFormatStyle(presentation: .numeric, unitsStyle: .wide)))
 			} else {
-				return AnyView(Text(date, style: .date)
+				view = AnyView(Text(date, format: Date.FormatStyle(date: .abbreviated)))
+			}
+			
+			if #available(iOS 17, *) {
+				return AnyView(view
+					.textCase(.uppercase)
+					.contentTransition(.numericText(value: -date.timeIntervalSince1970)))
+			} else {
+				return AnyView(view
 					.textCase(.uppercase)
 					.contentTransition(.numericText()))
 			}
 		} else {
 			return AnyView(Text("SWIPED") + Text(".")
-				.foregroundColor(.accentColor))
+				.foregroundColor(Color("brandGreen")))
 		}
 	}
 	
@@ -263,7 +270,7 @@ struct CardInfoView: View {
 		}
 			.padding(.horizontal, 20)
 			.padding(.vertical, 18)
-			.foregroundColor(.white)
+			.foregroundColor(.primary)
 			.sheet(isPresented: $showSettings) {
 				SettingsView()
 			}

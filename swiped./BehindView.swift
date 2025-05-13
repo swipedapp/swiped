@@ -51,7 +51,7 @@ class BehindView: UIView {
 		scoreLabel.textAlignment = .center
 		
 		deleteButton.translatesAutoresizingMaskIntoConstraints = false
-		deleteButton.setText(text: "Continue", color: .green)
+		deleteButton.setText(text: "Continue", color: UIColor(named: "brandGreen")!)
 		deleteButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		deleteButton.tag = Action.delete.rawValue
 		
