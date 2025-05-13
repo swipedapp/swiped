@@ -21,10 +21,6 @@ struct InternalView: View {
 
 		Form {
 			Section {
-				NavigationLink("App Icons") {
-					SettingsIconView()
-				}
-				.font(.custom("LoosExtended-Regular", size: 16))
 				Toggle(isOn: $sync) {
 					Text("Disable Sync")
 						.font(.custom("LoosExtended-Regular", size: 16))
