@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+	@State var showRestriction = false
 	let commitInfo = Bundle.main.infoDictionary?["GitCommitHash"] as? String ?? "Unknown"
 	
 	@AppStorage("timestamps")
@@ -75,10 +76,17 @@ struct SettingsView: View {
 							Text("SYNC.")
 								.font(.custom("LoosExtended-Bold", size: 16))
 							Spacer()
-							Text(ServerController.shared.syncFailed ? "Could not verify signature." : "Connected.")
+							Text(ServerController.shared.syncFailed ? "Restricted." : "Connected")
 								.font(.custom("LoosExtended-Regular", size: 16))
 								.foregroundColor(ServerController.shared.syncFailed ? .yellow : Color("brandGreen"))
-							
+								.onTapGesture {
+									if ServerController.shared.syncFailed {
+										showRestriction = true
+									}
+								}
+								.sheet(isPresented: $showRestriction) {
+									RestrictionView()
+								}
 								
 						}
 					}
