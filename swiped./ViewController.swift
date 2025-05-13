@@ -50,7 +50,18 @@ class ViewController: UIViewController {
 		loadBatch()
 
 		Task {
-			await ServerController.shared.doRegister()
+			//await ServerController.shared.doRegister()
+			let registerTask = createRepeatingTask(every: 30.0) {
+				await ServerController.shared.doRegister()
+			}
+		}
+	}
+	func createRepeatingTask(every seconds: TimeInterval, _ operation: @escaping () async -> Void) -> Task<Void, Never> {
+		Task {
+			while !Task.isCancelled {
+				await operation()
+				try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+			}
 		}
 	}
 
