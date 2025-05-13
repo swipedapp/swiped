@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Combine
 
 struct InternalView: View {
-
+	@ObservedObject var coordinationServer = Coordination()
 	@State
 	var sync: Bool = false
 	var body: some View {
@@ -21,6 +22,7 @@ struct InternalView: View {
 
 		Form {
 			Section {
+				TextField("Custom coordination server", text: $coordinationServer.text)
 				Toggle(isOn: $sync) {
 					Text("Disable Sync")
 						.font(.custom("LoosExtended-Regular", size: 16))
@@ -32,7 +34,21 @@ struct InternalView: View {
 		}
 		
 	}
-
+class Coordination : ObservableObject {
+	private static let userDefaultTextKey = "textKey"
+	@Published var text = UserDefaults.standard.string(forKey: Coordination.userDefaultTextKey) ?? ""
+	private var canc: AnyCancellable!
+	
+	init() {
+		canc = $text.debounce(for: 0.2, scheduler: DispatchQueue.main).sink { newText in
+			UserDefaults.standard.set(newText, forKey: Coordination.userDefaultTextKey)
+		}
+	}
+	
+	deinit {
+		canc.cancel()
+	}
+}
 #Preview {
 	InternalView()
 }
