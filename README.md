@@ -25,7 +25,7 @@
 - [x] Selective App Icons
 - [x] App Info View
 ---
-#### Thanks to
+#### Thanks to..
 - Adam Demasi (kirb)
 - Toby Kohlhagen (missaustraliana)
 - [Shuffle](https://github.com/mac-gallagher/Shuffle) by [Mac Gallagher](https://github.com/mac-gallagher)
