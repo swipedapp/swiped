@@ -1,4 +1,7 @@
-<center><img src="swiped./swippy.png" alt="drawing" width="300"/></center>
+<center><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="swiped./swippy.png">
+  <img src="swiped./swippy_dark.png" width="300">
+</picture></center>
 
 ## The open source photo library cleaning app.
 
@@ -19,7 +22,7 @@
 - [x] Sharing Images
 - [ ] Sharing Videos
 - [x] Relative Time Stamps
-- [ ] Selective App Icons
+- [x] Selective App Icons
 - [x] App Info View
 ---
 #### Thanks to
