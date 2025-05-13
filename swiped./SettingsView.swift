@@ -146,7 +146,7 @@ struct SettingsView: View {
 				}
 					.scrollContentBackground(.hidden)
 					.background(Color.black)
-					.alert("You will lose all statistics you have collected so far.", isPresented: $showResetAlert, actions: {
+					.alert("You will lose all statistics you have collected so far. Are you sure you want to do this?", isPresented: $showResetAlert, actions: {
 						Button("Reset", role: .destructive) {
 							DatabaseController.shared.reset()
 						}
