@@ -51,7 +51,7 @@ class ViewController: UIViewController {
 
 		Task {
 			//await ServerController.shared.doRegister()
-			let registerTask = createRepeatingTask(every: 30.0) {
+			_ = createRepeatingTask(every: 30.0) {
 				await ServerController.shared.doRegister()
 			}
 		}

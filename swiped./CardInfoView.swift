@@ -105,7 +105,7 @@ struct CardInfoView: View {
 			types.append("Screenshot")
 		}
 		if asset.mediaSubtypes.contains(.photoHDR) {
-			types.append("HDR Photo")
+			types.append("HDR")
 		}
 		if asset.mediaSubtypes.contains(.photoLive) {
 			types.append("Live Photo")
@@ -114,16 +114,16 @@ struct CardInfoView: View {
 			types.append("Panorama")
 		}
 		if asset.mediaSubtypes.contains(.photoDepthEffect) {
-			types.append("Depth Effect")
+			types.append("Portrait")
 		}
 		if asset.mediaSubtypes.contains(.spatialMedia) {
-			types.append("Spatial Media")
+			types.append("Spatial")
 		}
 		if asset.mediaSubtypes.contains(.videoCinematic) {
-			types.append("Cinematic Video")
+			types.append("Cinematic")
 		}
 		if asset.mediaSubtypes.contains(.videoHighFrameRate) {
-			types.append("High Frame Rate Video")
+			types.append("Slo-mo")
 		}
 		if asset.mediaSubtypes.contains(.videoStreamed) {
 			types.append("Streamed Video")
@@ -135,7 +135,7 @@ struct CardInfoView: View {
 			types.append("Screen Recording")
 		}
 		if asset.burstIdentifier != nil {
-			types.append("Burst Photo")
+			types.append("Burst")
 		}
 
 		if types.isEmpty {

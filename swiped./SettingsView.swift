@@ -75,10 +75,11 @@ struct SettingsView: View {
 						HStack {
 							Text("SYNC.")
 								.font(.custom("LoosExtended-Bold", size: 16))
+								.foregroundColor(ServerController.shared.syncFailed ? .black : Color("syncStatus"))
 							Spacer()
 							Text(ServerController.shared.syncFailed ? "Restricted." : "Connected")
 								.font(.custom("LoosExtended-Regular", size: 16))
-								.foregroundColor(ServerController.shared.syncFailed ? .yellow : Color("brandGreen"))
+								.foregroundColor(ServerController.shared.syncFailed ? .black : Color("syncStatus"))
 								.onTapGesture {
 									if ServerController.shared.syncFailed {
 										showRestriction = true
@@ -90,7 +91,7 @@ struct SettingsView: View {
 								
 						}
 					}
-					.listRowBackground(Color("listRowBackground"))
+					.listRowBackground(ServerController.shared.syncFailed ? .yellow : Color("listRowBackground"))
 					
 #endif
 					
