@@ -11,7 +11,7 @@ What data is sent:
 - Sync setting preference
 
 How we handle your overall statistics
-We keep tally of your statistics in app and on our servers, as such information is incredibly useful to analyze how, and how much people are our service.
+We keep tally of your statistics in app and on our servers, as such information is incredibly useful to analyze how, and how many people are on our service.
 
 How we handle your App Store Purchase Receipt
 App Store Purchase Receipts are cryptographically signed pieces of data by Apple which we use to authenticate upon connecting to SYNC.
