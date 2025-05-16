@@ -14,7 +14,7 @@
 - [ ] Sharable Statistics in photo form
 - [ ] Live Photos
 - [ ] Sharable Videos
-- [ ] Light Mode Support
+- [x] Light Mode Support
 - [x] Sync
 - [x] Dates
 - [x] Image Quick Look
