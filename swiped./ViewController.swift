@@ -176,7 +176,7 @@ class ViewController: UIViewController {
 			}
 			
 			DispatchQueue.main.async {
-				if let buildNumber = Int(self.build), let appliesToBuild = json.appliesToBuild, appliesToBuild <= buildNumber {
+				if let buildNumber = Int(self.build), let appliesToBuild = json.appliesToBuild, appliesToBuild < buildNumber {
 					print("hi")
 				}
 				let alert = UIAlertController(title: json.alertTitle, message: json.alertContents, preferredStyle: .alert)
