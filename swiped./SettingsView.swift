@@ -70,34 +70,7 @@ struct SettingsView: View {
 						}
 						.padding(.vertical, 30)
 					})
-					Section {
-						HStack {
-							Text("SYNC.")
-								.font(.custom("LoosExtended-Bold", size: 16))
-								.foregroundColor(ServerController.shared.syncFailed ? .black : .primary)
-							Spacer()
-							if (!sync) {
-								Text(ServerController.shared.syncFailed ? "Restricted." : "Connected")
-									.font(.custom("LoosExtended-Regular", size: 16))
-									.foregroundColor(ServerController.shared.syncFailed ? .black : Color("syncStatus"))
-									.onTapGesture {
-										if ServerController.shared.syncFailed {
-											showRestriction = true
-										}
-									}
-									.sheet(isPresented: $showRestriction) {
-										RestrictionView()
-									}
-							} else {
-								Text("Disabled by policy")
-									.font(.custom("LoosExtended-Regular", size: 16))
-									.foregroundColor(.black)
-							}
-							
-								
-						}
-					}
-					.listRowBackground(ServerController.shared.syncFailed ? .yellow : Color("listRowBackground"))
+					syncSection
 					
 #if INTERNAL
 					// INTERNAL FLAGS
@@ -154,6 +127,37 @@ struct SettingsView: View {
 			}
 				.background(Color(uiColor: .systemBackground))
 		}
+	}
+	
+	var syncSection: some View {
+		Section {
+			HStack {
+				Text("SYNC.")
+					.font(.custom("LoosExtended-Bold", size: 16))
+					.foregroundColor(ServerController.shared.syncFailed ? .black : .primary)
+				Spacer()
+				if (!sync) {
+					Text(ServerController.shared.syncFailed ? "Restricted." : "Connected")
+						.font(.custom("LoosExtended-Regular", size: 16))
+						.foregroundColor(ServerController.shared.syncFailed ? .black : Color("syncStatus"))
+						.onTapGesture {
+							if ServerController.shared.syncFailed {
+								showRestriction = true
+							}
+						}
+						.sheet(isPresented: $showRestriction) {
+							RestrictionView()
+						}
+				} else {
+					Text("Disabled")
+						.font(.custom("LoosExtended-Regular", size: 16))
+						.foregroundColor(.gray)
+				}
+				
+				
+			}
+		}
+		.listRowBackground(ServerController.shared.syncFailed ? .yellow : Color("listRowBackground"))
 	}
 }
 
