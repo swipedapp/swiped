@@ -189,7 +189,7 @@ class ViewController: UIViewController {
 
 extension ViewController: PhotosController.PhotoLoadDelegate {
 	func didLoadThumbnail(for card: PhotoCard, image: UIImage) {
-		print("loaded thumbnail for \(card.id)")
+		//print("loaded thumbnail for \(card.id)")
 		card.thumbnail = image
 		
 		if let swipeCard = cardStack.card(forIndexAt: card.id),
@@ -199,7 +199,7 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 	}
 	
 	func didLoadFullImage(for card: PhotoCard, image: UIImage) {
-		print("loaded full image for \(card.id)")
+		//print("loaded full image for \(card.id)")
 		card.fullImage = image
 		
 		if let swipeCard = cardStack.card(forIndexAt: card.id),
