@@ -176,8 +176,11 @@ class ViewController: UIViewController {
 			}
 			
 			DispatchQueue.main.async {
-				if let appliesToVersion = json.appliesToVersion, self.version.compare(appliesToVersion, options: .numeric) != .orderedDescending {
-					if let buildNumber = Int(self.build), let appliesToBuild = Int(json.appliesToBuild ?? ""), appliesToBuild <= buildNumber {
+				if let appliesToVersion = json.appliesToVersion,
+					 self.version.compare(appliesToVersion, options: .numeric) != .orderedDescending {
+					if let buildNumber = Int(self.build),
+						 let appliesToBuild = Int(json.appliesToBuild ?? ""),
+						 appliesToBuild <= buildNumber {
 						
 						let alert = UIAlertController(title: json.alertTitle, message: json.alertContents, preferredStyle: .alert)
 						
