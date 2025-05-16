@@ -13,6 +13,6 @@ class SettingsJson: Codable {
 	let alertContents: String?
 	let alertButtonText: String?
 	let alertButtonURL: String?
-	let appliesToBuild: Int?
+	let appliesToBuild: String?
 	let appliesToVersion: String?
 }
