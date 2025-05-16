@@ -103,6 +103,8 @@ class ServerController: NSObject {
 			}
 			
 			syncFailed = res.statusCode != 200
+		} else {
+			syncFailed = false
 		}
 
 		
@@ -134,8 +136,6 @@ class ServerController: NSObject {
 			}
 			
 			syncFailed = res.statusCode != 200
-		} else {
-			syncFailed = false
 		}
 	}
 	
