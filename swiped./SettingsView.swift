@@ -21,7 +21,7 @@ struct SettingsView: View {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
 	}
 
-	@State
+	@AppStorage("sync")
 	var sync: Bool = false
 	
 
