@@ -70,7 +70,6 @@ struct SettingsView: View {
 						}
 						.padding(.vertical, 30)
 					})
-#if RELEASE || DEBUG || INTERNAL
 					Section {
 						HStack {
 							Text("SYNC.")
@@ -92,8 +91,6 @@ struct SettingsView: View {
 						}
 					}
 					.listRowBackground(ServerController.shared.syncFailed ? .yellow : Color("listRowBackground"))
-					
-#endif
 					
 
 					// Production flags
