@@ -92,7 +92,38 @@ struct SettingsView: View {
 					}
 					.listRowBackground(ServerController.shared.syncFailed ? .yellow : Color("listRowBackground"))
 					
-
+#if INTERNAL
+					Section {
+						HStack {
+							Text("SYNC.")
+								.font(.custom("LoosExtended-Bold", size: 16))
+							Spacer()
+							Text("Unavailable")
+								.font(.custom("LoosExtended-Regular", size: 16))
+								.foregroundColor(.gray)
+							
+						}
+					}
+					.listRowBackground(Color("listRowBackground"))
+					/*								Section {
+					 Toggle(isOn: $sync) {
+					 Text("Sync")
+					 .font(.custom("LoosExtended-Bold", size: 16))
+					 }
+					 }*/
+					// INTERNAL FLAGS
+					
+					
+					Section {
+						NavigationLink("Internal") {
+							InternalView()
+						}
+						.font(.custom("LoosExtended-Regular", size: 16))
+						.listRowBackground(Color("listRowBackground"))
+					}
+					
+					
+#endif
 					// Production flags
 					Toggle(isOn: $timestamps) {
 						
