@@ -26,7 +26,7 @@ struct SyncRequest: Codable {
 	let swipeScore: Int64
 }
 // INTERNAL BUILDS
-#if INTERNAL
+/*#if INTERNAL
 class ServerController: NSObject {
 
 	
@@ -47,7 +47,7 @@ class ServerController: NSObject {
 	}
 	
 }
-#else
+*///#else
 // Release Builds
 class ServerController: NSObject {
 	
@@ -132,5 +132,5 @@ class ServerController: NSObject {
 	}
 	
 }
-#endif
+//#endif
 
