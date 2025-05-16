@@ -84,26 +84,30 @@ class ServerController: NSObject {
 	}
 	
 	func doRegister() async {
-		if (sync) {
-			print("Syncing disabled")
+		if (!sync) {
+			print("Registering with \(Self.server)")
+			let receipt = await getReceipt()
+			let data = RegisterRequest(receipt: receipt)
+			
+			var request = URLRequest(url: Self.server.appendingPathComponent("register"))
+			request.httpMethod = "POST"
+			request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+			request.httpBody = try? JSONEncoder().encode(data)
+			
+			guard let (_, res) = try? await URLSession.shared.data(for: request) else {
+				return
+			}
+			
+			guard let res = res as? HTTPURLResponse else {
+				return
+			}
+			
+			syncFailed = res.statusCode != 200
+		} else {
+			print("SYNC. Off")
 		}
-		let receipt = await getReceipt()
-		let data = RegisterRequest(receipt: receipt)
+
 		
-		var request = URLRequest(url: Self.server.appendingPathComponent("register"))
-		request.httpMethod = "POST"
-		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-		request.httpBody = try? JSONEncoder().encode(data)
-		
-		guard let (_, res) = try? await URLSession.shared.data(for: request) else {
-			return
-		}
-		
-		guard let res = res as? HTTPURLResponse else {
-			return
-		}
-		
-		syncFailed = res.statusCode != 200
 	}
 	
 	func doSync() async {
