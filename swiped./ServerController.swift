@@ -103,38 +103,38 @@ class ServerController: NSObject {
 			}
 			
 			syncFailed = res.statusCode != 200
-		} else {
-			print("SYNC. Off")
 		}
 
 		
 	}
 	
 	func doSync() async {
-		let db = DatabaseController.shared
-		let receipt = await getReceipt()
-		let data = SyncRequest(receipt: receipt,
-													 totalKept: db.getTotalKept(),
-													 totalDeleted: db.getTotalDeleted(),
-													 totalPhotoDeleted: db.getTotalPhotoDeleted(),
-													 totalVideoDeleted: db.getTotalVideoDeleted(),
-													 spaceSaved: Int(db.getSpaceSaved()),
-													 swipeScore: db.calcSwipeScore())
-		
-		var request = URLRequest(url: Self.server.appendingPathComponent("sync"))
-		request.httpMethod = "POST"
-		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-		request.httpBody = try? JSONEncoder().encode(data)
-		
-		guard let (_, res) = try? await URLSession.shared.data(for: request) else {
-			return
+		if (!sync) {
+			let db = DatabaseController.shared
+			let receipt = await getReceipt()
+			let data = SyncRequest(receipt: receipt,
+														 totalKept: db.getTotalKept(),
+														 totalDeleted: db.getTotalDeleted(),
+														 totalPhotoDeleted: db.getTotalPhotoDeleted(),
+														 totalVideoDeleted: db.getTotalVideoDeleted(),
+														 spaceSaved: Int(db.getSpaceSaved()),
+														 swipeScore: db.calcSwipeScore())
+			
+			var request = URLRequest(url: Self.server.appendingPathComponent("sync"))
+			request.httpMethod = "POST"
+			request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+			request.httpBody = try? JSONEncoder().encode(data)
+			
+			guard let (_, res) = try? await URLSession.shared.data(for: request) else {
+				return
+			}
+			
+			guard let res = res as? HTTPURLResponse else {
+				return
+			}
+			
+			syncFailed = res.statusCode != 200
 		}
-		
-		guard let res = res as? HTTPURLResponse else {
-			return
-		}
-		
-		syncFailed = res.statusCode != 200
 	}
 	
 }
