@@ -148,7 +148,7 @@ class ViewController: UIViewController {
 			}
 			
 			guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-				print("Server error: Invalid response")
+				print("Could not fetch beta config")
 				return
 			}
 			
