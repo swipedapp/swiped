@@ -84,7 +84,7 @@ class ServerController: NSObject {
 	}
 	
 	func doRegister() async {
-		print($sync)
+		print(sync)
 		let receipt = await getReceipt()
 		let data = RegisterRequest(receipt: receipt)
 		
