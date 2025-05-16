@@ -20,7 +20,7 @@
 - [x] Image Quick Look
 - [x] Video Quick Look
 - [x] Sharing Images
-- [ ] Sharing Videos
+- [x] Disable Sync Switch
 - [x] Relative Time Stamps
 - [x] Selective App Icons
 - [x] App Info View
