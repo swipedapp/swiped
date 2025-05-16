@@ -134,6 +134,8 @@ class ServerController: NSObject {
 			}
 			
 			syncFailed = res.statusCode != 200
+		} else {
+			syncFailed = false
 		}
 	}
 	
