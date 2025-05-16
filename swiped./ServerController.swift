@@ -7,10 +7,14 @@
 
 import Foundation
 import StoreKit
+import SwiftUI
+import Combine
 
 struct RegisterRequest: Codable {
 	let receipt: String?
+	
 }
+
 
 struct SyncRequest: Codable {
 	let receipt: String?
@@ -24,10 +28,10 @@ struct SyncRequest: Codable {
 // INTERNAL BUILDS
 #if INTERNAL
 class ServerController: NSObject {
+
 	
 	static let shared = ServerController()
 
-	
 	var syncFailed = false
 	
 	func getReceipt() async -> String? {
@@ -48,6 +52,8 @@ class ServerController: NSObject {
 class ServerController: NSObject {
 	
 	static let shared = ServerController()
+	@AppStorage("sync")
+	var sync: Bool = false
 	
 	static let server = URL(string: "https://swiped.pics")!
 	
@@ -78,6 +84,7 @@ class ServerController: NSObject {
 	}
 	
 	func doRegister() async {
+		print($sync)
 		let receipt = await getReceipt()
 		let data = RegisterRequest(receipt: receipt)
 		

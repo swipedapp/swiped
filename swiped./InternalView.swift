@@ -10,7 +10,7 @@ import Combine
 
 struct InternalView: View {
 	@ObservedObject var coordinationServer = Coordination()
-	@State
+	@AppStorage("sync")
 	var sync: Bool = false
 	var body: some View {
 		Spacer()
