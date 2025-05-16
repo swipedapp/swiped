@@ -76,17 +76,24 @@ struct SettingsView: View {
 								.font(.custom("LoosExtended-Bold", size: 16))
 								.foregroundColor(ServerController.shared.syncFailed ? .black : .primary)
 							Spacer()
-							Text(ServerController.shared.syncFailed ? "Restricted." : "Connected")
-								.font(.custom("LoosExtended-Regular", size: 16))
-								.foregroundColor(ServerController.shared.syncFailed ? .black : Color("syncStatus"))
-								.onTapGesture {
-									if ServerController.shared.syncFailed {
-										showRestriction = true
+							if (!sync) {
+								Text(ServerController.shared.syncFailed ? "Restricted." : "Connected")
+									.font(.custom("LoosExtended-Regular", size: 16))
+									.foregroundColor(ServerController.shared.syncFailed ? .black : Color("syncStatus"))
+									.onTapGesture {
+										if ServerController.shared.syncFailed {
+											showRestriction = true
+										}
 									}
-								}
-								.sheet(isPresented: $showRestriction) {
-									RestrictionView()
-								}
+									.sheet(isPresented: $showRestriction) {
+										RestrictionView()
+									}
+							} else {
+								Text("Disabled by policy")
+									.font(.custom("LoosExtended-Regular", size: 16))
+									.foregroundColor(.black)
+							}
+							
 								
 						}
 					}
