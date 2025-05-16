@@ -84,7 +84,9 @@ class ServerController: NSObject {
 	}
 	
 	func doRegister() async {
-		print(sync)
+		if (sync) {
+			print("Syncing disabled")
+		}
 		let receipt = await getReceipt()
 		let data = RegisterRequest(receipt: receipt)
 		
