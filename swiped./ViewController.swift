@@ -176,21 +176,23 @@ class ViewController: UIViewController {
 			}
 			
 			DispatchQueue.main.async {
-				if let buildNumber = Int(self.build), let appliesToBuild = json.appliesToBuild, appliesToBuild < buildNumber {
-					print("hi")
+				print(json.appliesToBuild)
+				if let buildNumber = Int(self.build), let appliesToBuild = json.appliesToBuild, appliesToBuild <= buildNumber {
+					
+					let alert = UIAlertController(title: json.alertTitle, message: json.alertContents, preferredStyle: .alert)
+					
+					if let buttonText = json.alertButtonText {
+						alert.addAction(UIAlertAction(title: buttonText, style: .default, handler: { _ in
+							if let buttonURL = json.alertButtonURL,
+								 let url = URL(string: buttonURL) {
+								UIApplication.shared.open(url)
+							}
+						}))
+					}
+					
+					self.present(alert, animated: true)
 				}
-				let alert = UIAlertController(title: json.alertTitle, message: json.alertContents, preferredStyle: .alert)
 				
-				if let buttonText = json.alertButtonText {
-					alert.addAction(UIAlertAction(title: buttonText, style: .default, handler: { _ in
-						if let buttonURL = json.alertButtonURL,
-							 let url = URL(string: buttonURL) {
-							UIApplication.shared.open(url)
-						}
-					}))
-				}
-				
-				self.present(alert, animated: true)
 			}
 		}
 		task.resume()
