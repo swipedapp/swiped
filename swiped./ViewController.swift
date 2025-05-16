@@ -13,23 +13,29 @@ import AVKit
 import SwiftUI
 
 class ViewController: UIViewController {
-
+	var version: String {
+		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+	}
+	
+	var build: String {
+		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+	}
 	private let cardStack = SwipeCardStack()
 	private let buttonStackView = ButtonStackView()
 	private var infoView: CardInfoView!
 	private var infoHostingController: UIHostingController<AnyView>!
 	private let behindView = BehindView()
-
+	
 	private let photosController = PhotosController()
 	private var cards = [PhotoCard]()
 	private var toDelete = [PhotoCard]()
 	private var loadingBatch = true
 	private var batchesLoaded = 0
-
+	
 	private let cardInfo = CardInfo()
-
+	
 	private var previewItem: URL?
-
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		fetchAlert()
@@ -40,7 +46,7 @@ class ViewController: UIViewController {
 		infoView = CardInfoView()
 		behindView.delegate = self
 		photosController.delegate = self
-
+		
 		configureNavigationBar()
 		layoutButtonStackView()
 		layoutBehindView()
@@ -48,7 +54,7 @@ class ViewController: UIViewController {
 		layoutCardStackView()
 		
 		loadBatch()
-
+		
 		Task {
 			//await ServerController.shared.doRegister()
 			_ = createRepeatingTask(every: 30.0) {
@@ -64,11 +70,11 @@ class ViewController: UIViewController {
 			}
 		}
 	}
-
+	
 	private func configureNavigationBar() {
 		navigationController?.setNavigationBarHidden(true, animated: false)
 	}
-
+	
 	private func layoutButtonStackView() {
 		view.addSubview(buttonStackView)
 		buttonStackView.anchor(left: view.safeAreaLayoutGuide.leftAnchor,
@@ -78,7 +84,7 @@ class ViewController: UIViewController {
 													 paddingBottom: 12,
 													 paddingRight: 24)
 	}
-
+	
 	private func layoutCardStackView() {
 		view.addSubview(cardStack)
 		cardStack.anchor(top: infoHostingController.view.bottomAnchor,
@@ -111,19 +117,19 @@ class ViewController: UIViewController {
 	private func loadBatch() {
 		loadingBatch = true
 		batchesLoaded += 1
-
+		
 		var newCards = [PhotoCard]()
 		for _ in 0..<20 {
 			newCards.append(PhotoCard())
 		}
-
+		
 		photosController.loadRandomPhotos(for: newCards) {
 			for card in newCards {
 				card.id = self.cards.count
 				self.cards.append(card)
 				self.cardStack.appendCards(atIndices: [card.id])
 			}
-
+			
 			if self.loadingBatch {
 				self.loadingBatch = false
 				self.updateCurrentItem()
@@ -137,13 +143,13 @@ class ViewController: UIViewController {
 			cardInfo.setCard(cards[index], summary: false)
 		}
 	}
-
+	
 	private func fetchAlert() {
-		#if RELEASE || DEBUG
+#if RELEASE || DEBUG
 		let url = URL(string: "https://swiped.pics/beta/conf.json")!
-		#else
-		let url = URL(string: "https://swiped.pics/beta/conf.json")!
-		#endif
+#else
+		let url = URL(string: "https://swiped.pics/internal/conf.json")!
+#endif
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
 			if let error = error {
 				print("Error: \(error.localizedDescription)")
@@ -170,6 +176,9 @@ class ViewController: UIViewController {
 			}
 			
 			DispatchQueue.main.async {
+				if let buildNumber = Int(self.build), let appliesToBuild = json.appliesToBuild, appliesToBuild <= buildNumber {
+					print("hi")
+				}
 				let alert = UIAlertController(title: json.alertTitle, message: json.alertContents, preferredStyle: .alert)
 				
 				if let buttonText = json.alertButtonText {
@@ -209,13 +218,13 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 			 let contentView = swipeCard.content as? CardContentView {
 			contentView.updateCard()
 		}
-
+		
 		updateCurrentItem()
 	}
 	
 	func didFail(error: PhotosController.PhotoError) {
 		print("Photo controller error: \(error.localizedDescription)")
-
+		
 		switch error {
 		case .noAccessToPhotoLibrary, .noPhotosAvailable:
 			let alert = UIAlertController(title: "No Photos!", message: "Your Photos library is empty, or you limited access.", preferredStyle: .alert)
@@ -223,19 +232,19 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 				UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
 			}))
 			present(alert, animated: true)
-
+			
 		case .noPhotosLeft:
 			let alert = UIAlertController(title: "You’ve swiped all your photos", message: "Come back later when you need to clean up!", preferredStyle: .alert)
 			alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
 			present(alert, animated: true)
-
+			
 			didSwipeAllCards(cardStack)
-
+			
 		case .failedToDelete:
 			let alert = UIAlertController(title: "Failed to delete photo", message: nil, preferredStyle: .alert)
 			alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
 			present(alert, animated: true)
-
+			
 		case .failedToFetchPhoto:
 			let idiom = UIDevice.current.userInterfaceIdiom
 			
@@ -249,14 +258,14 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 				// It's something else
 			}
 			/*
-
+			 
 			 */
 			break
 		}
 	}
 }
 extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, ButtonStackView.Delegate, BehindView.Delegate {
-
+	
 	func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
 		let card = SwipeCard()
 		card.footerHeight = 80
@@ -264,19 +273,19 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		for direction in card.swipeDirections {
 			card.setOverlay(CardOverlay(direction: direction), forDirection: direction)
 		}
-
+		
 		card.content = CardContentView(card: cards[index])
-
+		
 		return card
 	}
-
+	
 	func numberOfCards(in cardStack: SwipeCardStack) -> Int {
 		return cards.count
 	}
-
+	
 	func didSwipeAllCards(_ cardStack: SwipeCardStack) {
 		print("Swiped all cards!")
-
+		
 		photosController.delete(cards: toDelete) { success in
 			if !success {
 				for card in self.toDelete {
@@ -286,30 +295,30 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 					}
 				}
 			}
-
+			
 			self.toDelete.removeAll()
 		}
-
+		
 		cardStack.isUserInteractionEnabled = false
 		buttonStackView.isUserInteractionEnabled = false
 		cardInfo.setCard(nil, summary: true)
 		behindView.updateCount()
-
+		
 		Task {
 			await ServerController.shared.doSync()
 		}
-
+		
 		UIView.animate(withDuration: 0.3) {
 			self.behindView.alpha = 1
 			self.buttonStackView.alpha = 0
 		}
 	}
-
+	
 	func cardStack(_ cardStack: SwipeCardStack, didUndoCardAt index: Int, from direction: SwipeDirection) {
 		print("Undo")
 		updateCurrentItem()
 	}
-
+	
 	func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
 		print("Swiped \(direction)")
 		let card = cards[index]
@@ -323,10 +332,10 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		case .right:
 			choice = .keep
 			toDelete.removeAll(where: { $0.id == card.id })
-
+			
 		case .up:
 			choice = .skip
-
+			
 		case .down:
 			fatalError()
 		}
@@ -334,7 +343,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		guard let photo = card.photo else {
 			return
 		}
-
+		
 		photo.choice = choice
 		photo.swipeDate = Date()
 		DatabaseController.shared.addPhoto(photo: photo)
@@ -348,7 +357,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		
 		updateCurrentItem()
 	}
-
+	
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
 		print("Card tapped")
 		
@@ -380,7 +389,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			print("Error in quick look \(error.localizedDescription)")
 		}
 	}
-
+	
 	func didTapButton(action: ButtonStackView.Action) {
 		switch action {
 		case .undo:
@@ -391,11 +400,11 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			cardStack.swipe(.right, animated: true)
 		}
 	}
-
+	
 	func didTapBehindButton(action: BehindView.Action) {
 		let keepGoing = {
 			self.loadBatch()
-
+			
 			self.cardStack.isUserInteractionEnabled = true
 			self.buttonStackView.isUserInteractionEnabled = true
 			
@@ -410,16 +419,16 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 				AppStore.requestReview(in: self.view.window!.windowScene!)
 			}
 		}
-
+		
 		switch action {
 		case .continue:
 			keepGoing()
 			break
-
+			
 		case .delete:
 			keepGoing()
 		}
-
+		
 		// Release all but the last card from memory
 		let oldCount = cards.count
 		if oldCount != 0 {
@@ -432,10 +441,10 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			}
 			cardStack.deleteCards(atIndices: indices)
 		}
-
+		
 		loadBatch()
 	}
-
+	
 }
 
 extension ViewController: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
@@ -454,3 +463,4 @@ extension ViewController: QLPreviewControllerDataSource, QLPreviewControllerDele
 		}
 	}
 }
+
