@@ -10,6 +10,13 @@ import StoreKit
 import SwiftUI
 import Combine
 
+extension UserDefaults {
+	@objc var sync: Bool {
+		get { bool(forKey: "sync") }
+		set { set(newValue, forKey: "sync") }
+	}
+}
+
 struct RegisterRequest: Codable {
 	let receipt: String?
 	
@@ -65,10 +72,12 @@ class ServerController: NSObject, ObservableObject {
 	
 	@Published var publishedSyncFailed = true
 	
+	private var syncPublisher: AnyCancellable?
+	
 	override init() {
 		super.init()
-		
-		publisher(for: \.sync)
+
+		syncPublisher = UserDefaults.standard.publisher(for: \.sync)
 			.sink { _ in
 				if !self.sync {
 					Task {
