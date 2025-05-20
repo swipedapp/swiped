@@ -17,8 +17,6 @@ struct SettingsIconView: View {
 	
 	let collection: String
 	
-	@State private var path = NavigationPath()
-	
 	var icons: [Icon] {
 		switch collection {
 		case "main":
@@ -41,32 +39,32 @@ struct SettingsIconView: View {
 	}
 	
 	var body: some View {
-		NavigationStack(path: $path) {
-			ScrollView {
-				LazyVStack {
-					ForEach(icons, id: \.name) { icon in
-						if let collection = icon.collection {
-							NavigationLink(value: collection, label: {
-								self.button(icon: icon)
-							})
-						} else {
+		ScrollView {
+			LazyVStack {
+				ForEach(icons, id: \.name) { icon in
+					if let collection = icon.collection {
+						NavigationLink {
+							SettingsIconView(collection: collection)
+						} label: {
 							self.button(icon: icon)
 						}
-						
-						Divider()
-							.background(.gray)
+					} else {
+						self.button(icon: icon)
 					}
+					
+					Divider()
+						.background(.gray)
 				}
 			}
-			.background(Color(uiColor: .systemBackground))
-			//.navigationTitle("Icons")
 		}
+		.background(Color(uiColor: .systemBackground))
+		//.navigationTitle("Icons")
 	}
 	
 	func button(icon: Icon) -> some View {
 		Button(action: {
-			if let collection = icon.collection {
-				path.append(collection)
+			if icon.collection != nil {
+				return
 			} else if icon.name == "AppIcon" {
 				UIApplication.shared.setAlternateIconName(nil)
 			} else {
@@ -95,5 +93,7 @@ struct SettingsIconView: View {
 }
 
 #Preview {
-	SettingsIconView(collection: "main")
+	NavigationView {
+		SettingsIconView(collection: "main")
+	}
 }
