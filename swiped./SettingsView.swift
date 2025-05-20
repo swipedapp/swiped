@@ -34,27 +34,41 @@ struct SettingsView: View {
 	@State
 	var showResetAlert: Bool = false
 	
+	@AppStorage("swipeDownCount")
+	var swipeDownCount = 0
+	
 	var body: some View {
 		NavigationStack {
 			VStack {
 				Form {
 					Section(content: {}, header: {
-						HStack {
-							Spacer()
-							VStack(alignment: .center) {
-								Text("SWIPED")
-									.foregroundColor(.primary)
-									.font(.custom("LoosExtended-Bold", size: 50))
-								+
-								Text(".")
-									.foregroundColor(Color("brandGreen"))
-									.font(.custom("LoosExtended-Bold", size: 50))
-								Text("Version \(version) (\(build))")
-									.font(.custom("LoosExtended-Medium", size: 18))
+						ZStack(alignment: .top) {
+							if swipeDownCount < 5 {
+								HStack {
+									Image(systemName: "chevron.down")
+									Text("Swipe down to dismiss")
+									Image(systemName: "chevron.down")
+								}
+								.font(.custom("LoosExtended-Regular", size: 14))
 							}
-							Spacer()
+
+							HStack {
+								Spacer()
+								VStack(alignment: .center) {
+									Text("SWIPED")
+										.foregroundColor(.primary)
+										.font(.custom("LoosExtended-Bold", size: 50))
+									+
+									Text(".")
+										.foregroundColor(Color("brandGreen"))
+										.font(.custom("LoosExtended-Bold", size: 50))
+									Text("Version \(version) (\(build))")
+										.font(.custom("LoosExtended-Medium", size: 18))
+								}
+								Spacer()
+							}
+							.padding(.vertical, 30)
 						}
-						.padding(.vertical, 30)
 					})
 					syncSection
 					
@@ -108,6 +122,7 @@ struct SettingsView: View {
 				.alert("You will lose all statistics you have collected so far. Are you sure you want to do this?", isPresented: $showResetAlert, actions: {
 					Button("Continue", role: .destructive) {
 						DatabaseController.shared.reset()
+						self.swipeDownCount = 0
 					}
 					Button("Cancel", role: .cancel) {}
 				})
@@ -124,6 +139,9 @@ struct SettingsView: View {
 			
 			.background(Color(uiColor: .systemBackground))
 			.navigationBarTitleDisplayMode(.inline)
+		}
+		.onAppear {
+			self.swipeDownCount += 1
 		}
 	}
 	
