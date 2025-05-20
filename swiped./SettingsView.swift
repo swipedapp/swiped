@@ -80,13 +80,12 @@ struct SettingsView: View {
 					NavigationLink("App Icons") {
 						SettingsIconView()
 					}.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
-					Section {
 						NavigationLink("Advanced") {
 							AdvancedView()
 						}
 						.font(.custom("LoosExtended-Regular", size: 16))
 						.listRowBackground(Color("listRowBackground"))
-					}
+					
 					Section {
 						Button(action: {
 							showResetAlert = true
