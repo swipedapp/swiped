@@ -129,6 +129,7 @@ struct SettingsView: View {
 	
 	var syncSection: some View {
 		let syncFailed = !sync || serverController.syncFailed
+		print("sync failed? \(syncFailed)")
 		
 		return Section {
 			HStack {
