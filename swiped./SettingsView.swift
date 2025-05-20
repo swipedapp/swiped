@@ -141,7 +141,7 @@ struct SettingsView: View {
 						.sheet(isPresented: $showRestriction) {
 							RestrictionView()
 						}
-				} else {
+				} else if (sync) {
 					Text("Disabled")
 						.font(.custom("LoosExtended-Regular", size: 16))
 						.foregroundColor(.gray)
