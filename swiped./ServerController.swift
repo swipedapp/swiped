@@ -49,7 +49,7 @@ class ServerController: NSObject {
 }
 *///#else
 // Release Builds
-class ServerController: NSObject {
+class ServerController: NSObject, ObservableObject {
 	
 	static let shared = ServerController()
 #if !INTERNAL
