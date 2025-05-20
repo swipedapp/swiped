@@ -138,7 +138,7 @@ struct SettingsView: View {
 			}
 			
 			.background(Color(uiColor: .systemBackground))
-			.navigationBarTitleDisplayMode(.inline)
+			.navigationBarTitleDisplayMode(.large)
 		}
 		.onAppear {
 			self.swipeDownCount += 1
