@@ -126,18 +126,20 @@ struct SettingsView: View {
 	}
 	
 	var syncSection: some View {
-		Section {
+		let syncFailed = sync && ServerController.shared.syncFailed
+		
+		return Section {
 			HStack {
 				Text("SYNC.")
 					.font(.custom("LoosExtended-Bold", size: 16))
-					.foregroundColor(ServerController.shared.syncFailed ? .black : .primary)
+					.foregroundColor(syncFailed ? .black : .primary)
 				Spacer()
 				if (!sync) {
 					Text(ServerController.shared.syncFailed ? "Restricted." : "Connected")
 						.font(.custom("LoosExtended-Regular", size: 16))
-						.foregroundColor(ServerController.shared.syncFailed ? .black : Color("syncStatus"))
+						.foregroundColor(syncFailed ? .black : Color("syncStatus"))
 						.onTapGesture {
-							if ServerController.shared.syncFailed {
+							if syncFailed {
 								showRestriction = true
 							}
 						}
@@ -153,7 +155,7 @@ struct SettingsView: View {
 				
 			}
 		}
-		.listRowBackground(ServerController.shared.syncFailed ? .yellow : Color("listRowBackground"))
+		.listRowBackground(syncFailed ? .yellow : Color("listRowBackground"))
 	}
 }
 
