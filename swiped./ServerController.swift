@@ -61,7 +61,7 @@ class ServerController: NSObject {
 	
 	static let server = URL(string: "https://swiped.pics/")!
 	
-	var syncFailed = true
+	@Published var syncFailed = true
 	
 	func getReceipt() async -> String? {
 		syncFailed = true
