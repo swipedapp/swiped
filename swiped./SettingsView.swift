@@ -36,25 +36,6 @@ struct SettingsView: View {
 						HStack {
 							Spacer()
 							VStack(alignment: .center) {
-#if INTERNAL
-								Text("INTERNAL")
-									.foregroundColor(.primary)
-									.font(.custom("LoosExtended-Bold", size: 40))
-								+
-								Text(".")
-									.foregroundColor(Color("brandGreen"))
-									.font(.custom("LoosExtended-Bold", size: 40))
-#elseif DEBUG
-								Text("CANDIDATE")
-									.foregroundColor(.primary)
-									.font(.custom("LoosExtended-Bold", size: 35))
-								+
-								Text(".")
-									.foregroundColor(Color("brandGreen"))
-									.font(.custom("LoosExtended-Bold", size: 35))
-								Text("Build \(build)")
-									.font(.custom("LoosExtended-Medium", size: 18))
-#else
 								Text("SWIPED")
 									.foregroundColor(.primary)
 									.font(.custom("LoosExtended-Bold", size: 50))
@@ -64,7 +45,6 @@ struct SettingsView: View {
 									.font(.custom("LoosExtended-Bold", size: 50))
 								Text("Version \(version) (\(build))")
 									.font(.custom("LoosExtended-Medium", size: 18))
-#endif
 							}
 							Spacer()
 						}
@@ -128,8 +108,13 @@ struct SettingsView: View {
 					})
 				
 				Spacer()
-				
 				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
+				#if INTERNAL
+				Text("For testing only.").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
+				#elseif DEBUG
+				Text("Internal release. Do not submit").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
+			#endif
+				
 			}
 			
 				.background(Color(uiColor: .systemBackground))
