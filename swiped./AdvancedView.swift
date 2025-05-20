@@ -18,7 +18,7 @@ struct AdvancedView: View {
 			Form {
 				Section {
 					Toggle(isOn: $sync) {
-						Text("Disable Sync (Beta)")
+						Text("Disable Sync")
 							.font(.custom("LoosExtended-Regular", size: 16))
 					}
 				}
