@@ -21,6 +21,8 @@ struct SettingsView: View {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
 	}
 	
+	@StateObject var serverController = ServerController.shared
+	
 #if !INTERNAL
 	@AppStorage("sync")
 	var sync: Bool = false
@@ -126,7 +128,7 @@ struct SettingsView: View {
 	}
 	
 	var syncSection: some View {
-		let syncFailed = sync && ServerController.shared.syncFailed
+		let syncFailed = sync && serverController.syncFailed
 		
 		return Section {
 			HStack {
@@ -135,7 +137,7 @@ struct SettingsView: View {
 					.foregroundColor(syncFailed ? .black : .primary)
 				Spacer()
 				if (!sync) {
-					Text(ServerController.shared.syncFailed ? "Restricted." : "Connected")
+					Text(syncFailed ? "Restricted." : "Connected")
 						.font(.custom("LoosExtended-Regular", size: 16))
 						.foregroundColor(syncFailed ? .black : Color("syncStatus"))
 						.onTapGesture {
