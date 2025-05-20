@@ -23,10 +23,6 @@ struct InternalView: View {
 		Form {
 			Section {
 				TextField("Custom coordination server", text: $coordinationServer.text)
-				Toggle(isOn: $sync) {
-					Text("Disable Sync")
-						.font(.custom("LoosExtended-Regular", size: 16))
-				}
 			}
 
 			
