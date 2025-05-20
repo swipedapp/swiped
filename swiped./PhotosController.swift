@@ -183,111 +183,11 @@ class PhotosController {
 		}
 	}
 	
-//	func getShareVideo(asset: PHAsset) -> NSItemProvider {
-//		let provider = NSItemProvider()
-//		
-//		// Register a type and loading handler
-//		provider.registerDataRepresentation(forTypeIdentifier: UTType.movie.identifier, visibility: .all) { completion in
-//			let progress = Progress()
-//
-//			let options = PHVideoRequestOptions()
-//			options.version = .original
-//			options.deliveryMode = .highQualityFormat
-//			options.isNetworkAccessAllowed = true
-//			
-//			let requestID = PHImageManager.default().requestAVAsset(forVideo: asset, options: options) { asset, audioMix, info in
-//				guard let asset = asset as? AVURLAsset else {
-//					completion(nil, NSError(domain: "VideoShare", code: 1, userInfo: nil))
-//					return
-//				}
-//				
-//				// Create a temporary file URL
-//				let temporaryDirectoryURL = FileManager.default.temporaryDirectory
-//				let temporaryFileURL = temporaryDirectoryURL
-//					.appendingPathComponent(UUID().uuidString)
-//					.appendingPathExtension("mp4")
-//				
-//				// Use AVAssetExportSession to export the video
-//				guard let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else {
-//					completion(nil, NSError(domain: "VideoShare", code: 2, userInfo: nil))
-//					return
-//				}
-//				
-//				exportSession.outputURL = temporaryFileURL
-//				exportSession.outputFileType = .mp4
-//				
-//				exportSession.exportAsynchronously {
-//					if exportSession.status == .completed,
-//						 let data = try? Data(contentsOf: temporaryFileURL) {
-//						completion(data, nil)
-//					} else {
-//						completion(nil, exportSession.error ?? NSError(domain: "VideoShare", code: 3, userInfo: nil))
-//					}
-//				}
-//			}
-//			
-//			return progress
-//		}
-//		
-//		return provider
-//	}
+	func getShareImage(asset: PHAsset) -> TransferableImage {
+		return TransferableImage(asset: asset)
+	}
 	
 	func getShareVideo(asset: PHAsset) -> TransferableVideo {
 		return TransferableVideo(asset: asset)
-	}
-}
-
-struct TransferableVideo: Transferable {
-	let asset: PHAsset
-	
-	static var transferRepresentation: some TransferRepresentation {
-		DataRepresentation(exportedContentType: .mpeg4Movie) { video in
-			return try await withCheckedThrowingContinuation { continuation in
-				let options = PHVideoRequestOptions()
-				options.version = .original
-				options.deliveryMode = .highQualityFormat
-				options.isNetworkAccessAllowed = true
-				
-				PHImageManager.default().requestAVAsset(forVideo: video.asset, options: options) { avAsset, _, _ in
-					guard let urlAsset = avAsset as? AVURLAsset else {
-						continuation.resume(throwing: NSError(domain: "VideoTransfer", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not load video"]))
-						return
-					}
-					
-					// Create a temporary file URL
-					let temporaryDirectoryURL = FileManager.default.temporaryDirectory
-					let temporaryFileURL = temporaryDirectoryURL
-						.appendingPathComponent(UUID().uuidString)
-						.appendingPathExtension("mp4")
-					
-					// Export the video
-					guard let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetHighestQuality) else {
-						continuation.resume(throwing: NSError(domain: "VideoTransfer", code: 2, userInfo: [NSLocalizedDescriptionKey: "Could not create export session"]))
-						return
-					}
-					
-					exportSession.outputURL = temporaryFileURL
-					exportSession.outputFileType = .mp4
-					
-					exportSession.exportAsynchronously {
-						if exportSession.status == .completed {
-							do {
-								let data = try Data(contentsOf: temporaryFileURL)
-								continuation.resume(returning: data)
-								
-								// Clean up temporary file
-								try? FileManager.default.removeItem(at: temporaryFileURL)
-							} catch {
-								continuation.resume(throwing: error)
-							}
-						} else if let error = exportSession.error {
-							continuation.resume(throwing: error)
-						} else {
-							continuation.resume(throwing: NSError(domain: "VideoTransfer", code: 3, userInfo: [NSLocalizedDescriptionKey: "Export failed"]))
-						}
-					}
-				}
-			}
-		}
 	}
 }

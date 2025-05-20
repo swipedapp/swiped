@@ -240,7 +240,7 @@ struct CardInfoView: View {
 																	image: Image(uiImage: card.thumbnail ?? UIImage()))
 			if asset.mediaType == .image {
 				return AnyView(ShareLink(
-					item: Image(uiImage: card.fullImage ?? card.thumbnail ?? UIImage()),
+					item: photosController.getShareImage(asset: asset),
 					preview: preview
 				) {
 					Image(systemName: "square.and.arrow.up")
