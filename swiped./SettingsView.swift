@@ -96,7 +96,13 @@ struct SettingsView: View {
 					NavigationLink("App Icons") {
 						SettingsIconView()
 					}.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
-					
+					Section {
+						NavigationLink("Advanced") {
+							AdvancedView()
+						}
+						.font(.custom("LoosExtended-Regular", size: 16))
+						.listRowBackground(Color("listRowBackground"))
+					}
 					Section {
 						Button(action: {
 							showResetAlert = true
@@ -125,6 +131,7 @@ struct SettingsView: View {
 				
 				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 			}
+			
 				.background(Color(uiColor: .systemBackground))
 				.navigationBarTitleDisplayMode(.inline)
 		}
