@@ -61,7 +61,9 @@ class ServerController: NSObject, ObservableObject {
 	
 	static let server = URL(string: "https://swiped.pics/")!
 	
-	@Published var syncFailed = true
+	var syncFailed = true
+	
+	@Published var publishedSyncFailed = true
 	
 	func getReceipt() async -> String? {
 		syncFailed = true
@@ -88,6 +90,11 @@ class ServerController: NSObject, ObservableObject {
 	}
 	
 	func doRegister() async {
+		syncFailed = true
+		await MainActor.run {
+			self.publishedSyncFailed = true
+		}
+
 		if (!sync) {
 			print("Registering with \(Self.server)")
 			let receipt = await getReceipt()
@@ -112,6 +119,9 @@ class ServerController: NSObject, ObservableObject {
 		}
 
 		
+		await MainActor.run {
+			self.publishedSyncFailed = self.syncFailed
+		}
 	}
 	
 	func doSync() async {
