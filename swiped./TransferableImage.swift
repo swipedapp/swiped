@@ -12,7 +12,7 @@ struct TransferableImage: Transferable {
 	let asset: PHAsset
 	
 	static var transferRepresentation: some TransferRepresentation {
-		DataRepresentation(exportedContentType: .image) { item in
+		DataRepresentation(exportedContentType: .jpeg) { item in
 			return try await withCheckedThrowingContinuation { continuation in
 				let fullImageOptions = PHImageRequestOptions()
 				fullImageOptions.deliveryMode = .highQualityFormat
@@ -21,18 +21,6 @@ struct TransferableImage: Transferable {
 				fullImageOptions.isNetworkAccessAllowed = true
 				
 				// Request full quality image asynchronously
-//				PHImageManager.default().requestImage(
-//					for: item.asset,
-//					targetSize: PHImageManagerMaximumSize,
-//					contentMode: .aspectFit,
-//					options: fullImageOptions
-//				) { fullImage, fullImageInfo in
-//					if let jpeg = fullImage?.jpegData(compressionQuality: 0.95) {
-//						continuation.resume(returning: jpeg)
-//					} else {
-//						continuation.resume(throwing: NSError(domain: "ImageTransfer", code: 0, userInfo: [NSLocalizedDescriptionKey: "Export failed"]))
-//					}
-//				}
 				PHImageManager.default().requestImageDataAndOrientation(for: item.asset, options: fullImageOptions) { imageData, dataUTI, orientation, info in
 					if let error = info?[PHImageErrorKey] as? Error {
 						continuation.resume(throwing: error)
