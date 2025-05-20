@@ -113,9 +113,7 @@ struct SettingsView: View {
 				Spacer()
 				
 				#if INTERNAL
-				Text("Internal testing only.").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16)).onTapGesture {
-					InternalView()
-				}
+				Text("Internal testing only.").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 				#elseif DEBUG
 				Text("Candidate Release. Do not submit").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 			#endif
