@@ -21,8 +21,12 @@ struct SettingsView: View {
 			Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
 		}
 
+#if !INTERNAL
 	@AppStorage("sync")
 	var sync: Bool = false
+#else
+	var sync: Bool = true
+#endif
 	
 
 	@State
@@ -141,7 +145,7 @@ struct SettingsView: View {
 						.sheet(isPresented: $showRestriction) {
 							RestrictionView()
 						}
-				} else if (sync) {
+				} else {
 					Text("Disabled")
 						.font(.custom("LoosExtended-Regular", size: 16))
 						.foregroundColor(.gray)
