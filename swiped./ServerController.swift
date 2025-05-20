@@ -88,7 +88,9 @@ class ServerController: NSObject, ObservableObject {
 	}
 	
 	func getReceipt() async -> String? {
-		syncFailed = true
+		await MainActor.run {
+			self.syncFailed = true
+		}
 		
 		var result: VerificationResult<AppTransaction>?
 		do {
