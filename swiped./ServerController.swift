@@ -56,10 +56,10 @@ class ServerController: NSObject {
 	@AppStorage("sync")
 	var sync: Bool = false
 	#else
-	var sync: Bool = true
+	var sync: Bool = false
 	#endif
 	
-	static let server = URL(string: "https://swiped.pics")!
+	static let server = URL(string: "https://swiped.pics/")!
 	
 	var syncFailed = true
 	
