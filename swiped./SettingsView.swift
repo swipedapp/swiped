@@ -128,7 +128,7 @@ struct SettingsView: View {
 	}
 	
 	var syncSection: some View {
-		let syncFailed = !sync || serverController.publishedSyncFailed
+		let syncFailed = !sync || serverController.syncFailed
 		
 		return Section {
 			HStack {

@@ -68,9 +68,7 @@ class ServerController: NSObject, ObservableObject {
 	
 	static let server = URL(string: "https://swiped.pics/")!
 	
-	var syncFailed = true
-	
-	@Published var publishedSyncFailed = true
+	@Published var syncFailed = true
 	
 	private var syncPublisher: AnyCancellable?
 	
@@ -80,7 +78,7 @@ class ServerController: NSObject, ObservableObject {
 		syncPublisher = UserDefaults.standard.publisher(for: \.sync)
 			.sink { _ in
 				if self.sync {
-					self.publishedSyncFailed = false
+					self.syncFailed = false
 				} else {
 					Task {
 						await self.doRegister()
@@ -114,11 +112,11 @@ class ServerController: NSObject, ObservableObject {
 	}
 	
 	func doRegister() async {
-		syncFailed = true
 		await MainActor.run {
-			self.publishedSyncFailed = true
+			self.syncFailed = true
 		}
 
+		let syncFailed: Bool
 		if (!sync) {
 			print("Registering with \(Self.server)")
 			let receipt = await getReceipt()
@@ -144,7 +142,7 @@ class ServerController: NSObject, ObservableObject {
 
 		
 		await MainActor.run {
-			self.publishedSyncFailed = self.syncFailed
+			self.syncFailed = syncFailed
 		}
 	}
 	
