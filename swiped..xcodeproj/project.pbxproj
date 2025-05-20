@@ -191,7 +191,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = swiped.;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow us to display photos so you can use the app.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We require access to your library to display cards.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -228,7 +228,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = swiped.;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow us to display photos so you can use the app.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We require access to your library to display cards.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -454,7 +454,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = swiped.;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow us to display photos so you can use the app.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We require access to your library to display cards.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
