@@ -49,7 +49,15 @@ struct SettingsIconView: View {
 							self.button(icon: icon)
 						}
 					} else {
-						self.button(icon: icon)
+						Button(action: {
+							if icon.name == "AppIcon" {
+								UIApplication.shared.setAlternateIconName(nil)
+							} else {
+								UIApplication.shared.setAlternateIconName(icon.name)
+							}
+						}, label: {
+							self.button(icon: icon)
+						})
 					}
 					
 					Divider()
@@ -62,33 +70,23 @@ struct SettingsIconView: View {
 	}
 	
 	func button(icon: Icon) -> some View {
-		Button(action: {
-			if icon.collection != nil {
-				return
-			} else if icon.name == "AppIcon" {
-				UIApplication.shared.setAlternateIconName(nil)
-			} else {
-				UIApplication.shared.setAlternateIconName(icon.name)
-			}
-		}, label: {
-			HStack(alignment: .center, spacing: 10) {
-				Image(uiImage: UIImage(named: "\(icon.name)-Preview") ?? UIImage(systemName: "questionmark")!)
-					.frame(width: 60, height: 60)
-					.background(Color(UIColor.secondarySystemBackground))
-					.cornerRadius(12)
-					.overlay(
-						RoundedRectangle(cornerRadius: 12)
-							.stroke(Color(UIColor.separator), lineWidth: 1)
-					)
-				
-				Text(icon.title)
-					.font(.custom("LoosExtended-Regular", size: 16))
-					.foregroundColor(.primary)
-				
-				Spacer()
-			}
+		HStack(alignment: .center, spacing: 10) {
+			Image(uiImage: UIImage(named: "\(icon.name)-Preview") ?? UIImage(systemName: "questionmark")!)
+				.frame(width: 60, height: 60)
+				.background(Color(UIColor.secondarySystemBackground))
+				.cornerRadius(12)
+				.overlay(
+					RoundedRectangle(cornerRadius: 12)
+						.stroke(Color(UIColor.separator), lineWidth: 1)
+				)
+			
+			Text(icon.title)
+				.font(.custom("LoosExtended-Regular", size: 16))
+				.foregroundColor(.primary)
+			
+			Spacer()
+		}
 			.padding(15)
-		})
 	}
 }
 
