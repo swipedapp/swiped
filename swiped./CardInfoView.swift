@@ -32,6 +32,8 @@ struct CardInfoView: View {
 	
 	private static let fileSizeFormatter = ByteCountFormatter()
 	
+	private let photosController = PhotosController()
+	
 	@EnvironmentObject var cardInfo: CardInfo
 	
 	@State var showSettings = false
@@ -230,6 +232,36 @@ struct CardInfoView: View {
 		return AnyView(EmptyView())
 	}
 	
+	var shareButton: some View {
+		if let card = cardInfo.card,
+			 let asset = card.asset,
+			 asset.mediaType == .image || asset.mediaType == .video {
+			let preview =  SharePreview(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast),
+																	image: Image(uiImage: card.thumbnail ?? UIImage()))
+			if asset.mediaType == .image {
+				return AnyView(ShareLink(
+					item: Image(uiImage: card.fullImage ?? card.thumbnail ?? UIImage()),
+					preview: preview
+				) {
+					Image(systemName: "square.and.arrow.up")
+				}
+					.font(.custom("LoosExtended-Bold", size: 20))
+					.frame(width: 40, height: 40, alignment: .center))
+			} else {
+				return AnyView(ShareLink(
+					item: photosController.getShareVideo(asset: asset),
+					preview: preview
+				) {
+					Image(systemName: "square.and.arrow.up")
+				}
+					.font(.custom("LoosExtended-Bold", size: 20))
+					.frame(width: 40, height: 40, alignment: .center))
+			}
+		} else {
+			return AnyView(EmptyView())
+		}
+	}
+	
 	var body: some View {
 		VStack(alignment: .leading, spacing: 4) {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
@@ -241,19 +273,7 @@ struct CardInfoView: View {
 				
 				Spacer()
 				
-				if let card = cardInfo.card,
-					 let asset = card.asset,
-					 asset.mediaType == .image {
-					ShareLink(
-						item: Image(uiImage: card.fullImage ?? card.thumbnail ?? UIImage()),
-						preview: SharePreview(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast),
-																	image: Image(uiImage: card.thumbnail ?? UIImage()))
-					) {
-						Image(systemName: "square.and.arrow.up")
-					}
-					.font(.custom("LoosExtended-Bold", size: 20))
-					.frame(width: 40, height: 40, alignment: .center)
-				}
+				shareButton
 				
 				Button(action: {
 					showSettings = true
