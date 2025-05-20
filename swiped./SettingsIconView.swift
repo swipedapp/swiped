@@ -18,8 +18,12 @@ struct SettingsIconView: View {
 		Icon(name: "AppIcon", title: "Classic"),
 		Icon(name: "SFIcon", title: "SF"),
 		Icon(name: "ghostedIcon", title: "ghosted"),
-		Icon(name: "flightIcon", title: "Flight"),
-		Icon(name: "brat-collection-nextgen", title: "BRAT Collection Pt.2")
+		Icon(name: "flightIcon", title: "Flight")
+		/*
+		 * do not include in V1. needs seperate page.
+		 Icon(name: "brat-collection-nextgen", title: "BRAT Collection Pt.2")
+		 */
+		
 	]
 
 	var body: some View {
