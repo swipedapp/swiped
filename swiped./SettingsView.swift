@@ -108,13 +108,13 @@ struct SettingsView: View {
 					})
 				
 				Spacer()
-				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
+				
 				#if INTERNAL
 				Text("For testing only.").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 				#elseif DEBUG
 				Text("Internal release. Do not submit").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 			#endif
-				
+				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 			}
 			
 				.background(Color(uiColor: .systemBackground))
