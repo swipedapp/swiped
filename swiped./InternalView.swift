@@ -22,7 +22,7 @@ struct InternalView: View {
 
 		Form {
 			Section {
-				TextField("Custom coordination server", text: $coordinationServer.text)
+				// where settings go
 			}
 
 			
