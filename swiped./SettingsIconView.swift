@@ -13,7 +13,7 @@ struct SettingsIconView: View {
 		var name: String
 		var title: String
 	}
-
+	
 	let icons = [
 		Icon(name: "AppIcon", title: "Classic"),
 		Icon(name: "SFIcon", title: "SF"),
@@ -25,44 +25,44 @@ struct SettingsIconView: View {
 		 */
 		
 	]
-
+	
 	var body: some View {
 		ScrollView {
 			LazyVStack {
-					ForEach(icons, id: \.name) { icon in
-						Button(action: {
-							if icon.name == "AppIcon" {
-								UIApplication.shared.setAlternateIconName(nil)
-							} else {
-								UIApplication.shared.setAlternateIconName(icon.name)
-							}
-						}, label: {
-							HStack(alignment: .center, spacing: 10) {
-								Image(uiImage: UIImage(named: "\(icon.name)-Preview") ?? UIImage(systemName: "questionmark")!)
-									.frame(width: 60, height: 60)
-									.background(Color(UIColor.secondarySystemBackground))
-									.cornerRadius(12)
-									.overlay(
-										RoundedRectangle(cornerRadius: 12)
-											.stroke(Color(UIColor.separator), lineWidth: 1)
-									)
-								
-								Text(icon.title)
-									.font(.custom("LoosExtended-Regular", size: 16))
-									.foregroundColor(.primary)
-								
-								Spacer()
-							}
-								.padding(15)
-						})
-						
-						Divider()
-							.background(.gray)
-					}
+				ForEach(icons, id: \.name) { icon in
+					Button(action: {
+						if icon.name == "AppIcon" {
+							UIApplication.shared.setAlternateIconName(nil)
+						} else {
+							UIApplication.shared.setAlternateIconName(icon.name)
+						}
+					}, label: {
+						HStack(alignment: .center, spacing: 10) {
+							Image(uiImage: UIImage(named: "\(icon.name)-Preview") ?? UIImage(systemName: "questionmark")!)
+								.frame(width: 60, height: 60)
+								.background(Color(UIColor.secondarySystemBackground))
+								.cornerRadius(12)
+								.overlay(
+									RoundedRectangle(cornerRadius: 12)
+										.stroke(Color(UIColor.separator), lineWidth: 1)
+								)
+							
+							Text(icon.title)
+								.font(.custom("LoosExtended-Regular", size: 16))
+								.foregroundColor(.primary)
+							
+							Spacer()
+						}
+						.padding(15)
+					})
+					
+					Divider()
+						.background(.gray)
 				}
+			}
 		}
 		.background(Color(uiColor: .systemBackground))
-			//.navigationTitle("Icons")
+		//.navigationTitle("Icons")
 	}
 }
 

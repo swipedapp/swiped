@@ -8,34 +8,34 @@
 import UIKit
 
 class ButtonStackView: UIStackView {
-
+	
 	enum Action: Int {
 		case undo = 1
 		case delete = 2
 		case keep = 3
 	}
-
+	
 	protocol Delegate: AnyObject {
 		func didTapButton(action: Action)
 	}
-
+	
 	weak var delegate: Delegate?
-
+	
 	private let undoButton = ActionButton(frame: .zero)
 	private let deleteButton = ActionButton(frame: .zero)
 	private let keepButton = ActionButton(frame: .zero)
-
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		distribution = .equalSpacing
 		alignment = .fill
 		configureButtons()
 	}
-
+	
 	required init(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-
+	
 	private func configureButtons() {
 		undoButton.setText(text: "Undo")
 		undoButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
@@ -44,7 +44,7 @@ class ButtonStackView: UIStackView {
 		deleteButton.setText(text: "Delete")
 		deleteButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		deleteButton.tag = Action.delete.rawValue
-
+		
 		keepButton.setText(text: "Keep")
 		keepButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
 		keepButton.tag = Action.keep.rawValue
@@ -56,7 +56,7 @@ class ButtonStackView: UIStackView {
 			addArrangedSubview(button)
 		}
 	}
-
+	
 	@objc private func handleTap(_ button: ActionButton) {
 		let action = ButtonStackView.Action(rawValue: button.tag)!
 		delegate?.didTapButton(action: action)

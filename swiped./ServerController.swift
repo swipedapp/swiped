@@ -52,12 +52,12 @@ class ServerController: NSObject {
 class ServerController: NSObject {
 	
 	static let shared = ServerController()
-	#if !INTERNAL
+#if !INTERNAL
 	@AppStorage("sync")
 	var sync: Bool = false
-	#else
+#else
 	var sync: Bool = true
-	#endif
+#endif
 	
 	static let server = URL(string: "https://swiped.pics/")!
 	

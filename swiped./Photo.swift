@@ -15,7 +15,7 @@ class Photo {
 		case delete = 2
 		case skip = 3
 	}
-
+	
 	let id: String
 	var type: PHAssetMediaType = .unknown
 	var size: Double = 0

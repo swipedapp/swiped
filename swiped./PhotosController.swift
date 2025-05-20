@@ -15,7 +15,7 @@ class PhotosController {
 		func didLoadFullImage(for card: PhotoCard, image: UIImage)
 		func didFail(error: PhotoError)
 	}
-		
+	
 	enum PhotoError: Error {
 		case noAccessToPhotoLibrary
 		case noPhotosAvailable
@@ -23,9 +23,9 @@ class PhotosController {
 		case failedToFetchPhoto
 		case failedToDelete
 	}
-		
+	
 	weak var delegate: PhotoLoadDelegate?
-		
+	
 	func loadRandomPhotos(for cards: [PhotoCard], callback: @escaping () -> Void) {
 		// Request permission to access photo library
 		PHPhotoLibrary.requestAuthorization { status in
@@ -34,13 +34,13 @@ class PhotosController {
 				Task {
 					do {
 						try await self.fetchRandomPhotos(for: cards)
-
+						
 						await MainActor.run {
 							callback()
 						}
 					} catch {
 						print("error loading photos for cards: \(error)")
-
+						
 						await MainActor.run {
 							if let error = error as? PhotoError {
 								self.delegate?.didFail(error: error)
@@ -48,7 +48,7 @@ class PhotosController {
 						}
 					}
 				}
-
+				
 			default:
 				DispatchQueue.main.async {
 					self.delegate?.didFail(error: .noAccessToPhotoLibrary)
@@ -56,7 +56,7 @@ class PhotosController {
 			}
 		}
 	}
-		
+	
 	private func fetchRandomPhotos(for cards: [PhotoCard]) async throws {
 		// Create fetch options
 		let fetchOptions = PHFetchOptions()
@@ -64,66 +64,66 @@ class PhotosController {
 		fetchOptions.predicate = NSPredicate(format: "isHidden == NO AND (mediaType == %d OR mediaType == %d)",
 																				 PHAssetMediaType.image.rawValue,
 																				 PHAssetMediaType.video.rawValue)
-
+		
 		// Fetch all photos
 		let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
-
+		
 		if fetchResult.count == 0 {
 			throw PhotoError.noPhotosAvailable
 		}
-
+		
 		if fetchResult.count == DatabaseController.shared.getTotalKept() {
 			throw PhotoError.noPhotosLeft
 		}
-
+		
 		for card in cards {
 			// Pick a random photo
 			var asset: PHAsset!
 			while true {
 				let randomIndex = Int.random(in: 0..<fetchResult.count)
 				asset = fetchResult.object(at: randomIndex) as PHAsset
-
+				
 				if asset.sourceType.contains(.typeCloudShared) || asset.sourceType.contains(.typeiTunesSynced) {
 					continue
 				}
-
+				
 				if let oldPhoto = DatabaseController.shared.getPhoto(id: asset.localIdentifier),
 					 oldPhoto.choice != .skip {
 					continue
 				}
-
+				
 				break
 			}
-
+			
 			card.asset = asset
-
+			
 			let photo = Photo(id: asset.localIdentifier)
 			photo.creationDate = asset.creationDate
 			photo.type = asset.mediaType
-
+			
 			card.photo = photo
-
+			
 			let resources = PHAssetResource.assetResources(for: asset)
 			var size = 0.0
 			for resource in resources {
 				size += resource.value(forKey: "fileSize") as? Double ?? 0
 			}
-
+			
 			photo.size = size
-
+			
 			// Create thumbnail options
 			let thumbnailOptions = PHImageRequestOptions()
 			thumbnailOptions.deliveryMode = .fastFormat
 			thumbnailOptions.resizeMode = .fast
 			thumbnailOptions.isSynchronous = true
-
+			
 			// Create full image options
 			let fullImageOptions = PHImageRequestOptions()
 			fullImageOptions.deliveryMode = .highQualityFormat
 			fullImageOptions.resizeMode = .fast
 			fullImageOptions.isSynchronous = false
 			fullImageOptions.isNetworkAccessAllowed = true
-
+			
 			// Request thumbnail
 			PHImageManager.default().requestImage(
 				for: asset,
@@ -135,7 +135,7 @@ class PhotosController {
 					self.delegate?.didLoadThumbnail(for: card, image: thumbnailImage ?? UIImage())
 				}
 			}
-
+			
 			// Request full quality image asynchronously
 			PHImageManager.default().requestImage(
 				for: asset,
@@ -152,7 +152,7 @@ class PhotosController {
 	
 	func delete(cards: [PhotoCard], callback: @escaping (Bool) -> Void) {
 		let assets = cards.compactMap { $0.asset }
-
+		
 		PHPhotoLibrary.shared().performChanges {
 			PHAssetChangeRequest.deleteAssets(assets as NSFastEnumeration)
 		} completionHandler: { success, error in
@@ -164,7 +164,7 @@ class PhotosController {
 				if !success {
 					self.delegate?.didFail(error: .failedToDelete)
 				}
-
+				
 				callback(success)
 			}
 		}
@@ -174,7 +174,7 @@ class PhotosController {
 		let fullVideoOptions = PHVideoRequestOptions()
 		fullVideoOptions.deliveryMode = .automatic
 		fullVideoOptions.isNetworkAccessAllowed = true
-
+		
 		PHCachingImageManager().requestPlayerItem(forVideo: asset, options: fullVideoOptions) { playerItem, args in
 			DispatchQueue.main.async {
 				callback(AVPlayer(playerItem: playerItem))

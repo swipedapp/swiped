@@ -9,12 +9,12 @@ import UIKit
 import SQLite
 
 class BehindView: UIView {
-
+	
 	enum Action: Int {
 		case `continue`
 		case delete
 	}
-
+	
 	protocol Delegate: AnyObject {
 		func didTapBehindButton(action: Action)
 	}
@@ -22,13 +22,13 @@ class BehindView: UIView {
 	private static let fileSizeFormatter = ByteCountFormatter()
 	
 	weak var delegate: Delegate?
-
+	
 	private let keepLabel = UILabel()
 	private let deletedLabel = UILabel()
 	private let savedLabel = UILabel()
 	private let scoreLabel = UILabel()
 	private let deleteButton = ActionButton()
-
+	
 	override init(frame: CGRect) {
 		super.init(frame: .zero)
 		
@@ -82,7 +82,7 @@ class BehindView: UIView {
 	@objc private func handleTap(_ button: ActionButton) {
 		delegate?.didTapBehindButton(action: Action(rawValue: button.tag)!)
 	}
-
+	
 	func updateCount() {
 		let db = DatabaseController.shared
 		keepLabel.text = "\(db.getTotalKept().formatted()) kept"
@@ -90,5 +90,5 @@ class BehindView: UIView {
 		savedLabel.text = "\(Self.fileSizeFormatter.string(fromByteCount: Int64(db.getSpaceSaved()))) saved"
 		scoreLabel.text = "SwipeScore: \(db.calcSwipeScore().formatted())"
 	}
-
+	
 }

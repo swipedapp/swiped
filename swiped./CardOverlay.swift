@@ -34,7 +34,7 @@ class CardOverlay: UIView {
 																						rotation: CGFloat.pi / 10)
     addSubview(leftTextView)
     leftTextView.anchor(top: topAnchor,
-                        right: rightAnchor,
+												right: rightAnchor,
                         paddingTop: 60,
                         paddingRight: 44)
   }

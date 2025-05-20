@@ -42,11 +42,11 @@ class DatabaseController {
 			fatalError(error.localizedDescription)
 		}
 	}
-
+	
 	func reset() {
 		try! db.run(photos.delete())
 	}
-
+	
 	func addPhoto(photo: Photo) {
 		try! db.run(photos.insert(
 			or: .replace,
@@ -63,11 +63,11 @@ class DatabaseController {
 		let query = photos.select(*)
 			.where(id == photoID)
 			.limit(1)
-
+		
 		guard let row = try! db.pluck(query) else {
 			return nil
 		}
-
+		
 		let photo = Photo(id: row[id])
 		photo.type = PHAssetMediaType(rawValue: row[type]) ?? .unknown
 		photo.size = row[size]
@@ -76,11 +76,11 @@ class DatabaseController {
 		photo.swipeDate = Date(timeIntervalSince1970: row[swipeDate])
 		return photo
 	}
-
+	
 	func getTotal() -> Int {
 		return try! db.scalar(photos.count)
 	}
-
+	
 	func getTotalKept() -> Int {
 		return try! db.scalar(photos
 			.filter(choice == Photo.Choice.keep.rawValue)

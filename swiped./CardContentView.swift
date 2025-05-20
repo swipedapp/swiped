@@ -8,7 +8,7 @@
 import UIKit
 
 class CardContentView: UIView {
-
+	
 	private let shadowView = UIView()
 	private let containerView = UIView()
 	private let imageView = UIImageView()
@@ -16,7 +16,7 @@ class CardContentView: UIView {
 	private let spinner = UIActivityIndicatorView(style: .medium)
 	
 	let card: PhotoCard
-
+	
 	init(card: PhotoCard) {
 		self.card = card
 		
@@ -88,7 +88,7 @@ class CardContentView: UIView {
 		])
 		
 		updateCard()
-  }
+	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
@@ -105,7 +105,7 @@ class CardContentView: UIView {
 			imageView.image = nil
 			return
 		}
-
+		
 		imageView.image = image
 		
 		let isLandscape = image.size.width > image.size.height
@@ -115,7 +115,7 @@ class CardContentView: UIView {
 			playImageView.isHidden = true
 			return
 		}
-
+		
 		playImageView.isHidden = asset.mediaType != .video
 	}
 	

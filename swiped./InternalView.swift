@@ -19,17 +19,17 @@ struct InternalView: View {
 				.padding()
 			Text("Things in here are experimental, and could fail.").font(.custom("LoosExtended-Regular", size: 16))
 		}
-
+		
 		Form {
 			Section {
 				// where settings go
 			}
-
+			
 			
 		}
-		}
-		
 	}
+	
+}
 class Coordination : ObservableObject {
 	private static let userDefaultTextKey = "textKey"
 	@Published var text = UserDefaults.standard.string(forKey: Coordination.userDefaultTextKey) ?? ""

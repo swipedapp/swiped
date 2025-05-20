@@ -23,29 +23,29 @@ class CardInfo: ObservableObject {
 }
 
 struct CardInfoView: View {
-
+	
 	private static let dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateStyle = .medium
 		return dateFormatter
 	}()
-
+	
 	private static let fileSizeFormatter = ByteCountFormatter()
-
+	
 	@EnvironmentObject var cardInfo: CardInfo
-
+	
 	@State var showSettings = false
-
+	
 	@AppStorage("timestamps")
 	var timestamps = false
-
+	
 	var icon: String {
 		guard let asset = cardInfo.card?.asset else {
 			return ""
 		}
-
+		
 		var icon = ""
-
+		
 		switch asset.mediaType {
 		case .image:
 			icon = "photo"
@@ -58,7 +58,7 @@ struct CardInfoView: View {
 		@unknown default:
 			icon = "questionmark.circle"
 		}
-
+		
 		if asset.mediaSubtypes.contains(.photoScreenshot) {
 			icon = "camera.viewfinder"
 		}
@@ -89,18 +89,18 @@ struct CardInfoView: View {
 		if asset.burstIdentifier != nil {
 			icon = "square.stack.3d.down.forward"
 		}
-
+		
 		return icon
 	}
-
+	
 	var type: String {
 		guard let photo = cardInfo.card?.photo,
 					let asset = cardInfo.card?.asset else {
 			return ""
 		}
-
+		
 		var types = [String]()
-
+		
 		if asset.mediaSubtypes.contains(.photoScreenshot) {
 			types.append("Screenshot")
 		}
@@ -137,7 +137,7 @@ struct CardInfoView: View {
 		if asset.burstIdentifier != nil {
 			types.append("Burst")
 		}
-
+		
 		if types.isEmpty {
 			switch asset.mediaType {
 			case .image:
@@ -152,28 +152,28 @@ struct CardInfoView: View {
 				types.append("Unknown")
 			}
 		}
-
+		
 		let resources = PHAssetResource.assetResources(for: asset)
-
+		
 		if resources.contains(where: { UTType($0.uniformTypeIdentifier)?.conforms(to: UTType.rawImage) == true }) {
 			types.append("RAW")
 		}
-
+		
 		if let resource = resources.first {
 			let fileName = resource.originalFilename
-
+			
 			if fileName.starts(with: "telegram-") {
 				types.append("Saved from Telegram")
 			} else if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
 				types.append("Imported")
 			}
 		}
-
+		
 		types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(photo.size)))
-
+		
 		return types.joined(separator: ", ")
 	}
-
+	
 	var title: AnyView {
 		if let asset = cardInfo.card?.asset {
 			let date = asset.creationDate ?? .distantPast
@@ -229,7 +229,7 @@ struct CardInfoView: View {
 		
 		return AnyView(EmptyView())
 	}
-
+	
 	var body: some View {
 		VStack(alignment: .leading, spacing: 4) {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
@@ -238,9 +238,9 @@ struct CardInfoView: View {
 					.onTapGesture {
 						timestamps = !timestamps
 					}
-
+				
 				Spacer()
-
+				
 				if let card = cardInfo.card,
 					 let asset = card.asset,
 					 asset.mediaType == .image {
@@ -251,37 +251,37 @@ struct CardInfoView: View {
 					) {
 						Image(systemName: "square.and.arrow.up")
 					}
-						.font(.custom("LoosExtended-Bold", size: 20))
-						.frame(width: 40, height: 40, alignment: .center)
+					.font(.custom("LoosExtended-Bold", size: 20))
+					.frame(width: 40, height: 40, alignment: .center)
 				}
-
+				
 				Button(action: {
 					showSettings = true
 				}, label: {
 					Image(systemName: "gear")
 						.font(.custom("LoosExtended-Bold", size: 20))
 				})
-					.frame(width: 40, height: 40, alignment: .center)
+				.frame(width: 40, height: 40, alignment: .center)
 			}
-
+			
 			subhead
 				.font(.custom("LoosExtended-Regular", size: 18))
 				.contentTransition(.numericText())
 		}
-			.padding(.horizontal, 20)
-			.padding(.vertical, 18)
-			.foregroundColor(.primary)
-			.sheet(isPresented: $showSettings) {
-				SettingsView()
-			}
+		.padding(.horizontal, 20)
+		.padding(.vertical, 18)
+		.foregroundColor(.primary)
+		.sheet(isPresented: $showSettings) {
+			SettingsView()
+		}
 	}
-
+	
 }
 
 #Preview {
 	let cardInfo = CardInfo()
 	cardInfo.card = PhotoCard()
-
+	
 	return CardInfoView()
 		.environmentObject(cardInfo)
 }

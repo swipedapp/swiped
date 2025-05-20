@@ -29,8 +29,8 @@ struct AdvancedView: View {
 		
 	}
 }
-	
-	#Preview {
-		AdvancedView()
-	}
+
+#Preview {
+	AdvancedView()
+}
 

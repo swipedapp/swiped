@@ -13,14 +13,14 @@ struct SettingsView: View {
 	@AppStorage("timestamps")
 	var timestamps: Bool = false
 	
-		var version: String {
-			Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-		}
-
-		var build: String {
-			Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-		}
-
+	var version: String {
+		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+	}
+	
+	var build: String {
+		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+	}
+	
 #if !INTERNAL
 	@AppStorage("sync")
 	var sync: Bool = false
@@ -28,10 +28,10 @@ struct SettingsView: View {
 	var sync: Bool = true
 #endif
 	
-
+	
 	@State
 	var showResetAlert: Bool = false
-
+	
 	var body: some View {
 		NavigationStack {
 			VStack {
@@ -75,16 +75,16 @@ struct SettingsView: View {
 						
 						Text("Show relative timestamps")
 							.font(.custom("LoosExtended-Regular", size: 16))
-							
+						
 					}.listRowBackground(Color("listRowBackground"))
 					NavigationLink("App Icons") {
 						SettingsIconView()
 					}.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
-						NavigationLink("Advanced") {
-							AdvancedView()
-						}
-						.font(.custom("LoosExtended-Regular", size: 16))
-						.listRowBackground(Color("listRowBackground"))
+					NavigationLink("Advanced") {
+						AdvancedView()
+					}
+					.font(.custom("LoosExtended-Regular", size: 16))
+					.listRowBackground(Color("listRowBackground"))
 					
 					Section {
 						Button(action: {
@@ -101,27 +101,27 @@ struct SettingsView: View {
 						.listRowBackground(Color("listRowBackground"))
 					}
 				}
-					.scrollContentBackground(.hidden)
-					.background(Color(uiColor: .systemBackground))
-					.alert("You will lose all statistics you have collected so far. Are you sure you want to do this?", isPresented: $showResetAlert, actions: {
-						Button("Continue", role: .destructive) {
-							DatabaseController.shared.reset()
-						}
-						Button("Cancel", role: .cancel) {}
-					})
+				.scrollContentBackground(.hidden)
+				.background(Color(uiColor: .systemBackground))
+				.alert("You will lose all statistics you have collected so far. Are you sure you want to do this?", isPresented: $showResetAlert, actions: {
+					Button("Continue", role: .destructive) {
+						DatabaseController.shared.reset()
+					}
+					Button("Cancel", role: .cancel) {}
+				})
 				
 				Spacer()
 				
-				#if INTERNAL
+#if INTERNAL
 				Text("Internal testing only.").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
-				#elseif DEBUG
+#elseif DEBUG
 				Text("Candidate Release").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
-			#endif
+#endif
 				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Regular", size: 16))
 			}
 			
-				.background(Color(uiColor: .systemBackground))
-				.navigationBarTitleDisplayMode(.inline)
+			.background(Color(uiColor: .systemBackground))
+			.navigationBarTitleDisplayMode(.inline)
 		}
 	}
 	
