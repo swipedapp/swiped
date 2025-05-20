@@ -65,6 +65,19 @@ class ServerController: NSObject, ObservableObject {
 	
 	@Published var publishedSyncFailed = true
 	
+	override init() {
+		super.init()
+		
+		publisher(for: \.sync)
+			.sink { _ in
+				if !self.sync {
+					Task {
+						await self.doRegister()
+					}
+				}
+			}
+	}
+	
 	func getReceipt() async -> String? {
 		syncFailed = true
 		
