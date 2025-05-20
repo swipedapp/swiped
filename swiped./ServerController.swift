@@ -79,7 +79,9 @@ class ServerController: NSObject, ObservableObject {
 
 		syncPublisher = UserDefaults.standard.publisher(for: \.sync)
 			.sink { _ in
-				if !self.sync {
+				if self.sync {
+					self.publishedSyncFailed = false
+				} else {
 					Task {
 						await self.doRegister()
 					}
