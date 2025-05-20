@@ -114,7 +114,7 @@ struct SettingsView: View {
 				#elseif DEBUG
 				Text("Internal release. Do not submit").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 			#endif
-				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
+				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Regular", size: 16))
 			}
 			
 				.background(Color(uiColor: .systemBackground))
