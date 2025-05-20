@@ -21,10 +21,13 @@ struct AdvancedView: View {
 						Text("Disable Sync")
 							.font(.custom("LoosExtended-Regular", size: 16))
 					}
+					.listRowBackground(Color("listRowBackground"))
 				}
 				
 				
 			}
+			.scrollContentBackground(.hidden)
+			.background(Color(uiColor: .systemBackground))
 		}
 		
 	}

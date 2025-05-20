@@ -12,60 +12,88 @@ struct SettingsIconView: View {
 	struct Icon {
 		var name: String
 		var title: String
+		var collection: String?
 	}
 	
-	let icons = [
-		Icon(name: "AppIcon", title: "Classic"),
-		Icon(name: "SFIcon", title: "SF"),
-		Icon(name: "ghostedIcon", title: "ghosted"),
-		Icon(name: "flightIcon", title: "Flight")
-		/*
-		 * do not include in V1. needs seperate page.
-		 Icon(name: "brat-collection-nextgen", title: "BRAT Collection Pt.2")
-		 */
-		
-	]
+	let collection: String
+	
+	@State private var path = NavigationPath()
+	
+	var icons: [Icon] {
+		switch collection {
+		case "main":
+			return [
+				Icon(name: "AppIcon", title: "Classic"),
+				Icon(name: "SFIcon", title: "SF"),
+				Icon(name: "ghostedIcon", title: "ghosted"),
+				Icon(name: "flightIcon", title: "Flight"),
+				Icon(name: "brat-collection-nextgen", title: "BRAT Collection", collection: "brat")
+			]
+			
+		case "brat":
+			return [
+				Icon(name: "brat-collection-nextgen", title: "BRAT Collection Pt.2")
+			]
+
+		default:
+			fatalError()
+		}
+	}
 	
 	var body: some View {
-		ScrollView {
-			LazyVStack {
-				ForEach(icons, id: \.name) { icon in
-					Button(action: {
-						if icon.name == "AppIcon" {
-							UIApplication.shared.setAlternateIconName(nil)
+		NavigationStack(path: $path) {
+			ScrollView {
+				LazyVStack {
+					ForEach(icons, id: \.name) { icon in
+						if let collection = icon.collection {
+							NavigationLink(value: collection, label: {
+								self.button(icon: icon)
+							})
 						} else {
-							UIApplication.shared.setAlternateIconName(icon.name)
+							self.button(icon: icon)
 						}
-					}, label: {
-						HStack(alignment: .center, spacing: 10) {
-							Image(uiImage: UIImage(named: "\(icon.name)-Preview") ?? UIImage(systemName: "questionmark")!)
-								.frame(width: 60, height: 60)
-								.background(Color(UIColor.secondarySystemBackground))
-								.cornerRadius(12)
-								.overlay(
-									RoundedRectangle(cornerRadius: 12)
-										.stroke(Color(UIColor.separator), lineWidth: 1)
-								)
-							
-							Text(icon.title)
-								.font(.custom("LoosExtended-Regular", size: 16))
-								.foregroundColor(.primary)
-							
-							Spacer()
-						}
-						.padding(15)
-					})
-					
-					Divider()
-						.background(.gray)
+						
+						Divider()
+							.background(.gray)
+					}
 				}
 			}
+			.background(Color(uiColor: .systemBackground))
+			//.navigationTitle("Icons")
 		}
-		.background(Color(uiColor: .systemBackground))
-		//.navigationTitle("Icons")
+	}
+	
+	func button(icon: Icon) -> some View {
+		Button(action: {
+			if let collection = icon.collection {
+				path.append(collection)
+			} else if icon.name == "AppIcon" {
+				UIApplication.shared.setAlternateIconName(nil)
+			} else {
+				UIApplication.shared.setAlternateIconName(icon.name)
+			}
+		}, label: {
+			HStack(alignment: .center, spacing: 10) {
+				Image(uiImage: UIImage(named: "\(icon.name)-Preview") ?? UIImage(systemName: "questionmark")!)
+					.frame(width: 60, height: 60)
+					.background(Color(UIColor.secondarySystemBackground))
+					.cornerRadius(12)
+					.overlay(
+						RoundedRectangle(cornerRadius: 12)
+							.stroke(Color(UIColor.separator), lineWidth: 1)
+					)
+				
+				Text(icon.title)
+					.font(.custom("LoosExtended-Regular", size: 16))
+					.foregroundColor(.primary)
+				
+				Spacer()
+			}
+			.padding(15)
+		})
 	}
 }
 
 #Preview {
-	SettingsIconView()
+	SettingsIconView(collection: "main")
 }

@@ -94,7 +94,7 @@ struct SettingsView: View {
 						
 					}.listRowBackground(Color("listRowBackground"))
 					NavigationLink("App Icons") {
-						SettingsIconView()
+						SettingsIconView(collection: "main")
 					}.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
 					NavigationLink("Advanced") {
 						AdvancedView()
