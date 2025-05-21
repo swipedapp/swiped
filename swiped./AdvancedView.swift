@@ -16,14 +16,6 @@ struct AdvancedView: View {
 		VStack {
 			
 			Form {
-				Section {
-					Toggle(isOn: $sync) {
-						Text("Disable Sync")
-							.font(.custom("LoosExtended-Regular", size: 16))
-					}
-					.listRowBackground(Color("listRowBackground"))
-				}
-				
 #if INTERNAL
 				// INTERNAL FLAGS
 				
@@ -38,6 +30,15 @@ struct AdvancedView: View {
 				
 				
 #endif
+				Section {
+					Toggle(isOn: $sync) {
+						Text("Disable Sync")
+							.font(.custom("LoosExtended-Regular", size: 16))
+					}
+					.listRowBackground(Color("listRowBackground"))
+				}
+				
+				
 			}
 			.scrollContentBackground(.hidden)
 			.background(Color(uiColor: .systemBackground))
