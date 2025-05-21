@@ -15,7 +15,7 @@ struct SummaryGridView: SwiftUI.View {
 
 	var body: some SwiftUI.View {
 		let total = totalKept + totalDeleted
-		let keptCount = total == 0 ? 0 : Int(Double(totalKept) / Double(total) * 100)
+		let keptCount = total == 0 ? 0 : Int((Double(totalKept) / Double(total) * 100).rounded(.toNearestOrAwayFromZero))
 
 		return VStack {
 			ForEach(0..<10) { i in
