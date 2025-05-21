@@ -25,12 +25,13 @@ struct SettingsIconView: View {
 				Icon(name: "SFIcon", title: "SF"),
 				Icon(name: "ghostedIcon", title: "ghosted"),
 				Icon(name: "flightIcon", title: "Flight"),
-				Icon(name: "brat-collection-nextgen", title: "BRAT Collection", collection: "brat")
+				Icon(name: "brat-collection-general", title: "BRAT Collection", collection: "brat")
 			]
 			
 		case "brat":
 			return [
-				Icon(name: "brat-collection-nextgen", title: "BRAT Collection Pt.2")
+				Icon(name: "brat-collection-general", title: "BRAT"),
+				Icon(name: "brat-collection-nextgen", title: "BRAT Phase II")
 			]
 
 		default:
