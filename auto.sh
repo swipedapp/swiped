@@ -1,7 +1,7 @@
 #!/bin/bash
 cd $WORKSPACE_PATH
 cd ../../
-git add .
+git add -A
 added=$(git diff --cached --name-only --diff-filter=A | tr '\n' ' ')
 modified=$(git diff --cached --name-only --diff-filter=M | tr '\n' ' ')
 deleted=$(git diff --cached --name-only --diff-filter=D | tr '\n' ' ')
