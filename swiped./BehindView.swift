@@ -62,10 +62,10 @@ struct BehindView: SwiftUI.View {
 			} label: {
 				Text("Continue")
 			}
-				.frame(maxWidth: .infinity)
 				.font(.custom("LoosExtended-Bold", size: 16))
 				.padding(.vertical, 10)
 				.background(Color("brandGreen").cornerRadius(8))
+				.frame(maxWidth: .infinity)
 				.foregroundColor(.black)
 		}
 			.padding(20)
