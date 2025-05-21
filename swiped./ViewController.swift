@@ -121,7 +121,7 @@ class ViewController: UIViewController {
 		view.addSubview(behindViewHostingController.view)
 		behindViewHostingController.view.anchor(top: view.safeAreaLayoutGuide.topAnchor,
 																						left: view.safeAreaLayoutGuide.leftAnchor,
-																						bottom: buttonStackView.topAnchor,
+																						bottom: view.safeAreaLayoutGuide.bottomAnchor,
 																						right: view.safeAreaLayoutGuide.rightAnchor)
 	}
 	
