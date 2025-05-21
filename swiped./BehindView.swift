@@ -12,6 +12,7 @@ struct SummaryGridView: SwiftUI.View {
 
 	let totalKept: Int
 	let totalDeleted: Int
+	let summary: Bool
 
 	var body: some SwiftUI.View {
 		let total = totalKept + totalDeleted
@@ -21,7 +22,7 @@ struct SummaryGridView: SwiftUI.View {
 			ForEach(0..<10) { i in
 				HStack {
 					ForEach(0..<10) { j in
-						return Circle()
+						Circle()
 							.fill(Color((i * 10) + j < keptCount ? UIColor.sampleGreen : UIColor.sampleRed))
 					}
 				}
@@ -47,7 +48,7 @@ struct BehindView: SwiftUI.View {
 		let db = DatabaseController.shared
 
 		return VStack(alignment: .leading, spacing: 10) {
-			SummaryGridView(totalKept: db.getTotalKept(), totalDeleted: db.getTotalDeleted())
+			SummaryGridView(totalKept: db.getTotalKept(), totalDeleted: db.getTotalDeleted(), summary: cardInfo.summary)
 
 			VStack(alignment: .leading, spacing: 10) {
 				Text("\(db.getTotalKept().formatted()) kept")
@@ -72,7 +73,8 @@ struct BehindView: SwiftUI.View {
 		}
 			.padding(20)
 			.opacity(cardInfo.summary ? 1 : 0)
-			.animation(.linear(duration: cardInfo.summary ? 0 : 0.2), value: cardInfo.summary)
+			.animation(.easeOut(duration: cardInfo.summary ? 0.5 : 0), value: cardInfo.summary)
+			.contentTransition(.numericText())
 	}
 }
 

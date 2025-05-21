@@ -116,7 +116,6 @@ class ViewController: UIViewController {
 			behindView
 				.environmentObject(cardInfo)
 		))
-		behindViewHostingController.view.alpha = 0
 		behindViewHostingController.willMove(toParent: self)
 		view.addSubview(behindViewHostingController.view)
 		behindViewHostingController.view.anchor(top: view.safeAreaLayoutGuide.topAnchor,
@@ -320,17 +319,16 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		buttonStackView.isUserInteractionEnabled = false
 		
 		Task {
-			await MainActor.run {
-				self.cardInfo.setCard(nil, summary: true)
-			}
-
 			await ServerController.shared.doSync()
 		}
 
-		UIView.animate(withDuration: 0.3) {
-			self.cardStack.alpha = 0
-			self.buttonStackView.alpha = 0
-			self.behindViewHostingController.view.alpha = 1
+		DispatchQueue.main.async {
+			UIView.animate(withDuration: 0.3) {
+				self.cardStack.alpha = 0
+				self.buttonStackView.alpha = 0
+			}
+
+			self.cardInfo.setCard(nil, summary: true)
 		}
 	}
 	
@@ -422,15 +420,14 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 	}
 	
 	func didTapContinue() {
-		loadBatch()
-
 		cardStack.isUserInteractionEnabled = true
 		buttonStackView.isUserInteractionEnabled = true
 
 		UIView.animate(withDuration: 0.3) {
 			self.cardStack.alpha = 1
 			self.buttonStackView.alpha = 1
-			self.behindViewHostingController.view.alpha = 0
+		} completion: { _ in
+			self.loadBatch()
 		}
 
 		if batchesLoaded == 4 && !UserDefaults.standard.bool(forKey: "requestedReview") {
