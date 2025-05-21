@@ -24,7 +24,20 @@ struct AdvancedView: View {
 					.listRowBackground(Color("listRowBackground"))
 				}
 				
+#if INTERNAL
+				// INTERNAL FLAGS
 				
+				
+				Section {
+					NavigationLink("Internal") {
+						InternalView()
+					}
+					.font(.custom("LoosExtended-Regular", size: 16))
+					.listRowBackground(Color("listRowBackground"))
+				}
+				
+				
+#endif
 			}
 			.scrollContentBackground(.hidden)
 			.background(Color(uiColor: .systemBackground))

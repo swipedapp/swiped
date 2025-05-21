@@ -72,20 +72,6 @@ struct SettingsView: View {
 					})
 					syncSection
 					
-#if INTERNAL
-					// INTERNAL FLAGS
-					
-					
-					Section {
-						NavigationLink("Internal") {
-							InternalView()
-						}
-						.font(.custom("LoosExtended-Regular", size: 16))
-						.listRowBackground(Color("listRowBackground"))
-					}
-					
-					
-#endif
 					// Production flags
 					Toggle(isOn: $timestamps) {
 						
