@@ -31,7 +31,9 @@ struct SettingsIconView: View {
 		case "brat":
 			return [
 				Icon(name: "brat-collection-general", title: "BRAT"),
-				Icon(name: "brat-collection-nextgen", title: "BRAT Phase II")
+				Icon(name: "brat-collection-nextgen", title: "BRAT Phase II"),
+				Icon(name: "brat-s-general", title: "BRAT Simplified"),
+				Icon(name: "brat-s-nextgen", title: "BRAT Simplified Phase II")
 			]
 
 		default:
