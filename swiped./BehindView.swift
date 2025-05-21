@@ -27,7 +27,6 @@ struct SummaryGridView: SwiftUI.View {
 				}
 			}
 		}
-			.padding(.vertical, 10)
 	}
 
 }
@@ -54,8 +53,9 @@ struct BehindView: SwiftUI.View {
 				Text("\(Self.fileSizeFormatter.string(fromByteCount: Int64(db.getSpaceSaved()))) saved")
 				Text("SwipeScore: \(db.calcSwipeScore().formatted())")
 			}
-				.font(.custom("LoosExtended-Bold", size: 16))
+				.font(.custom("LoosExtended-Bold", size: 18))
 				.multilineTextAlignment(.center)
+				.padding(.vertical, 20)
 
 			Button {
 				delegate?.didTapContinue()
@@ -66,9 +66,9 @@ struct BehindView: SwiftUI.View {
 				.font(.custom("LoosExtended-Bold", size: 16))
 				.padding(.vertical, 10)
 				.background(Color("brandGreen").cornerRadius(8))
-				.padding(.top, 10)
+				.foregroundColor(.black)
 		}
-			.padding(15)
+			.padding(20)
 	}
 }
 
