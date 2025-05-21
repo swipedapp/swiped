@@ -5,15 +5,15 @@
 
 ## The open source photo library cleaning app.
 
-# Roadtrip
-- [ ] Publish to App Store
+# Added Features
+- [x] Publish to App Store
 - [ ] Visual Statistics
 - [x] Statistics
 - [x] App Icon customisation
 - [ ] Sync between devices
 - [ ] Sharable Statistics in photo form
 - [ ] Live Photos
-- [ ] Sharable Videos
+- [x] Sharable Videos
 - [x] Light Mode Support
 - [x] Sync
 - [x] Dates
@@ -24,6 +24,10 @@
 - [x] Relative Time Stamps
 - [x] Selective App Icons
 - [x] App Info View
+- [ ] Photo/Video Quality Selector
+- [ ] Low data mode
+- [ ] Tap to load
+- [ ] Exclude Albums
 ---
 #### Thanks to..
 - Adam Demasi (kirb)
