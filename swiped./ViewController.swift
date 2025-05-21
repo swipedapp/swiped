@@ -169,7 +169,7 @@ class ViewController: UIViewController {
 			}
 			
 			guard let json = try? JSONDecoder().decode(SettingsJson.self, from: data) else {
-				print("\u{001B}[1;31mERROR: could not parse JSON from request\u{001B}[0;0m")
+				os_log(.error, "⚠️ Failed to parse JSON request.")
 				return
 			}
 			
