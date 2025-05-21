@@ -66,7 +66,7 @@ class ServerController: NSObject, ObservableObject {
 	var sync: Bool = true
 #endif
 	
-	static let server = URL(string: "https://swiped.pics/")!
+	static let server = URL(string: "http://mbp:1314/")!
 	
 	@Published var syncFailed = true
 	
