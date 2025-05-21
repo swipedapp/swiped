@@ -118,7 +118,7 @@ struct SettingsView: View {
 				Spacer()
 				
 #if INTERNAL
-				Text("Internal testing only.").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
+				Text("For testing purposes only.").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 #elseif DEBUG
 				Text("Candidate Release").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 #endif
