@@ -62,8 +62,10 @@ struct SettingsView: View {
 									Text(".")
 										.foregroundColor(Color("brandGreen"))
 										.font(.custom("LoosExtended-Bold", size: 50))
+									#if !INTERNAL
 									Text("Version \(version) (\(build))")
 										.font(.custom("LoosExtended-Medium", size: 18))
+									#endif
 								}
 								Spacer()
 							}
