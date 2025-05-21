@@ -11,6 +11,9 @@ import QuickLook
 import StoreKit
 import AVKit
 import SwiftUI
+import os
+private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.app.swiped", category: "JSONParsing")
+
 
 class ViewController: UIViewController {
 	var version: String {
@@ -167,6 +170,7 @@ class ViewController: UIViewController {
 			}
 			
 			guard let json = try? JSONDecoder().decode(SettingsJson.self, from: data) else {
+				os_log(.error, "Failed parse")
 				print("Error: JSON decode failed")
 				return
 			}
