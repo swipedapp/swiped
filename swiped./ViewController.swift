@@ -130,7 +130,7 @@ class ViewController: UIViewController {
 		batchesLoaded += 1
 		
 		var newCards = [PhotoCard]()
-		for _ in 0..<20 {
+		for _ in 0..<3 {
 			newCards.append(PhotoCard())
 		}
 		
@@ -318,15 +318,19 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		
 		cardStack.isUserInteractionEnabled = false
 		buttonStackView.isUserInteractionEnabled = false
-		cardInfo.setCard(nil, summary: true)
 		
 		Task {
+			await MainActor.run {
+				self.cardInfo.setCard(nil, summary: true)
+			}
+
 			await ServerController.shared.doSync()
 		}
-		
+
 		UIView.animate(withDuration: 0.3) {
-			self.behindViewHostingController.view.alpha = 1
+			self.cardStack.alpha = 0
 			self.buttonStackView.alpha = 0
+			self.behindViewHostingController.view.alpha = 1
 		}
 	}
 	
@@ -418,18 +422,18 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 	}
 	
 	func didTapContinue() {
-		self.loadBatch()
+		loadBatch()
 
-		self.cardStack.isUserInteractionEnabled = true
-		self.buttonStackView.isUserInteractionEnabled = true
+		cardStack.isUserInteractionEnabled = true
+		buttonStackView.isUserInteractionEnabled = true
 
 		UIView.animate(withDuration: 0.3) {
-			self.infoHostingController.view.alpha = 1
-			self.behindViewHostingController.view.alpha = 0
+			self.cardStack.alpha = 1
 			self.buttonStackView.alpha = 1
+			self.behindViewHostingController.view.alpha = 0
 		}
 
-		if self.batchesLoaded == 4 && !UserDefaults.standard.bool(forKey: "requestedReview") {
+		if batchesLoaded == 4 && !UserDefaults.standard.bool(forKey: "requestedReview") {
 			UserDefaults.standard.set(true, forKey: "requestedReview")
 			AppStore.requestReview(in: self.view.window!.windowScene!)
 		}
@@ -446,8 +450,6 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			}
 			cardStack.deleteCards(atIndices: indices)
 		}
-		
-		loadBatch()
 	}
 	
 }

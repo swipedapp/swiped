@@ -39,6 +39,8 @@ struct BehindView: SwiftUI.View {
 
 	private static let fileSizeFormatter = ByteCountFormatter()
 
+	@EnvironmentObject var cardInfo: CardInfo
+
 	weak var delegate: Delegate?
 
 	var body: some SwiftUI.View {
@@ -61,14 +63,16 @@ struct BehindView: SwiftUI.View {
 				delegate?.didTapContinue()
 			} label: {
 				Text("Continue")
+					.frame(maxWidth: .infinity)
+					.frame(height: 44)
 			}
-				.frame(maxWidth: .infinity)
-				.font(.custom("LoosExtended-Bold", size: 16))
-				.padding(.vertical, 10)
-				.background(Color("brandGreen").cornerRadius(8))
-				.foregroundColor(.black)
+			.font(.custom("LoosExtended-Bold", size: 16))
+			.background(Color("brandGreen").cornerRadius(8))
+			.foregroundColor(.black)
 		}
 			.padding(20)
+			.opacity(cardInfo.summary ? 1 : 0)
+			.animation(.linear(duration: cardInfo.summary ? 0 : 0.2), value: cardInfo.summary)
 	}
 }
 
