@@ -26,8 +26,9 @@ class ViewController: UIViewController {
 	private let buttonStackView = ButtonStackView()
 	private var infoView: CardInfoView!
 	private var infoHostingController: UIHostingController<AnyView>!
-	private let behindView = BehindView()
-	
+	private var behindView: BehindView!
+	private var behindViewHostingController: UIHostingController<AnyView>!
+
 	private let photosController = PhotosController()
 	private var cards = [PhotoCard]()
 	private var toDelete = [PhotoCard]()
@@ -48,6 +49,7 @@ class ViewController: UIViewController {
 		cardStack.dataSource = self
 		buttonStackView.delegate = self
 		infoView = CardInfoView()
+		behindView = BehindView()
 		behindView.delegate = self
 		photosController.delegate = self
 		
@@ -110,12 +112,17 @@ class ViewController: UIViewController {
 	}
 	
 	private func layoutBehindView() {
-		behindView.alpha = 0
-		view.addSubview(behindView)
-		behindView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-											left: view.safeAreaLayoutGuide.leftAnchor,
-											bottom: buttonStackView.topAnchor,
-											right: view.safeAreaLayoutGuide.rightAnchor)
+		behindViewHostingController = UIHostingController(rootView: AnyView(
+			behindView
+				.environmentObject(cardInfo)
+		))
+		behindViewHostingController.view.alpha = 0
+		behindViewHostingController.willMove(toParent: self)
+		view.addSubview(behindViewHostingController.view)
+		behindViewHostingController.view.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+																						left: view.safeAreaLayoutGuide.leftAnchor,
+																						bottom: buttonStackView.topAnchor,
+																						right: view.safeAreaLayoutGuide.rightAnchor)
 	}
 	
 	private func loadBatch() {
@@ -312,14 +319,13 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		cardStack.isUserInteractionEnabled = false
 		buttonStackView.isUserInteractionEnabled = false
 		cardInfo.setCard(nil, summary: true)
-		behindView.updateCount()
 		
 		Task {
 			await ServerController.shared.doSync()
 		}
 		
 		UIView.animate(withDuration: 0.3) {
-			self.behindView.alpha = 1
+			self.behindViewHostingController.view.alpha = 1
 			self.buttonStackView.alpha = 0
 		}
 	}
@@ -411,32 +417,21 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		}
 	}
 	
-	func didTapBehindButton(action: BehindView.Action) {
-		let keepGoing = {
-			self.loadBatch()
-			
-			self.cardStack.isUserInteractionEnabled = true
-			self.buttonStackView.isUserInteractionEnabled = true
-			
-			UIView.animate(withDuration: 0.3) {
-				self.infoHostingController.view.alpha = 1
-				self.behindView.alpha = 0
-				self.buttonStackView.alpha = 1
-			}
-			
-			if self.batchesLoaded == 4 && !UserDefaults.standard.bool(forKey: "requestedReview") {
-				UserDefaults.standard.set(true, forKey: "requestedReview")
-				AppStore.requestReview(in: self.view.window!.windowScene!)
-			}
+	func didTapContinue() {
+		self.loadBatch()
+
+		self.cardStack.isUserInteractionEnabled = true
+		self.buttonStackView.isUserInteractionEnabled = true
+
+		UIView.animate(withDuration: 0.3) {
+			self.infoHostingController.view.alpha = 1
+			self.behindViewHostingController.view.alpha = 0
+			self.buttonStackView.alpha = 1
 		}
-		
-		switch action {
-		case .continue:
-			keepGoing()
-			break
-			
-		case .delete:
-			keepGoing()
+
+		if self.batchesLoaded == 4 && !UserDefaults.standard.bool(forKey: "requestedReview") {
+			UserDefaults.standard.set(true, forKey: "requestedReview")
+			AppStore.requestReview(in: self.view.window!.windowScene!)
 		}
 		
 		// Release all but the last card from memory
