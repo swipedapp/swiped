@@ -75,7 +75,7 @@ class PhotosController {
 		if fetchResult.count == 0 {
 			throw PhotoError.noPhotosAvailable
 		}
-		
+
 		if fetchResult.count == db.getTotalKept() {
 			throw PhotoError.noPhotosLeft
 		}
