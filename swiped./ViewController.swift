@@ -52,7 +52,6 @@ class ViewController: UIViewController {
 		super.viewDidLoad()
 
 		photosController.db = db
-		db.migrate()
 
 		#if !INTERNAL
 		fetchAlert()

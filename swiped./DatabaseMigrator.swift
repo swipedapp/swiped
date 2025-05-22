@@ -40,6 +40,10 @@ class DatabaseMigrator {
 		}
 	}
 
+	func needsMigration() -> Bool {
+		return try! db.scalar(photos.count) > 0
+	}
+
 	func migrate(dbController: DatabaseController) {
 		let query = photos.select(*)
 
