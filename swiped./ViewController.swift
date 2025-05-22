@@ -129,7 +129,7 @@ class ViewController: UIViewController {
 		batchesLoaded += 1
 		
 		var newCards = [PhotoCard]()
-		for _ in 0..<20  {
+		for _ in 0..<3  {
 			newCards.append(PhotoCard())
 		}
 		
