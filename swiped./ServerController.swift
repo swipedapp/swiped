@@ -9,6 +9,7 @@ import Foundation
 import StoreKit
 import SwiftUI
 import Combine
+import os
 
 extension UserDefaults {
 	@objc var sync: Bool {
@@ -96,7 +97,7 @@ class ServerController: NSObject, ObservableObject {
 		do {
 			result = try await AppTransaction.shared
 		} catch {
-			print("Transaction error: \(error)")
+			os_log(.error, "⚠️ Failed transaction. \(error)")
 		}
 		
 		switch result {
@@ -104,7 +105,7 @@ class ServerController: NSObject, ObservableObject {
 			break
 			
 		case .unverified(_, let verificationError):
-			print("Receipt error: \(verificationError)")
+			os_log(.error, "⚠️ Could not verify app receipt. \(verificationError)")
 			
 		case .none:
 			return nil
@@ -120,7 +121,7 @@ class ServerController: NSObject, ObservableObject {
 
 		let syncFailed: Bool
 		if (!sync) {
-			print("Registering with \(Self.server)")
+			print("🌐 Connecting with \(Self.server)")
 			let receipt = await getReceipt()
 			let data = RegisterRequest(receipt: receipt)
 			

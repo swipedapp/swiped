@@ -8,6 +8,7 @@
 import UIKit
 import Photos
 import CoreTransferable
+import os
 
 class PhotosController {
 	
@@ -40,7 +41,7 @@ class PhotosController {
 							callback()
 						}
 					} catch {
-						print("error loading photos for cards: \(error)")
+						os_log(.error, "⚠️ Error loading photos:  \(error)")
 						
 						await MainActor.run {
 							if let error = error as? PhotoError {
@@ -158,7 +159,7 @@ class PhotosController {
 			PHAssetChangeRequest.deleteAssets(assets as NSFastEnumeration)
 		} completionHandler: { success, error in
 			if let error = error as? NSError {
-				print("Error deleting: \(error)")
+				os_log(.error, "⚠️ Could not delete photos. \(error)")
 			}
 
 			if !success {

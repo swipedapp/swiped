@@ -166,17 +166,17 @@ class ViewController: UIViewController {
 #endif
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
 			if let error = error {
-				print("Error: \(error.localizedDescription)")
+				os_log(.error, "⚠️ \(error.localizedDescription)")
 				return
 			}
 			
 			guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-				print("Could not fetch config")
+				os_log(.error, "⚠️ Could not fetch config")
 				return
 			}
 			
 			guard let data = data else {
-				print("Error: No data received")
+				os_log(.error, "⚠️ Server returned no data")
 				return
 			}
 			
@@ -243,7 +243,7 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 	}
 	
 	func didFail(error: PhotosController.PhotoError) {
-		print("Photo controller error: \(error.localizedDescription)")
+		os_log(.error, "⚠️ PhotoController Error:  \(error.localizedDescription)")
 		
 		switch error {
 		case .noAccessToPhotoLibrary, .noPhotosAvailable:
@@ -382,7 +382,6 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
-		print("Card tapped")
 		
 		do {
 			let card = cards[index]
