@@ -151,7 +151,8 @@ class ServerController: NSObject, ObservableObject {
 	
 	func doSync() async {
 		if (!sync) {
-			let db = DatabaseController.shared
+//			let db = DatabaseController.shared
+			let db = DatabaseController()
 			let receipt = await getReceipt()
 			let data = SyncRequest(receipt: receipt,
 														 totalKept: db.getTotalKept(),

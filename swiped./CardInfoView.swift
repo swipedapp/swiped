@@ -35,7 +35,13 @@ struct CardInfoView: View {
 	private let photosController = PhotosController()
 	
 	@EnvironmentObject var cardInfo: CardInfo
-	
+
+	@Environment(\.modelContext) var modelContext {
+		didSet {
+			photosController.db = DatabaseController(modelContext: modelContext)
+		}
+	}
+
 	@State var showSettings = false
 	
 	@AppStorage("timestamps")

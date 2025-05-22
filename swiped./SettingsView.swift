@@ -31,7 +31,9 @@ struct SettingsView: View {
 	
 	@AppStorage("swipeDownCount")
 	var swipeDownCount = 0
-	
+
+	@Environment(\.modelContext) var modelContext
+
 	var body: some View {
 		NavigationStack {
 			VStack {
@@ -104,7 +106,8 @@ struct SettingsView: View {
 				.background(Color(uiColor: .systemBackground))
 				.alert("You will lose all statistics you have collected so far. Are you sure you want to do this?", isPresented: $showResetAlert, actions: {
 					Button("Continue", role: .destructive) {
-						DatabaseController.shared.reset()
+						let db = DatabaseController()
+						db.modelContext = modelContext
 						self.swipeDownCount = 0
 					}
 					Button("Cancel", role: .cancel) {}

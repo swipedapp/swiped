@@ -27,7 +27,9 @@ class PhotosController {
 	}
 	
 	weak var delegate: PhotoLoadDelegate?
-	
+
+	var db: DatabaseController!
+
 	func loadRandomPhotos(for cards: [PhotoCard], callback: @escaping () -> Void) {
 		// Request permission to access photo library
 		PHPhotoLibrary.requestAuthorization { status in
@@ -74,7 +76,7 @@ class PhotosController {
 			throw PhotoError.noPhotosAvailable
 		}
 		
-		if fetchResult.count == DatabaseController.shared.getTotalKept() {
+		if fetchResult.count == db.getTotalKept() {
 			throw PhotoError.noPhotosLeft
 		}
 		
@@ -89,7 +91,7 @@ class PhotosController {
 					continue
 				}
 				
-				if let oldPhoto = DatabaseController.shared.getPhoto(id: asset.localIdentifier),
+				if let oldPhoto = db.getPhoto(id: asset.localIdentifier),
 					 oldPhoto.choice != .skip {
 					continue
 				}
@@ -101,8 +103,8 @@ class PhotosController {
 			
 			let photo = Photo(id: asset.localIdentifier)
 			photo.creationDate = asset.creationDate
-			photo.type = asset.mediaType
-			
+			photo.type = Photo.AssetType(rawValue: asset.mediaType.rawValue) ?? .unknown
+
 			card.photo = photo
 			
 			let resources = PHAssetResource.assetResources(for: asset)
@@ -167,7 +169,7 @@ class PhotosController {
 				for card in cards {
 					if let photo = card.photo {
 						photo.choice = .keep
-						DatabaseController.shared.addPhoto(photo: photo)
+						self.db.addPhoto(photo: photo)
 					}
 				}
 			}

@@ -6,109 +6,91 @@
 //
 
 import Foundation
-import SQLite
 import Photos
+import SwiftData
 
 class DatabaseController {
-	
-	static let shared = DatabaseController()
-	
-	private let db: Connection
-	
-	private let photos = Table("photos")
-	
-	private let id = SQLite.Expression<String>("id")
-	private let type = SQLite.Expression<Int>("type")
-	private let size = SQLite.Expression<Double>("size")
-	private let choice = SQLite.Expression<Int>("choice")
-	private let creationDate = SQLite.Expression<TimeInterval>("creationDate")
-	private let swipeDate = SQLite.Expression<TimeInterval>("swipeDate")
-	
-	private init() {
-		do {
-			let documents = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-			let path = documents.appendingPathComponent("swiped.sqlite3")
-			db = try Connection(path.path)
-			
-			try db.run(photos.create(ifNotExists: true) { t in
-				t.column(id, primaryKey: true)
-				t.column(type)
-				t.column(size)
-				t.column(choice)
-				t.column(creationDate)
-				t.column(swipeDate)
-			})
-		} catch {
-			fatalError(error.localizedDescription)
-		}
+
+	var modelContext: ModelContext!
+
+	init(modelContext: ModelContext? = nil) {
+		self.modelContext = modelContext
 	}
-	
+
+	func migrate() {
+		let migrator = DatabaseMigrator()
+		migrator.migrate(dbController: self)
+	}
+
 	func reset() {
-		try! db.run(photos.delete())
+		modelContext.container.deleteAllData()
+		try! modelContext.save()
 	}
-	
+
 	func addPhoto(photo: Photo) {
-		try! db.run(photos.insert(
-			or: .replace,
-			id <- photo.id,
-			type <- photo.type.rawValue,
-			size <- photo.size,
-			choice <- photo.choice.rawValue,
-			creationDate <- photo.creationDate?.timeIntervalSince1970 ?? 0,
-			swipeDate <- photo.swipeDate?.timeIntervalSince1970 ?? 0
-		))
-	}
-	
-	func getPhoto(id photoID: String) -> Photo? {
-		let query = photos.select(*)
-			.where(id == photoID)
-			.limit(1)
-		
-		guard let row = try! db.pluck(query) else {
-			return nil
+		if let photo2 = getPhoto(id: photo.id) {
+			modelContext.delete(photo2)
 		}
-		
-		let photo = Photo(id: row[id])
-		photo.type = PHAssetMediaType(rawValue: row[type]) ?? .unknown
-		photo.size = row[size]
-		photo.choice = Photo.Choice(rawValue: row[choice])!
-		photo.creationDate = Date(timeIntervalSince1970: row[creationDate])
-		photo.swipeDate = Date(timeIntervalSince1970: row[swipeDate])
-		return photo
+
+		modelContext.insert(photo)
+		try! modelContext.save()
 	}
-	
+
+	func getPhoto(id photoID: String) -> Photo? {
+		let descriptor = FetchDescriptor<Photo>(predicate: #Predicate {
+			$0.id == photoID
+		})
+		return try! modelContext.fetch(descriptor).first
+	}
+
 	func getTotal() -> Int {
-		return try! db.scalar(photos.count)
+		let descriptor = FetchDescriptor<Photo>()
+		return try! modelContext.fetchCount(descriptor)
 	}
-	
+
 	func getTotalKept() -> Int {
-		return try! db.scalar(photos
-			.filter(choice == Photo.Choice.keep.rawValue)
-			.count)
+		let keep = Photo.Choice.keep.rawValue
+		let descriptor = FetchDescriptor<Photo>(predicate: #Predicate {
+			$0._choice == keep
+		})
+		return try! modelContext.fetchCount(descriptor)
 	}
-	
+
 	func getTotalDeleted() -> Int {
-		return try! db.scalar(photos
-			.filter(choice == Photo.Choice.delete.rawValue)
-			.count)
+		let delete = Photo.Choice.delete.rawValue
+		let descriptor = FetchDescriptor<Photo>(predicate: #Predicate {
+			$0._choice == delete
+		})
+		return try! modelContext.fetchCount(descriptor)
 	}
+
 	func getTotalPhotoDeleted() -> Int {
-		return try! db.scalar(photos
-			.filter(choice == Photo.Choice.delete.rawValue)
-			.filter(type == PHAssetMediaType.image.rawValue)
-			.count)
+		let delete = Photo.Choice.delete.rawValue
+		let image = Photo.AssetType.image.rawValue
+		let descriptor = FetchDescriptor<Photo>(predicate: #Predicate {
+			$0._choice == delete && $0._type == image
+		})
+		return try! modelContext.fetchCount(descriptor)
 	}
 	func getTotalVideoDeleted() -> Int {
-		return try! db.scalar(photos
-			.filter(choice == Photo.Choice.delete.rawValue)
-			.filter(type == PHAssetMediaType.video.rawValue)
-			.count)
+		let delete = Photo.Choice.delete.rawValue
+		let video = Photo.AssetType.video.rawValue
+		let descriptor = FetchDescriptor<Photo>(predicate: #Predicate {
+			$0._choice == delete && $0._type == video
+		})
+		return try! modelContext.fetchCount(descriptor)
 	}
-	
+
 	func getSpaceSaved() -> Double {
-		return try! db.scalar(photos
-			.select(size.total)
-			.filter(choice == Photo.Choice.delete.rawValue))
+		let delete = Photo.Choice.delete.rawValue
+		let descriptor = FetchDescriptor<Photo>(predicate: #Predicate {
+			$0._choice == delete
+		})
+		var size = 0.0
+		try! modelContext.enumerate(descriptor) { photo in
+			size += photo.size
+		}
+		return size
 	}
 	func calcSwipeScore() -> Int64 {
 		let totalKept = getTotalKept()

@@ -2,11 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>loos_reg.ttf</string>
-		<string>loos_md.ttf</string>
-		<string>loos_bold.ttf</string>
-	</array>
+	<key>com.apple.developer.icloud-container-identifiers</key>
+	<array/>
 </dict>
 </plist>

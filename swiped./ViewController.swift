@@ -12,7 +12,7 @@ import StoreKit
 import AVKit
 import SwiftUI
 import os
-
+import SwiftData
 
 class ViewController: UIViewController {
 	var version: String {
@@ -22,6 +22,15 @@ class ViewController: UIViewController {
 	var build: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
 	}
+
+	var modelContext: ModelContext! {
+		didSet {
+			db.modelContext = modelContext
+		}
+	}
+
+	private let db = DatabaseController()
+
 	private let cardStack = SwipeCardStack()
 	private let buttonStackView = ButtonStackView()
 	private var infoView: CardInfoView!
@@ -41,6 +50,10 @@ class ViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+
+		photosController.db = db
+		db.migrate()
+
 		#if !INTERNAL
 		fetchAlert()
 		#endif
@@ -103,6 +116,7 @@ class ViewController: UIViewController {
 		infoHostingController = UIHostingController(rootView: AnyView(
 			infoView
 				.environmentObject(cardInfo)
+				.modelContext(modelContext)
 		))
 		infoHostingController.willMove(toParent: self)
 		view.addSubview(infoHostingController.view)
@@ -115,6 +129,7 @@ class ViewController: UIViewController {
 		behindViewHostingController = UIHostingController(rootView: AnyView(
 			behindView
 				.environmentObject(cardInfo)
+				.modelContext(modelContext)
 		))
 		behindViewHostingController.willMove(toParent: self)
 		view.addSubview(behindViewHostingController.view)
@@ -129,7 +144,7 @@ class ViewController: UIViewController {
 		batchesLoaded += 1
 		
 		var newCards = [PhotoCard]()
-		for _ in 0..<20  {
+		for _ in 0..<3  {
 			newCards.append(PhotoCard())
 		}
 		
@@ -311,7 +326,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 				for card in self.toDelete {
 					if let photo = card.photo {
 						photo.choice = .skip
-						DatabaseController.shared.addPhoto(photo: photo)
+						self.db.addPhoto(photo: photo)
 					}
 				}
 			}
@@ -369,8 +384,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		
 		photo.choice = choice
 		photo.swipeDate = Date()
-		DatabaseController.shared.addPhoto(photo: photo)
-		
+		db.addPhoto(photo: photo)
+
 		if direction == .up {
 			if let image = card.fullImage ?? card.thumbnail {
 				let shareSheet = UIActivityViewController(activityItems: [image], applicationActivities: [])

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SQLite
+import SwiftData
 
 struct SummaryGridView: SwiftUI.View {
 
@@ -43,10 +43,13 @@ struct BehindView: SwiftUI.View {
 
 	@EnvironmentObject var cardInfo: CardInfo
 
+	@Environment(\.modelContext) var modelContext
+
 	weak var delegate: Delegate?
 
 	var body: some SwiftUI.View {
-		let db = DatabaseController.shared
+		let db = DatabaseController()
+		db.modelContext = modelContext
 
 		return VStack(alignment: .leading, spacing: 10) {
 			SummaryGridView(totalKept: db.getTotalKept(), totalDeleted: db.getTotalDeleted(), summary: cardInfo.summary)
