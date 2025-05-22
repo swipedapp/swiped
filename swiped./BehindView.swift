@@ -52,10 +52,16 @@ struct BehindView: SwiftUI.View {
 			SummaryGridView(totalKept: db.getTotalKept(), totalDeleted: db.getTotalDeleted(), summary: cardInfo.summary)
 
 			VStack(alignment: .leading, spacing: 10) {
+		
 				Text("\(db.getTotalKept().formatted()) kept")
 				Text("\(db.getTotalDeleted().formatted()) deleted")
 				Text("\(Self.fileSizeFormatter.string(fromByteCount: Int64(db.getSpaceSaved()))) saved")
-				Text("SwipeScore: \(db.calcSwipeScore().formatted())")
+				HStack {
+					Image(systemName: "medal.star.fill")
+					Text("\(db.calcSwipeScore().formatted()) SwipeScore").font(.custom("LoosExtended-Medium", size: 18))
+				}
+				
+				
 			}
 				.font(.custom("LoosExtended-Bold", size: 18))
 				.multilineTextAlignment(.center)
