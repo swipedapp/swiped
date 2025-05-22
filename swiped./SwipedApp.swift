@@ -19,7 +19,7 @@ struct SwipedApp: App {
 	init() {
 		do {
 			let config = ModelConfiguration(url: URL.documentsDirectory.appending(path: "swiped.sqlite3"),
-																			cloudKitDatabase: .none)
+																			cloudKitDatabase: .automatic)
 			modelContainer = try ModelContainer(for: Photo.self, configurations: config)
 			db.modelContext = modelContainer.mainContext
 		} catch {
@@ -30,6 +30,7 @@ struct SwipedApp: App {
 	private func migrate() {
 		if needsMigration {
 			Task {
+				try? await Task.sleep(for: .milliseconds(100))
 				self.db.migrate()
 
 				await MainActor.run {
