@@ -160,17 +160,19 @@ class PhotosController {
 			if let error = error as? NSError {
 				print("Error deleting: \(error)")
 			}
-			
+
+			if !success {
+				// Mark as kept because the user likely pressed cancel
+				for card in cards {
+					if let photo = card.photo {
+						photo.choice = .keep
+						DatabaseController.shared.addPhoto(photo: photo)
+					}
+				}
+			}
+
 			DispatchQueue.main.async {
 				if !success {
-					// Mark as kept because the user likely pressed cancel
-					for card in cards {
-						if let photo = card.photo {
-							photo.choice = .keep
-							DatabaseController.shared.addPhoto(photo: photo)
-						}
-					}
-
 					self.delegate?.didFail(error: .failedToDelete)
 				}
 				
