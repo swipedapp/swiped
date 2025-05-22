@@ -141,6 +141,8 @@ class ViewController: UIViewController {
 			}
 			
 			if self.loadingBatch {
+				self.cardStack.alpha = 1
+				self.buttonStackView.alpha = 1
 				self.loadingBatch = false
 				self.updateCurrentItem()
 			}
@@ -425,8 +427,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		buttonStackView.isUserInteractionEnabled = true
 
 		UIView.animate(withDuration: 0.3) {
-			self.cardStack.alpha = 1
-			self.buttonStackView.alpha = 1
+			//self.cardStack.alpha = 1
+			//self.buttonStackView.alpha = 1
 			self.behindViewHostingController.view.alpha = 0
 		} completion: { _ in
 			self.loadBatch()
