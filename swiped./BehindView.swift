@@ -22,8 +22,9 @@ struct SummaryGridView: SwiftUI.View {
 			ForEach(0..<10) { i in
 				HStack {
 					ForEach(0..<10) { j in
+
 						Circle()
-							.fill(Color((i * 10) + j < keptCount ? UIColor.sampleGreen : UIColor.sampleRed))
+							.fill(Color((i * 10) + j < keptCount ? "brandGreen" : "brandRed"))
 					}
 				}
 			}
