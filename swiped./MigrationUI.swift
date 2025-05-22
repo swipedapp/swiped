@@ -12,7 +12,7 @@ struct MigrationUI: View {
 		NavigationView {
 			VStack {
 				
-				Text("Updating Database")
+				Text("Completing Update")
 				//.font(.custom("LoosExtended-Bold", size: 23))
 					.font(.custom("LoosExtended-Bold", size: 23))
 				Text("Please wait..")
@@ -25,6 +25,7 @@ struct MigrationUI: View {
 				.background(Color(uiColor: .systemBackground))
 				Spacer()
 			}
+				.interactiveDismissDisabled()
 		}
 		//.background(Color(uiColor: .systemBackground))
 	}

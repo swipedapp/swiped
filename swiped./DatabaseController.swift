@@ -17,6 +17,11 @@ class DatabaseController {
 		self.modelContext = modelContext
 	}
 
+	func needsMigration() -> Bool {
+		let migrator = DatabaseMigrator()
+		return migrator.needsMigration()
+	}
+
 	func migrate() {
 		let migrator = DatabaseMigrator()
 		migrator.migrate(dbController: self)
