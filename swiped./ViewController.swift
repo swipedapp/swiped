@@ -326,6 +326,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			UIView.animate(withDuration: 0.3) {
 				self.cardStack.alpha = 0
 				self.buttonStackView.alpha = 0
+				self.behindViewHostingController.view.alpha = 1
 			}
 
 			self.cardInfo.setCard(nil, summary: true)
