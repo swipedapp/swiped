@@ -23,12 +23,7 @@ struct SettingsView: View {
 	
 	
 	
-#if !INTERNAL
-	@AppStorage("sync")
-	var sync: Bool = false
-#else
-	var sync: Bool = true
-#endif
+
 	
 	
 	@State

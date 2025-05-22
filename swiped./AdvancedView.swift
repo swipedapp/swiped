@@ -9,10 +9,16 @@ import SwiftUI
 import Combine
 
 struct AdvancedView: View {
-	@AppStorage("sync") var sync: Bool = false
 	@State private var showRestriction = false
-	
+#if !INTERNAL
+	@AppStorage("sync")
+	var sync: Bool = false
+#else
+	@State
+	var sync: Bool = true
+#endif
 	@StateObject var serverController = ServerController.shared
+
 	
 	var body: some View {
 		Spacer()
