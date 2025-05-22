@@ -54,8 +54,8 @@ class ViewController: UIViewController {
 		photosController.delegate = self
 		
 		configureNavigationBar()
-		layoutButtonStackView()
 		layoutBehindView()
+		layoutButtonStackView()
 		layoutInfoView()
 		layoutCardStackView()
 		
