@@ -129,7 +129,7 @@ class ViewController: UIViewController {
 		batchesLoaded += 1
 		
 		var newCards = [PhotoCard]()
-		for _ in 0..<20 {
+		for _ in 0..<20  {
 			newCards.append(PhotoCard())
 		}
 		
@@ -426,6 +426,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		UIView.animate(withDuration: 0.3) {
 			self.cardStack.alpha = 1
 			self.buttonStackView.alpha = 1
+			self.behindViewHostingController.view.alpha = 0
 		} completion: { _ in
 			self.loadBatch()
 		}
