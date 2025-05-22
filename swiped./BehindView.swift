@@ -80,5 +80,9 @@ struct BehindView: SwiftUI.View {
 }
 
 #Preview {
-	BehindView()
+	let info = CardInfo()
+	info.setCard(nil, summary: true)
+
+	return BehindView()
+		.environmentObject(info)
 }
