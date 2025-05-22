@@ -141,8 +141,10 @@ class ViewController: UIViewController {
 			}
 			
 			if self.loadingBatch {
-				self.cardStack.alpha = 1
-				self.buttonStackView.alpha = 1
+				UIView.animate(withDuration: 0.3) {
+					self.cardStack.alpha = 1
+					self.buttonStackView.alpha = 1
+				}
 				self.loadingBatch = false
 				self.updateCurrentItem()
 			}
