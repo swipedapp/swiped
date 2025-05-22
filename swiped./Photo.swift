@@ -25,7 +25,7 @@ class Photo {
 		case skip = 3
 	}
 
-	var id: String
+	var id: String = ""
 	var size: Double = 0
 	var creationDate: Date?
 	var swipeDate: Date?
