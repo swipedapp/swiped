@@ -43,6 +43,10 @@ struct AdvancedView: View {
 							.font(.custom("LoosExtended-Regular", size: 16))
 					}
 					.listRowBackground(Color("listRowBackground"))
+					#if INTERNAL
+					.disabled(true)
+					#endif
+					
 				}
 			}
 			.scrollContentBackground(.hidden)
