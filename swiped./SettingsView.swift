@@ -21,7 +21,7 @@ struct SettingsView: View {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
 	}
 	
-	@StateObject var serverController = ServerController.shared
+	
 	
 #if !INTERNAL
 	@AppStorage("sync")
@@ -51,7 +51,7 @@ struct SettingsView: View {
 								}
 								.font(.custom("LoosExtended-Regular", size: 14))
 							}
-
+							
 							HStack {
 								Spacer()
 								VStack(alignment: .center) {
@@ -62,17 +62,17 @@ struct SettingsView: View {
 									Text(".")
 										.foregroundColor(Color("brandGreen"))
 										.font(.custom("LoosExtended-Bold", size: 50))
-									#if !INTERNAL
+#if !INTERNAL
 									Text("Version \(version) (\(build))")
 										.font(.custom("LoosExtended-Medium", size: 18))
-									#endif
+#endif
 								}
 								Spacer()
 							}
 							.padding(.vertical, 30)
 						}
 					})
-					syncSection
+					
 					
 					// Production flags
 					Toggle(isOn: $timestamps) {
@@ -133,38 +133,6 @@ struct SettingsView: View {
 		}
 	}
 	
-	var syncSection: some View {
-		let syncFailed = !sync && serverController.syncFailed
-
-		return Section {
-			HStack {
-				Text("SYNC.")
-					.font(.custom("LoosExtended-Bold", size: 16))
-					.foregroundColor(syncFailed ? .black : .primary)
-				Spacer()
-				if (!sync) {
-					Text(syncFailed ? "Restricted." : "Connected")
-						.font(.custom("LoosExtended-Regular", size: 16))
-						.foregroundColor(syncFailed ? .black : Color("syncStatus"))
-						.onTapGesture {
-							if syncFailed {
-								showRestriction = true
-							}
-						}
-						.sheet(isPresented: $showRestriction) {
-							RestrictionView()
-						}
-				} else {
-					Text("Disabled")
-						.font(.custom("LoosExtended-Regular", size: 16))
-						.foregroundColor(.gray)
-				}
-				
-				
-			}
-		}
-		.listRowBackground(syncFailed ? .yellow : Color("listRowBackground"))
-	}
 }
 
 

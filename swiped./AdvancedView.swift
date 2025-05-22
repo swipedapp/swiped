@@ -9,17 +9,19 @@ import SwiftUI
 import Combine
 
 struct AdvancedView: View {
-	@AppStorage("sync")
-	var sync: Bool = false
+	@AppStorage("sync") var sync: Bool = false
+	@State private var showRestriction = false
+	
+	@StateObject var serverController = ServerController.shared
+	
 	var body: some View {
 		Spacer()
 		VStack {
-			
 			Form {
+				syncSection
+				
 #if INTERNAL
 				// INTERNAL FLAGS
-				
-				
 				Section {
 					NavigationLink("Internal") {
 						InternalView()
@@ -27,9 +29,8 @@ struct AdvancedView: View {
 					.font(.custom("LoosExtended-Regular", size: 16))
 					.listRowBackground(Color("listRowBackground"))
 				}
-				
-				
 #endif
+				
 				Section {
 					Toggle(isOn: $sync) {
 						Text("Disable Sync")
@@ -37,13 +38,41 @@ struct AdvancedView: View {
 					}
 					.listRowBackground(Color("listRowBackground"))
 				}
-				
-				
 			}
 			.scrollContentBackground(.hidden)
 			.background(Color(uiColor: .systemBackground))
 		}
+	}
+	
+	var syncSection: some View {
+		let syncFailed = !sync && serverController.syncFailed
 		
+		return Section {
+			HStack {
+				Text("SYNC.")
+					.font(.custom("LoosExtended-Bold", size: 16))
+					.foregroundColor(syncFailed ? .black : .primary)
+				Spacer()
+				if (!sync) {
+					Text(syncFailed ? "Restricted." : "Connected")
+						.font(.custom("LoosExtended-Regular", size: 16))
+						.foregroundColor(syncFailed ? .black : Color("syncStatus"))
+						.onTapGesture {
+							if syncFailed {
+								showRestriction = true
+							}
+						}
+						.sheet(isPresented: $showRestriction) {
+							RestrictionView()
+						}
+				} else {
+					Text("Disabled")
+						.font(.custom("LoosExtended-Regular", size: 16))
+						.foregroundColor(.gray)
+				}
+			}
+		}
+		.listRowBackground(syncFailed ? .yellow : Color("listRowBackground"))
 	}
 }
 
