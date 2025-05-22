@@ -76,9 +76,9 @@ class PhotosController {
 			throw PhotoError.noPhotosAvailable
 		}
 		
-//		if fetchResult.count == db.getTotalKept() {
-//			throw PhotoError.noPhotosLeft
-//		}
+		if fetchResult.count == db.getTotalKept() {
+			throw PhotoError.noPhotosLeft
+		}
 
 		for card in cards {
 			// Pick a random photo
