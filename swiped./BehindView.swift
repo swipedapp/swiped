@@ -79,7 +79,8 @@ struct BehindView: SwiftUI.View {
 			.foregroundColor(.black)
 		}
 			.frame(maxWidth: 450)
-			.padding(20)
+			.padding(.horizontal, 20)
+			.padding(.vertical, 100)
 			.opacity(cardInfo.summary ? 1 : 0)
 			.animation(.easeOut(duration: cardInfo.summary ? 0.5 : 0), value: cardInfo.summary)
 			.contentTransition(.numericText())
