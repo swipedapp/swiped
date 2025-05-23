@@ -171,10 +171,10 @@ class PhotosController {
 			}
 
 			if !success {
-				// Mark as kept because the user likely pressed cancel
+				// Mark as skipped because the user likely pressed cancel
 				for card in cards {
 					if let photo = card.photo {
-						photo.choice = .keep
+						photo.choice = .skip
 						self.db.addPhoto(photo: photo)
 					}
 				}
