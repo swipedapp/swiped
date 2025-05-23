@@ -282,6 +282,7 @@ struct CardInfoView: View {
 						.font(.custom("LoosExtended-Bold", size: 20))
 				})
 				.frame(width: 40, height: 40, alignment: .center)
+				.accessibilityIdentifier("settingsButton")
 			}
 			
 			subhead
