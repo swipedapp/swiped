@@ -81,7 +81,13 @@ class PhotosController {
 		for card in cards {
 			// Pick a random photo
 			var asset: PHAsset!
+			var loops = 0
 			while true {
+				loops += 1
+				if loops > 100 {
+					throw PhotoError.noPhotosLeft
+				}
+				
 				let randomIndex = Int.random(in: 0..<fetchResult.count)
 				asset = fetchResult.object(at: randomIndex) as PHAsset
 				
