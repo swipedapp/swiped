@@ -50,6 +50,7 @@ struct BehindView: SwiftUI.View {
 
 		return VStack(alignment: .leading, spacing: 10) {
 			SummaryGridView(totalKept: db.getTotalKept(), totalDeleted: db.getTotalDeleted(), summary: cardInfo.summary)
+				.frame(maxWidth: 400)
 
 			VStack(alignment: .leading, spacing: 10) {
 		
