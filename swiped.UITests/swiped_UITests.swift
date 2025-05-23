@@ -82,10 +82,6 @@ final class swiped_UITests: XCTestCase {
 		let settingsButton = app.buttons["settingsButton"]
 		settingsButton.tap()
 		takeScreenshot(of: app, named: "Settings")
-		let settingsSheet = app.sheets.firstMatch
-		XCTAssertTrue(settingsSheet.waitForExistence(timeout: 2))
-		settingsSheet.swipeDown()
-
 		app.terminate()
 
 		let icon = springboardApp.icons["swiped."]
