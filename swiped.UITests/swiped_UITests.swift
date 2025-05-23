@@ -26,50 +26,6 @@ final class swiped_UITests: XCTestCase {
 	func testStuff() throws {
 		
 	}
-    
-
-    @MainActor
-			func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-			
-			app.activate()
-			let keepStaticText = app/*@START_MENU_TOKEN@*/.staticTexts["Keep"]/*[[".buttons[\"Keep\"].staticTexts.firstMatch",".buttons.staticTexts[\"Keep\"]",".staticTexts[\"Keep\"]"],[[[-1,2],[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-			keepStaticText.tap()
-			
-			let deleteStaticText = app/*@START_MENU_TOKEN@*/.staticTexts["Delete"]/*[[".buttons[\"Delete\"].staticTexts.firstMatch",".buttons.staticTexts[\"Delete\"]",".staticTexts[\"Delete\"]"],[[[-1,2],[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-			deleteStaticText.tap()
-			keepStaticText.tap()
-			deleteStaticText.tap()
-			keepStaticText.tap()
-			deleteStaticText.tap()
-			deleteStaticText.tap()
-			keepStaticText.tap()
-			deleteStaticText.tap()
-			keepStaticText.tap()
-			deleteStaticText.tap()
-			keepStaticText.tap()
-			deleteStaticText.tap()
-			keepStaticText.tap()
-			deleteStaticText.tap()
-			keepStaticText.tap()
-			deleteStaticText.tap()
-			keepStaticText.tap()
-			deleteStaticText.tap()
-			keepStaticText.tap()
-			deleteStaticText.tap()
-			keepStaticText.tap()
-			deleteStaticText.tap()
-			
-			XCUIDevice.shared.press(.home)
-			
-			let springboardApp = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-			springboardApp/*@START_MENU_TOKEN@*/.buttons["Delete"]/*[[".otherElements.buttons[\"Delete\"]",".buttons[\"Delete\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
-			
-    }
 	
 	
 
