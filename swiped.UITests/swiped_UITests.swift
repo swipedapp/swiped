@@ -41,9 +41,63 @@ final class swiped_UITests: XCTestCase {
 	@MainActor
 	func testStuff() throws {
 		let app = XCUIApplication()
+		app.resetAuthorizationStatus(for: .photos)
 		app.launch()
-		
+		app.activate()
+
+		let springboardApp = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+		springboardApp.buttons["Allow Full Access"].tap()
+
 		takeScreenshot(of: app, named: "Launch")
+
+		let keepStaticText = app.staticTexts["Keep"]
+		keepStaticText.tap()
+		let deleteStaticText = app.staticTexts["Delete"]
+		deleteStaticText.tap()
+		keepStaticText.tap()
+		deleteStaticText.tap()
+		keepStaticText.tap()
+		deleteStaticText.tap()
+		keepStaticText.tap()
+		deleteStaticText.tap()
+		keepStaticText.tap()
+		deleteStaticText.tap()
+		keepStaticText.tap()
+		deleteStaticText.tap()
+		keepStaticText.tap()
+		deleteStaticText.tap()
+		keepStaticText.tap()
+		deleteStaticText.tap()
+		keepStaticText.tap()
+		deleteStaticText.tap()
+		keepStaticText.tap()
+		deleteStaticText.tap()
+
+		springboardApp.buttons["Delete"].tap()
+
+		takeScreenshot(of: app, named: "Summary")
+
+		app.terminate()
+
+		let icon = springboardApp.icons["swiped."]
+		if icon.exists {
+			icon.press(forDuration: 1)
+
+			let buttonRemoveApp = springboardApp.buttons["Remove App"]
+			if buttonRemoveApp.waitForExistence(timeout: 5) {
+				buttonRemoveApp.tap()
+			}
+
+			let buttonDeleteApp = springboardApp.alerts.buttons["Delete App"]
+			if buttonDeleteApp.waitForExistence(timeout: 5) {
+				buttonDeleteApp.tap()
+			}
+
+			let buttonDelete = springboardApp.alerts.buttons["Delete"]
+			if buttonDelete.waitForExistence(timeout: 5) {
+				buttonDelete.tap()
+			}
+		}
 	}
 	
 	
