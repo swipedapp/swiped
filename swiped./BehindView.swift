@@ -54,15 +54,15 @@ struct BehindView: SwiftUI.View {
 			VStack(alignment: .leading, spacing: 10) {
 		
 				Text("\(db.getTotalKept().formatted()) kept")
-					.frame(maxWidth: .infinity)
+					.frame(maxWidth: .infinity, alignment: .leading)
 				Text("\(db.getTotalDeleted().formatted()) deleted")
-					.frame(maxWidth: .infinity)
+					.frame(maxWidth: .infinity, alignment: .leading)
 				Text("\(Self.fileSizeFormatter.string(fromByteCount: Int64(db.getSpaceSaved()))) saved")
-					.frame(maxWidth: .infinity)
+					.frame(maxWidth: .infinity, alignment: .leading)
 				HStack {
 					Image(systemName: "medal.star.fill")
 					Text("\(db.calcSwipeScore().formatted()) SwipeScore").font(.custom("LoosExtended-Medium", size: 18))
-						.frame(maxWidth: .infinity)
+						.frame(maxWidth: .infinity, alignment: .leading)
 				}
 				
 				
