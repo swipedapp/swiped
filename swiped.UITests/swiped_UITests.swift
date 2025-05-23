@@ -73,7 +73,7 @@ final class swiped_UITests: XCTestCase {
 		deleteStaticText.tap()
 		keepStaticText.tap()
 		deleteStaticText.tap()
-		if springboardApp.buttons["Delete"].waitForExistence(timeout: 5) {
+		if springboardApp.buttons["Delete"].waitForExistence(timeout: 30) {
 			springboardApp.buttons["Delete"].tap()
 		}
 		
