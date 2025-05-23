@@ -354,7 +354,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			
 		case .right:
 			choice = .keep
-			toDelete.removeAll(where: { $0.id == card.id })
+			toDelete.removeAll(where: { $0.photo?.id == card.photo?.id })
 			
 		case .up:
 			choice = .skip
