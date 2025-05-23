@@ -78,7 +78,11 @@ final class swiped_UITests: XCTestCase {
 		
 
 		takeScreenshot(of: app, named: "Summary")
-		
+		let elementsQuery = app.otherElements
+		let element = elementsQuery/*@START_MENU_TOKEN@*/.containing(.staticText, identifier: "SWIPE DOWN TO DISMISS").firstMatch/*[[".element(boundBy: 40)",".containing(.staticText, identifier: \"VERSION 1.1.1 (1)\").firstMatch",".containing(.staticText, identifier: \"SWIPED.\").firstMatch",".containing(.staticText, identifier: \"SWIPE DOWN TO DISMISS\").firstMatch"],[[[-1,3],[-1,2],[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+		element.tap()
+		takeScreenshot(of: app, named: "Settings")
+		element.swipeDown()
 
 		app.terminate()
 
