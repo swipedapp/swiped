@@ -1,15 +1,6 @@
 {
-  "originHash" : "988f3d65251cb54f9f04ef2e316a28c6af2633e1ef9b83b16e76e54054e979da",
+  "originHash" : "d9cdf14ca8ed8fe61a448476183638d079cc1f6ed8ebcc1dd356244b0d516d42",
   "pins" : [
-    {
-      "identity" : "shuffle",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mac-gallagher/Shuffle",
-      "state" : {
-        "branch" : "master",
-        "revision" : "df246b9cd6b8b5e021b23c80706b4a4571785c1b"
-      }
-    },
     {
       "identity" : "sqlite.swift",
       "kind" : "remoteSourceControl",

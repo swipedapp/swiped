@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Shuffle
+import reShuffled
 import QuickLook
 import StoreKit
 import AVKit
