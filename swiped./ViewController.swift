@@ -379,6 +379,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		}
 		
 		updateCurrentItem()
+		
+		print("to delete is now \(toDelete.map { $0.id })")
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
