@@ -169,11 +169,7 @@ class ViewController: UIViewController {
 	}
 
 	private func fetchAlert() {
-		DispatchQueue.main.async {
-			self.showUnsupportedMessage()
-		}
-
-		let url = URL(string: "https://swiped.pics/beta/conf.json")!
+		let url = URL(string: "https://swiped.pics/prod/conf.json")!
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
 			if let error = error {
 				print("Error: \(error.localizedDescription)")
@@ -200,6 +196,12 @@ class ViewController: UIViewController {
 			}
 
 			DispatchQueue.main.async {
+				if let minimumiOSVersion = json.minimumiOSVersion,
+					 UIDevice.current.systemVersion.compare(minimumiOSVersion, options: .numeric) != .orderedDescending {
+					self.showUnsupportedMessage()
+					return
+				}
+
 				if let appliesToVersion = json.appliesToVersion,
 					 self.version.compare(appliesToVersion, options: .numeric) != .orderedDescending {
 					if let buildNumber = Int(self.build),
