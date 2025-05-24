@@ -143,7 +143,8 @@ class ViewController: UIViewController {
 		batchesLoaded += 1
 		
 		var newCards = [PhotoCard]()
-		for _ in 0..<3  {
+		/// Defines number of cards to show. CSN
+		for _ in 0..<20  {
 			newCards.append(PhotoCard())
 		}
 		

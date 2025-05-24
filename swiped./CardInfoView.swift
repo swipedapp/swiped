@@ -63,9 +63,9 @@ struct CardInfoView: View {
 		case .audio:
 			icon = "audio"
 		case .unknown:
-			icon = "questionmark.circle"
+			icon = "camera.metering.unknown"
 		@unknown default:
-			icon = "questionmark.circle"
+			icon = "camera.metering.unknown"
 		}
 		
 		
@@ -215,6 +215,8 @@ struct CardInfoView: View {
 			return AnyView(HStack(alignment: .center, spacing: 8) {
 				Image(systemName: icon)
 					.frame(width: 20, height: 20, alignment: .center)
+				
+				/// this looks ugly, if theres a way to fix this with a switch statement, lmk
 				if asset.mediaSubtypes.contains(.photoScreenshot) {
 					Image(systemName: "camera.viewfinder")
 						.accessibilityLabel("Screenshot")
