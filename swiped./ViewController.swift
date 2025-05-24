@@ -14,8 +14,20 @@ import SwiftUI
 import os
 import SwiftData
 
+// add this class for managing the sheet
+class SheetManager: ObservableObject {
+	@Published var showImportantInfo = false
+	
+	func triggerImportantInfo() {
+		showImportantInfo = true
+	}
+}
+
 class ViewController: UIViewController {
 	@State private var unsupportedios = true
+	// add the sheet manager
+	private let sheetManager = SheetManager()
+	
 	var version: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 	}
@@ -23,22 +35,22 @@ class ViewController: UIViewController {
 	var build: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
 	}
-
+	
 	var modelContext: ModelContext! {
 		didSet {
 			db = DatabaseController(modelContainer: modelContext.container)
 		}
 	}
-
+	
 	private var db: DatabaseController!
-
+	
 	private let cardStack = SwipeCardStack()
 	private let buttonStackView = ButtonStackView()
 	private var infoView: CardInfoView!
 	private var infoHostingController: UIHostingController<AnyView>!
 	private var behindView: BehindView!
 	private var behindViewHostingController: UIHostingController<AnyView>!
-
+	
 	private let photosController = PhotosController()
 	private var cards = [PhotoCard]()
 	private var toDelete = [PhotoCard]()
@@ -48,15 +60,14 @@ class ViewController: UIViewController {
 	private let cardInfo = CardInfo()
 	
 	private var previewItem: URL?
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
+		
 		photosController.db = db
-
-		#if !INTERNAL
+		
+#if !INTERNAL
 		fetchAlert()
-		#endif
+#endif
 		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
@@ -72,9 +83,9 @@ class ViewController: UIViewController {
 		layoutInfoView()
 		layoutCardStackView()
 		
-			
+		
 		loadBatch()
-			
+		
 		Task {
 			//await ServerController.shared.doRegister()
 			_ = createRepeatingTask(every: 30.0) {
@@ -115,9 +126,7 @@ class ViewController: UIViewController {
 	
 	private func layoutInfoView() {
 		infoHostingController = UIHostingController(rootView: AnyView(
-			infoView
-				.environmentObject(cardInfo)
-				.modelContext(modelContext)
+			InfoViewWrapper(cardInfo: cardInfo, sheetManager: sheetManager, modelContext: modelContext)
 		))
 		infoHostingController.willMove(toParent: self)
 		view.addSubview(infoHostingController.view)
@@ -272,7 +281,7 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 			present(alert, animated: true)
 			
 		case .noPhotosLeft:
-			let alert = UIAlertController(title: "You’ve swiped all your photos", message: "Come back later when you need to clean up!", preferredStyle: .alert)
+			let alert = UIAlertController(title: "You've swiped all your photos", message: "Come back later when you need to clean up!", preferredStyle: .alert)
 			alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
 			present(alert, animated: true)
 			
@@ -345,14 +354,14 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		Task {
 			await ServerController.shared.doSync(db: db)
 		}
-
+		
 		DispatchQueue.main.async {
 			UIView.animate(withDuration: 0.3) {
 				self.cardStack.alpha = 0
 				self.buttonStackView.alpha = 0
 				self.behindViewHostingController.view.alpha = 1
 			}
-
+			
 			self.cardInfo.setCard(nil, summary: true)
 		}
 	}
@@ -389,11 +398,11 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		
 		photo.choice = choice
 		photo.swipeDate = Date()
-
+		
 		Task {
 			await self.db.addPhoto(photo: photo)
 		}
-
+		
 		if direction == .up {
 			if let image = card.fullImage ?? card.thumbnail {
 				let shareSheet = UIActivityViewController(activityItems: [image], applicationActivities: [])
@@ -445,15 +454,16 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			cardStack.swipe(.right, animated: true)
 		}
 	}
+	
+	// updated this function to use the sheet manager
 	func showUnsupportedMessage() {
-		Color.purple.sheet(isPresented: $unsupportedios, content: {
-			ImportantInfoView()
-		})
+		sheetManager.triggerImportantInfo()
 	}
+	
 	func didTapContinue() {
 		cardStack.isUserInteractionEnabled = true
 		buttonStackView.isUserInteractionEnabled = true
-
+		
 		UIView.animate(withDuration: 0.3) {
 			//self.cardStack.alpha = 1
 			//self.buttonStackView.alpha = 1
@@ -461,7 +471,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		} completion: { _ in
 			self.loadBatch()
 		}
-
+		
 		if batchesLoaded == 4 && !UserDefaults.standard.bool(forKey: "requestedReview") {
 			UserDefaults.standard.set(true, forKey: "requestedReview")
 			AppStore.requestReview(in: self.view.window!.windowScene!)
@@ -500,3 +510,19 @@ extension ViewController: QLPreviewControllerDataSource, QLPreviewControllerDele
 	}
 }
 
+// swiftui wrapper to handle the sheet binding properly
+struct InfoViewWrapper: View {
+	let cardInfo: CardInfo
+	@ObservedObject var sheetManager: SheetManager
+	let modelContext: ModelContext
+	
+	var body: some View {
+		CardInfoView()
+			.environmentObject(cardInfo)
+			.modelContext(modelContext)
+			.sheet(isPresented: $sheetManager.showImportantInfo) {
+				ImportantInfoView()
+					.environmentObject(sheetManager)
+			}
+	}
+}
