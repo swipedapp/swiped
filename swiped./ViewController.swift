@@ -32,11 +32,8 @@ class ViewController: UIViewController {
 	private var db: DatabaseController!
 
 	private let cardStack = SwipeCardStack()
-	private let buttonStackView = ButtonStackView()
-	private var infoView: CardInfoView!
-	private var infoHostingController: UIHostingController<AnyView>!
-	private var behindView: BehindView!
-	private var behindViewHostingController: UIHostingController<AnyView>!
+	private var mainView: MainView!
+	private var mainHostingController: UIHostingController<AnyView>!
 
 	private let photosController = PhotosController()
 	private var cards = [PhotoCard]()
@@ -59,16 +56,12 @@ class ViewController: UIViewController {
 		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
-		buttonStackView.delegate = self
-		infoView = CardInfoView()
-		behindView = BehindView()
-		behindView.delegate = self
+		mainView = MainView()
+		mainView.delegate = self
 		photosController.delegate = self
 		
 		configureNavigationBar()
-		layoutBehindView()
-		layoutButtonStackView()
-		layoutInfoView()
+		layoutMainView()
 		layoutCardStackView()
 		
 		loadBatch()
@@ -93,49 +86,28 @@ class ViewController: UIViewController {
 		navigationController?.setNavigationBarHidden(true, animated: false)
 	}
 	
-	private func layoutButtonStackView() {
-		view.addSubview(buttonStackView)
-		buttonStackView.anchor(left: view.safeAreaLayoutGuide.leftAnchor,
-													 bottom: view.safeAreaLayoutGuide.bottomAnchor,
-													 right: view.safeAreaLayoutGuide.rightAnchor,
-													 paddingLeft: 24,
-													 paddingBottom: 12,
-													 paddingRight: 24)
-	}
-	
 	private func layoutCardStackView() {
 		view.addSubview(cardStack)
-		cardStack.anchor(top: infoHostingController.view.bottomAnchor,
+		cardStack.anchor(top: view.safeAreaLayoutGuide.topAnchor,
 										 left: view.safeAreaLayoutGuide.leftAnchor,
-										 bottom: buttonStackView.topAnchor,
-										 right: view.safeAreaLayoutGuide.rightAnchor)
+										 bottom: view.safeAreaLayoutGuide.bottomAnchor,
+										 right: view.safeAreaLayoutGuide.rightAnchor,
+										 paddingTop: 76,
+										 paddingBottom: 56)
 	}
 	
-	private func layoutInfoView() {
-		infoHostingController = UIHostingController(rootView: AnyView(
-			infoView
+	private func layoutMainView() {
+		mainHostingController = UIHostingController(rootView: AnyView(
+			mainView
 				.environmentObject(cardInfo)
 				.modelContext(modelContext)
 		))
-		infoHostingController.willMove(toParent: self)
-		view.addSubview(infoHostingController.view)
-		infoHostingController.view.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+		mainHostingController.willMove(toParent: self)
+		view.addSubview(mainHostingController.view)
+		mainHostingController.view.anchor(top: view.safeAreaLayoutGuide.topAnchor,
 																			left: view.safeAreaLayoutGuide.leftAnchor,
+																			bottom: view.safeAreaLayoutGuide.bottomAnchor,
 																			right: view.safeAreaLayoutGuide.rightAnchor)
-	}
-	
-	private func layoutBehindView() {
-		behindViewHostingController = UIHostingController(rootView: AnyView(
-			behindView
-				.environmentObject(cardInfo)
-				.modelContext(modelContext)
-		))
-		behindViewHostingController.willMove(toParent: self)
-		view.addSubview(behindViewHostingController.view)
-		behindViewHostingController.view.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-																						left: view.safeAreaLayoutGuide.leftAnchor,
-																						bottom: view.safeAreaLayoutGuide.bottomAnchor,
-																						right: view.safeAreaLayoutGuide.rightAnchor)
 	}
 	
 	private func loadBatch() {
@@ -158,7 +130,6 @@ class ViewController: UIViewController {
 			if self.loadingBatch {
 				UIView.animate(withDuration: 0.3) {
 					self.cardStack.alpha = 1
-					self.buttonStackView.alpha = 1
 				}
 				self.loadingBatch = false
 				self.updateCurrentItem()
@@ -299,8 +270,8 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 		}
 	}
 }
-extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, ButtonStackView.Delegate, BehindView.Delegate {
-	
+extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, MainView.Delegate, BehindView.Delegate {
+
 	func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
 		let card = SwipeCard()
 		card.footerHeight = 80
@@ -337,7 +308,6 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		}
 		
 		cardStack.isUserInteractionEnabled = false
-		buttonStackView.isUserInteractionEnabled = false
 		
 		Task {
 			await ServerController.shared.doSync(db: db)
@@ -346,8 +316,6 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		DispatchQueue.main.async {
 			UIView.animate(withDuration: 0.3) {
 				self.cardStack.alpha = 0
-				self.buttonStackView.alpha = 0
-				self.behindViewHostingController.view.alpha = 1
 			}
 
 			self.cardInfo.setCard(nil, summary: true)
@@ -432,7 +400,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		}
 	}
 	
-	func didTapButton(action: ButtonStackView.Action) {
+	func didTapButton(action: MainView.Action) {
 		switch action {
 		case .undo:
 			cardStack.undoLastSwipe(animated: true)
@@ -445,12 +413,10 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 	
 	func didTapContinue() {
 		cardStack.isUserInteractionEnabled = true
-		buttonStackView.isUserInteractionEnabled = true
 
 		UIView.animate(withDuration: 0.3) {
 			//self.cardStack.alpha = 1
 			//self.buttonStackView.alpha = 1
-			self.behindViewHostingController.view.alpha = 0
 		} completion: { _ in
 			self.loadBatch()
 		}

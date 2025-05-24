@@ -295,6 +295,7 @@ struct CardInfoView: View {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
 				title
 					.font(.custom("LoosExtended-Bold", size: 24))
+					.lineLimit(1)
 					.onTapGesture {
 						timestamps = !timestamps
 					}
@@ -315,10 +316,11 @@ struct CardInfoView: View {
 			
 			subhead
 				.font(.custom("LoosExtended-Regular", size: 18))
+				.lineLimit(1)
 				.contentTransition(.numericText())
 		}
 		.padding(.horizontal, 20)
-		.padding(.vertical, 18)
+		.frame(height: 77)
 		.foregroundColor(.primary)
 		.sheet(isPresented: $showSettings) {
 			SettingsView()
