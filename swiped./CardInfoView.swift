@@ -98,14 +98,7 @@ struct CardInfoView: View {
 		if asset.burstIdentifier != nil {
 			icon = "square.stack.3d.down.forward"
 		}
-		let resources = PHAssetResource.assetResources(for: asset)
-		if let resource = resources.first {
-			let fileName = resource.originalFilename
-			
-			if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
-				icon = "square.and.arrow.down"
-			}
-		}
+		
 		return icon
 	}
 	
@@ -180,8 +173,6 @@ struct CardInfoView: View {
 			
 			if fileName.starts(with: "telegram-") {
 				types.append("Saved from Telegram")
-			} else if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
-				types.append("Imported")
 			}
 		}
 		
@@ -236,6 +227,16 @@ struct CardInfoView: View {
 					Image(systemName: "pencil")
 						.accessibilityLabel("Edited")
 						.frame(width: 20, height: 20, alignment: .center)
+				}
+				let resources = PHAssetResource.assetResources(for: asset)
+				if let resource = resources.first {
+					let fileName = resource.originalFilename
+					
+					if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
+						Image(systemName: "square.and.arrow.down")
+							.accessibilityLabel("Edited")
+							.frame(width: 20, height: 20, alignment: .center)
+					}
 				}
 				
 				Text(type)
