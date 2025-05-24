@@ -9,8 +9,25 @@ import SwiftUI
 
 struct ImportantInfoView: View {
 	var body: some View {
+			
+					Section(content: {}, header: {
+						ZStack(alignment: .top) {
+							HStack {
+								Image(systemName: "chevron.down")
+								Text("Swipe down to dismiss")
+								Image(systemName: "chevron.down")
+							}
+							.font(.custom("LoosExtended-Regular", size: 14))
+						}
+					})
+				
+			
+		
+						
 		NavigationView {
+			
 			VStack {
+				
 				Image(systemName: "exclamationmark.shield.fill")
 					.font(.system(size: 80))
 					.foregroundColor(.primary)
