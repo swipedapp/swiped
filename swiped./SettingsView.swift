@@ -106,8 +106,11 @@ struct SettingsView: View {
 				.background(Color(uiColor: .systemBackground))
 				.alert("You will lose all statistics you have collected so far. Are you sure you want to do this?", isPresented: $showResetAlert, actions: {
 					Button("Continue", role: .destructive) {
-						let db = DatabaseController(modelContainer: modelContext.container)
-						self.swipeDownCount = 0
+						Task {
+							let db = DatabaseController(modelContainer: modelContext.container)
+							await db.reset()
+							self.swipeDownCount = 0
+						}
 					}
 					Button("Cancel", role: .cancel) {}
 				})

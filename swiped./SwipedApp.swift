@@ -45,7 +45,7 @@ struct SwipedApp: App {
 			ContentView()
 				.onAppear {
 					Task {
-						self.needsMigration = db.needsMigration()
+						self.needsMigration = await db.needsMigration()
 					}
 				}
 				.sheet(isPresented: $needsMigration, content: {

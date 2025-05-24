@@ -174,7 +174,10 @@ class PhotosController {
 				for card in cards {
 					if let photo = card.photo {
 						photo.choice = .skip
-						self.db.addPhoto(photo: photo)
+
+						Task {
+							await self.db.addPhoto(photo: photo)
+						}
 					}
 				}
 			}
