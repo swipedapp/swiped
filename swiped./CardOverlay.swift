@@ -5,7 +5,7 @@
 //  Created by tobykohlhagen on 2/5/2025.
 //
 
-import Shuffle
+import reShuffled
 import UIKit
 
 class CardOverlay: UIView {

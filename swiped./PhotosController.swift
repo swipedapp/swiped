@@ -89,7 +89,6 @@ class PhotosController {
 				if loops > 100 {
 					throw PhotoError.noPhotosLeft
 				}
-
 				let randomIndex = Int.random(in: 0..<fetchResult.count)
 				asset = fetchResult.object(at: randomIndex) as PHAsset
 				

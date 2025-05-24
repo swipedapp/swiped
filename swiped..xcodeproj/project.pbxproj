@@ -7,12 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		32D99B6B2DC45A22003285A5 /* Shuffle in Frameworks */ = {isa = PBXBuildFile; productRef = 32D99B6A2DC45A22003285A5 /* Shuffle */; };
+		329749F72DE05753008D7C56 /* reShuffled in Frameworks */ = {isa = PBXBuildFile; productRef = 329749F62DE05753008D7C56 /* reShuffled */; };
 		32D99B882DC48324003285A5 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 32D99B872DC48324003285A5 /* SQLite */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		32F6BF8D2DE01AEC00DE28D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3269A8A82DC4593200215B83 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3269A8AF2DC4593200215B83;
+			remoteInfo = swiped.;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		3269A8B02DC4593200215B83 /* swiped..app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiped..app; sourceTree = BUILT_PRODUCTS_DIR; };
+		32F6BF872DE01AEB00DE28D5 /* swiped.UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiped.UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -34,6 +45,11 @@
 			path = swiped.;
 			sourceTree = "<group>";
 		};
+		32F6BF882DE01AEC00DE28D5 /* swiped.UITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = swiped.UITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,8 +57,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				329749F72DE05753008D7C56 /* reShuffled in Frameworks */,
 				32D99B882DC48324003285A5 /* SQLite in Frameworks */,
-				32D99B6B2DC45A22003285A5 /* Shuffle in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		32F6BF842DE01AEB00DE28D5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				3269A8B22DC4593200215B83 /* swiped. */,
+				32F6BF882DE01AEC00DE28D5 /* swiped.UITests */,
 				3269A8B12DC4593200215B83 /* Products */,
 			);
 			indentWidth = 2;
@@ -64,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				3269A8B02DC4593200215B83 /* swiped..app */,
+				32F6BF872DE01AEB00DE28D5 /* swiped.UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,12 +114,35 @@
 			);
 			name = swiped.;
 			packageProductDependencies = (
-				32D99B6A2DC45A22003285A5 /* Shuffle */,
 				32D99B872DC48324003285A5 /* SQLite */,
+				329749F62DE05753008D7C56 /* reShuffled */,
 			);
 			productName = swiped.;
 			productReference = 3269A8B02DC4593200215B83 /* swiped..app */;
 			productType = "com.apple.product-type.application";
+		};
+		32F6BF862DE01AEB00DE28D5 /* swiped.UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 32F6BF8F2DE01AEC00DE28D5 /* Build configuration list for PBXNativeTarget "swiped.UITests" */;
+			buildPhases = (
+				32F6BF832DE01AEB00DE28D5 /* Sources */,
+				32F6BF842DE01AEB00DE28D5 /* Frameworks */,
+				32F6BF852DE01AEB00DE28D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				32F6BF8E2DE01AEC00DE28D5 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				32F6BF882DE01AEC00DE28D5 /* swiped.UITests */,
+			);
+			name = swiped.UITests;
+			packageProductDependencies = (
+			);
+			productName = swiped.UITests;
+			productReference = 32F6BF872DE01AEB00DE28D5 /* swiped.UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -109,6 +157,10 @@
 					3269A8AF2DC4593200215B83 = {
 						CreatedOnToolsVersion = 16.3;
 					};
+					32F6BF862DE01AEB00DE28D5 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 3269A8AF2DC4593200215B83;
+					};
 				};
 			};
 			buildConfigurationList = 3269A8AB2DC4593200215B83 /* Build configuration list for PBXProject "swiped." */;
@@ -121,8 +173,8 @@
 			mainGroup = 3269A8A72DC4593200215B83;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				32D99B692DC45A22003285A5 /* XCRemoteSwiftPackageReference "Shuffle" */,
 				32D99B862DC48324003285A5 /* XCRemoteSwiftPackageReference "SQLite" */,
+				329749F52DE05753008D7C56 /* XCLocalSwiftPackageReference "../reShuffled" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3269A8B12DC4593200215B83 /* Products */;
@@ -130,12 +182,20 @@
 			projectRoot = "";
 			targets = (
 				3269A8AF2DC4593200215B83 /* swiped. */,
+				32F6BF862DE01AEB00DE28D5 /* swiped.UITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3269A8AE2DC4593200215B83 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		32F6BF852DE01AEB00DE28D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -173,7 +233,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		32F6BF832DE01AEB00DE28D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		32F6BF8E2DE01AEC00DE28D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3269A8AF2DC4593200215B83 /* swiped. */;
+			targetProxy = 32F6BF8D2DE01AEC00DE28D5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		3269A8C42DC4593400215B83 /* Debug */ = {
@@ -479,6 +554,64 @@
 			};
 			name = Internal;
 		};
+		32F6BF902DE01AEC00DE28D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = LDAP5Z3HV7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ma.swiped-UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = swiped.;
+			};
+			name = Debug;
+		};
+		32F6BF912DE01AEC00DE28D5 /* Internal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ma.swiped-UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = swiped.;
+			};
+			name = Internal;
+		};
+		32F6BF922DE01AEC00DE28D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LDAP5Z3HV7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ma.swiped-UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = swiped.;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -502,17 +635,26 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		32F6BF8F2DE01AEC00DE28D5 /* Build configuration list for PBXNativeTarget "swiped.UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				32F6BF902DE01AEC00DE28D5 /* Debug */,
+				32F6BF912DE01AEC00DE28D5 /* Internal */,
+				32F6BF922DE01AEC00DE28D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		32D99B692DC45A22003285A5 /* XCRemoteSwiftPackageReference "Shuffle" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mac-gallagher/Shuffle";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		329749F52DE05753008D7C56 /* XCLocalSwiftPackageReference "../reShuffled" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../reShuffled;
 		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
 		32D99B862DC48324003285A5 /* XCRemoteSwiftPackageReference "SQLite" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
@@ -524,10 +666,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		32D99B6A2DC45A22003285A5 /* Shuffle */ = {
+		329749F62DE05753008D7C56 /* reShuffled */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 32D99B692DC45A22003285A5 /* XCRemoteSwiftPackageReference "Shuffle" */;
-			productName = Shuffle;
+			productName = reShuffled;
 		};
 		32D99B872DC48324003285A5 /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;

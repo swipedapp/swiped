@@ -51,23 +51,27 @@ struct BehindView: SwiftUI.View {
 		let db = DatabaseController()
 		db.modelContext = modelContext
 
-		return VStack(alignment: .leading, spacing: 10) {
+		return VStack(alignment: .center, spacing: 10) {
 			SummaryGridView(totalKept: db.getTotalKept(), totalDeleted: db.getTotalDeleted(), summary: cardInfo.summary)
 
 			VStack(alignment: .leading, spacing: 10) {
 		
 				Text("\(db.getTotalKept().formatted()) kept")
+					.frame(maxWidth: .infinity, alignment: .leading)
 				Text("\(db.getTotalDeleted().formatted()) deleted")
+					.frame(maxWidth: .infinity, alignment: .leading)
 				Text("\(Self.fileSizeFormatter.string(fromByteCount: Int64(db.getSpaceSaved()))) saved")
+					.frame(maxWidth: .infinity, alignment: .leading)
 				HStack {
 					Image(systemName: "medal.star.fill")
 					Text("\(db.calcSwipeScore().formatted()) SwipeScore").font(.custom("LoosExtended-Medium", size: 18))
+						.frame(maxWidth: .infinity, alignment: .leading)
 				}
 				
 				
 			}
 				.font(.custom("LoosExtended-Bold", size: 18))
-				.multilineTextAlignment(.center)
+				.multilineTextAlignment(.leading)
 				.padding(.vertical, 20)
 
 			Button {
@@ -81,7 +85,10 @@ struct BehindView: SwiftUI.View {
 			.background(Color("brandGreen").cornerRadius(8))
 			.foregroundColor(.black)
 		}
-			.padding(20)
+			.frame(maxWidth: 450)
+			.padding(.horizontal, 20)
+			.padding(.top, 130)
+			.padding(.bottom, 40)
 			.opacity(cardInfo.summary ? 1 : 0)
 			.animation(.easeOut(duration: cardInfo.summary ? 0.5 : 0), value: cardInfo.summary)
 			.contentTransition(.numericText())

@@ -108,7 +108,7 @@ struct CardInfoView: View {
 		}
 		
 		var types = [String]()
-		
+		types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(photo.size)))
 		if asset.mediaSubtypes.contains(.photoScreenshot) {
 			types.append("Screenshot")
 		}
@@ -177,7 +177,7 @@ struct CardInfoView: View {
 			}
 		}
 		
-		types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(photo.size)))
+		
 		
 		return types.joined(separator: ", ")
 	}
@@ -288,6 +288,7 @@ struct CardInfoView: View {
 						.font(.custom("LoosExtended-Bold", size: 20))
 				})
 				.frame(width: 40, height: 40, alignment: .center)
+				.accessibilityIdentifier("settingsButton")
 			}
 			
 			subhead
