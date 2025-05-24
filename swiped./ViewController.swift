@@ -19,7 +19,9 @@ class SheetManager: ObservableObject {
 	@Published var showImportantInfo = false
 	
 	func triggerImportantInfo() {
+		print("triggerImportantInfo called")
 		showImportantInfo = true
+		print("showImportantInfo set to: \(showImportantInfo)")
 	}
 }
 
@@ -185,9 +187,18 @@ class ViewController: UIViewController {
 	}
 	
 	private func fetchAlert() {
+		// show the sheet immediately for testing
+		DispatchQueue.main.async {
+			self.showUnsupportedMessage()
+		}
+		
+#if RELEASE || DEBUG
 		let url = URL(string: "https://swiped.pics/beta/conf.json")!
+#else
+		let url = URL(string: "https://swiped.pics")!
+#endif
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
-			
+			// self.showUnsupportedMessage() // moved this up
 			if let error = error {
 				os_log(.error, "⚠️ \(error.localizedDescription)")
 				return
@@ -213,7 +224,6 @@ class ViewController: UIViewController {
 			}
 			
 			DispatchQueue.main.async {
-				self.showUnsupportedMessage()
 				if let appliesToVersion = json.appliesToVersion,
 					 self.version.compare(appliesToVersion, options: .numeric) != .orderedDescending {
 					if let buildNumber = Int(self.build),
@@ -454,7 +464,9 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 	
 	// updated this function to use the sheet manager
 	func showUnsupportedMessage() {
+		print("showUnsupportedMessage called")
 		sheetManager.triggerImportantInfo()
+		print("sheetManager.showImportantInfo is now: \(sheetManager.showImportantInfo)")
 	}
 	
 	func didTapContinue() {
