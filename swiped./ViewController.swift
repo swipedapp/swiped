@@ -323,10 +323,12 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		
 		photosController.delete(cards: toDelete) { success in
 			if !success {
-				for card in self.toDelete {
-					if let photo = card.photo {
-						photo.choice = .skip
-						self.db.addPhoto(photo: photo)
+				Task {
+					for card in self.toDelete {
+						if let photo = card.photo {
+							photo.choice = .skip
+							await self.db.addPhoto(photo: photo)
+						}
 					}
 				}
 			}
