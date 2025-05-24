@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		329749F72DE05753008D7C56 /* reShuffled in Frameworks */ = {isa = PBXBuildFile; productRef = 329749F62DE05753008D7C56 /* reShuffled */; };
 		32D99B882DC48324003285A5 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 32D99B872DC48324003285A5 /* SQLite */; };
+		32E31D9C2DE17AAC00C76132 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32E31D9A2DE17A9F00C76132 /* CloudKit.framework */; };
+		32E31D9D2DE17AAC00C76132 /* CloudKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 32E31D9A2DE17A9F00C76132 /* CloudKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -21,8 +23,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		32E31D9E2DE17AAC00C76132 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				32E31D9D2DE17AAC00C76132 /* CloudKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		3269A8B02DC4593200215B83 /* swiped..app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiped..app; sourceTree = BUILT_PRODUCTS_DIR; };
+		32E31D9A2DE17A9F00C76132 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		32F6BF872DE01AEB00DE28D5 /* swiped.UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiped.UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -57,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32E31D9C2DE17AAC00C76132 /* CloudKit.framework in Frameworks */,
 				329749F72DE05753008D7C56 /* reShuffled in Frameworks */,
 				32D99B882DC48324003285A5 /* SQLite in Frameworks */,
 			);
@@ -77,6 +95,7 @@
 			children = (
 				3269A8B22DC4593200215B83 /* swiped. */,
 				32F6BF882DE01AEC00DE28D5 /* swiped.UITests */,
+				32E31D992DE17A9F00C76132 /* Frameworks */,
 				3269A8B12DC4593200215B83 /* Products */,
 			);
 			indentWidth = 2;
@@ -93,6 +112,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		32E31D992DE17A9F00C76132 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				32E31D9A2DE17A9F00C76132 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -104,6 +131,7 @@
 				3269A8AD2DC4593200215B83 /* Frameworks */,
 				3269A8AE2DC4593200215B83 /* Resources */,
 				328D40F22DD1BF5400D1334D /* Run Script */,
+				32E31D9E2DE17AAC00C76132 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
