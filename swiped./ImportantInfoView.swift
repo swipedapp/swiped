@@ -28,7 +28,7 @@ struct ImportantInfoView: View {
 					.foregroundColor(.primary)
 					.padding([.bottom, .top], 20)
 				Spacer()
-				Text("You're on iOS 17.0")
+				Text("You're on iOS \(UIDevice.current.systemVersion)")
 				//.font(.custom("LoosExtended-Bold", size: 23))
 					.font(.custom("LoosExtended-Bold", size: 23))
 					.padding(.bottom, 20)
