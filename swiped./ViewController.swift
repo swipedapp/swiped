@@ -18,7 +18,7 @@ import os
 class SheetManager: ObservableObject {
 	@Published var showImportantInfo = false
 
-	func triggerImportantInfo() {
+	func triggerImportantInfo(json: SettingsJson) {
 		showImportantInfo = true
 	}
 }
@@ -169,7 +169,7 @@ class ViewController: UIViewController {
 	}
 
 	private func fetchAlert() {
-		let url = URL(string: "https://swiped.pics/prod/conf.json")!
+		let url = URL(string: "https://swiped.pics/beta/conf.json")!
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
 			if let error = error {
 				print("Error: \(error.localizedDescription)")
@@ -198,7 +198,7 @@ class ViewController: UIViewController {
 			DispatchQueue.main.async {
 				if let minimumiOSVersion = json.minimumiOSVersion,
 					 UIDevice.current.systemVersion.compare(minimumiOSVersion, options: .numeric) != .orderedDescending {
-					self.showUnsupportedMessage()
+					self.showUnsupportedMessage(json: json)
 					return
 				}
 
@@ -438,8 +438,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 	}
 
 	// updated this function to use the sheet manager
-	func showUnsupportedMessage() {
-		sheetManager.triggerImportantInfo()
+	func showUnsupportedMessage(json: SettingsJson) {
+		sheetManager.triggerImportantInfo(json: json)
 	}
 
 	func didTapContinue() {
