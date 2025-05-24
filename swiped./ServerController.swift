@@ -70,8 +70,6 @@ class ServerController: NSObject, ObservableObject {
 	
 	static let server = URL(string: "https://swiped.pics/")!
 
-	public var modelContainer: ModelContainer?
-
 	@Published var syncFailed = true
 	
 	private var syncPublisher: AnyCancellable?
@@ -152,13 +150,8 @@ class ServerController: NSObject, ObservableObject {
 		}
 	}
 	
-	func doSync() async {
+	func doSync(db: DatabaseController) async {
 		if (!sync) {
-			guard let modelContainer = modelContainer else {
-				return
-			}
-
-			let db = DatabaseController(modelContainer: modelContainer)
 			let receipt = await getReceipt()
 			let data = await SyncRequest(receipt: receipt,
 																	 totalKept: db.getTotalKept(),

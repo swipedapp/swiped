@@ -340,7 +340,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		buttonStackView.isUserInteractionEnabled = false
 		
 		Task {
-			await ServerController.shared.doSync()
+			await ServerController.shared.doSync(db: db)
 		}
 
 		DispatchQueue.main.async {
@@ -386,7 +386,10 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		
 		photo.choice = choice
 		photo.swipeDate = Date()
-		db.addPhoto(photo: photo)
+
+		Task {
+			await self.db.addPhoto(photo: photo)
+		}
 
 		if direction == .up {
 			if let image = card.fullImage ?? card.thumbnail {
