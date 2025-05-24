@@ -64,7 +64,7 @@ class ViewController: UIViewController {
 		behindView = BehindView()
 		behindView.delegate = self
 		photosController.delegate = self
-		
+		ImportantInfoView()
 		configureNavigationBar()
 		layoutBehindView()
 		layoutButtonStackView()
