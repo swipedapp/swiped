@@ -53,7 +53,7 @@ class ViewController: UIViewController {
 		behindView = BehindView()
 		behindView.delegate = self
 		photosController.delegate = self
-		showUnsupportedMessage()
+		
 		configureNavigationBar()
 		layoutBehindView()
 		layoutButtonStackView()
@@ -167,6 +167,7 @@ class ViewController: UIViewController {
 		let url = URL(string: "https://swiped.pics")!
 #endif
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
+			self.showUnsupportedMessage()
 			if let error = error {
 				print("Error: \(error.localizedDescription)")
 				return
