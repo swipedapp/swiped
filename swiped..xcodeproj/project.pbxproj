@@ -10,7 +10,7 @@
 		329749F72DE05753008D7C56 /* reShuffled in Frameworks */ = {isa = PBXBuildFile; productRef = 329749F62DE05753008D7C56 /* reShuffled */; };
 		32D99B882DC48324003285A5 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 32D99B872DC48324003285A5 /* SQLite */; };
 		32E31D9C2DE17AAC00C76132 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32E31D9A2DE17A9F00C76132 /* CloudKit.framework */; };
-		32E31D9D2DE17AAC00C76132 /* CloudKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 32E31D9A2DE17A9F00C76132 /* CloudKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		32E31D9D2DE17AAC00C76132 /* CloudKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 32E31D9A2DE17A9F00C76132 /* CloudKit.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
