@@ -208,7 +208,8 @@ class ViewController: UIViewController {
 
 						let alert = UIAlertController(title: json.alertTitle, message: json.alertContents, preferredStyle: .alert)
 
-						if let buttonText = json.alertButtonText {
+						if json.isButtonEnabled,
+							 let buttonText = json.alertButtonText {
 							alert.addAction(UIAlertAction(title: buttonText, style: .default, handler: { _ in
 								if let buttonURL = json.alertButtonURL,
 									 let url = URL(string: buttonURL) {
