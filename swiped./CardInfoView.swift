@@ -52,6 +52,7 @@ struct CardInfoView: View {
 			return ""
 		}
 		
+		
 		var icon = ""
 		
 		switch asset.mediaType {
@@ -97,7 +98,14 @@ struct CardInfoView: View {
 		if asset.burstIdentifier != nil {
 			icon = "square.stack.3d.down.forward"
 		}
-		
+		let resources = PHAssetResource.assetResources(for: asset)
+		if let resource = resources.first {
+			let fileName = resource.originalFilename
+			
+			if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
+				icon = "square.and.arrow.down"
+			}
+		}
 		return icon
 	}
 	
@@ -116,7 +124,7 @@ struct CardInfoView: View {
 			types.append("HDR")
 		}
 		if asset.mediaSubtypes.contains(.photoLive) {
-			types.append("Live Photo")
+			types.append("Live")
 		}
 		if asset.mediaSubtypes.contains(.photoPanorama) {
 			types.append("Panorama")
