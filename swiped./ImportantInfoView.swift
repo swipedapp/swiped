@@ -30,7 +30,7 @@ struct ImportantInfoView: View {
 					.padding(.top, 17)
 				}
 
-				Image(systemName: json.hasDroppedSupport ? "xmark" : "exclamationmark.shield.fill")
+				Image(systemName: json.hasDroppedSupport ? "xmark.shield.fill" : "exclamationmark.shield.fill")
 					.font(.system(size: 80))
 					.foregroundColor(json.hasDroppedSupport ? .brandRed : .primary)
 					.padding([.bottom, .top], 20)
