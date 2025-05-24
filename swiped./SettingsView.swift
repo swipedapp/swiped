@@ -20,9 +20,9 @@ struct SettingsView: View {
 	var build: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
 	}
-	
-	
-	
+
+	@EnvironmentObject var sheetManager: SheetManager
+
 
 	
 	
@@ -81,6 +81,7 @@ struct SettingsView: View {
 					}.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
 					NavigationLink("Advanced") {
 						AdvancedView()
+							.environmentObject(sheetManager)
 					}
 					.font(.custom("LoosExtended-Regular", size: 16))
 					.listRowBackground(Color("listRowBackground"))
@@ -133,5 +134,6 @@ struct SettingsView: View {
 
 #Preview {
 	SettingsView()
+		.environmentObject(SheetManager())
 }
 

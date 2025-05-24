@@ -35,7 +35,9 @@ struct CardInfoView: View {
 	private let photosController = PhotosController()
 	
 	@EnvironmentObject var cardInfo: CardInfo
-	
+
+	@EnvironmentObject var sheetManager: SheetManager
+
 	@State var showSettings = false
 	
 	@AppStorage("timestamps")
@@ -293,6 +295,7 @@ struct CardInfoView: View {
 		.foregroundColor(.primary)
 		.sheet(isPresented: $showSettings) {
 			SettingsView()
+				.environmentObject(sheetManager)
 		}
 	}
 	

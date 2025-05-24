@@ -199,7 +199,8 @@ class ViewController: UIViewController {
 
 			DispatchQueue.main.async {
 				if let minimumiOSVersion = json.minimumiOSVersion,
-					 UIDevice.current.systemVersion.compare(minimumiOSVersion, options: .numeric) != .orderedDescending {
+					 UIDevice.current.systemVersion.compare(minimumiOSVersion, options: .numeric) == .orderedAscending,
+					 UserDefaults.standard.object(forKey: "supportAlertLastVersion") as? String != self.version {
 					self.showUnsupportedMessage(json: json)
 					return
 				}
@@ -502,6 +503,7 @@ struct InfoViewWrapper: View {
 	var body: some View {
 		CardInfoView()
 			.environmentObject(cardInfo)
+			.environmentObject(sheetManager)
 			.sheet(isPresented: $sheetManager.showImportantInfo) {
 				ImportantInfoView()
 					.environmentObject(sheetManager)
