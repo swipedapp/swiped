@@ -10,7 +10,8 @@ import SQLite
 
 class DatabaseMigrator {
 
-	private let db: Connection
+	private let db: Connection?
+	private let url = URL.documentsDirectory.appending(path: "swiped.sqlite3")
 
 	private let photos = Table("photos")
 
@@ -23,11 +24,14 @@ class DatabaseMigrator {
 
 	init() {
 		do {
-			let documents = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-			let path = documents.appendingPathComponent("swiped.sqlite3")
-			db = try Connection(path.path)
+			if !FileManager.default.fileExists(atPath: url.path) {
+				db = nil
+				return
+			}
 
-			try db.run(photos.create(ifNotExists: true) { t in
+			db = try Connection(url.path)
+
+			try db!.run(photos.create(ifNotExists: true) { t in
 				t.column(id, primaryKey: true)
 				t.column(type)
 				t.column(size)
@@ -41,10 +45,18 @@ class DatabaseMigrator {
 	}
 
 	func needsMigration() -> Bool {
+		guard let db = db else {
+			return false
+		}
+
 		return try! db.scalar(photos.count) > 0
 	}
 
 	func migrate(dbController: DatabaseController) async {
+		guard let db = db else {
+			return
+		}
+
 		let query = photos.select(*)
 
 		for row in try! db.prepare(query) {
