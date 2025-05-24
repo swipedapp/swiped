@@ -68,12 +68,7 @@ struct CardInfoView: View {
 			icon = "questionmark.circle"
 		}
 		
-		if asset.mediaSubtypes.contains(.photoScreenshot) {
-			icon = "camera.viewfinder"
-		}
-		if asset.mediaSubtypes.contains(.photoLive) {
-			icon = "livephoto"
-		}
+		
 		if asset.mediaSubtypes.contains(.photoDepthEffect) {
 			icon = "person.and.background.dotted"
 		}
@@ -110,14 +105,8 @@ struct CardInfoView: View {
 		
 		var types = [String]()
 		types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(photo.size)))
-		if asset.mediaSubtypes.contains(.photoScreenshot) {
-			types.append("Screenshot")
-		}
 		if asset.mediaSubtypes.contains(.photoHDR) {
 			types.append("HDR")
-		}
-		if asset.mediaSubtypes.contains(.photoLive) {
-			types.append("Live")
 		}
 		if asset.mediaSubtypes.contains(.photoPanorama) {
 			types.append("Panorama")
@@ -146,6 +135,16 @@ struct CardInfoView: View {
 		if asset.burstIdentifier != nil {
 			types.append("Burst")
 		}
+		
+		/// Deprecated in favor of having icons sit next to their parent icon.
+		/*
+		if asset.mediaSubtypes.contains(.photoScreenshot) {
+			types.append("Screenshot")
+		}
+		if asset.mediaSubtypes.contains(.photoLive) {
+			types.append("Live")
+		}
+		 */
 		
 		if types.isEmpty {
 			switch asset.mediaType {
@@ -216,6 +215,18 @@ struct CardInfoView: View {
 			return AnyView(HStack(alignment: .center, spacing: 8) {
 				Image(systemName: icon)
 					.frame(width: 20, height: 20, alignment: .center)
+				if asset.mediaSubtypes.contains(.photoScreenshot) {
+					Image(systemName: "camera.viewfinder")
+						.accessibilityLabel("Screenshot")
+						.frame(width: 20, height: 20, alignment: .center)
+				}
+				
+				if asset.mediaSubtypes.contains(.photoLive) {
+					Image(systemName: "livephoto")
+						.accessibilityLabel("Live")
+						.frame(width: 20, height: 20, alignment: .center)
+				}
+				
 				
 				if asset.isFavorite {
 					Image(systemName: "heart.fill")
