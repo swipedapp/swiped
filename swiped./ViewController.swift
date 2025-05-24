@@ -25,11 +25,11 @@ class ViewController: UIViewController {
 
 	var modelContext: ModelContext! {
 		didSet {
-			db.modelContext = modelContext
+			db = DatabaseController(modelContainer: modelContext.container)
 		}
 	}
 
-	private let db = DatabaseController()
+	private var db: DatabaseController!
 
 	private let cardStack = SwipeCardStack()
 	private let buttonStackView = ButtonStackView()

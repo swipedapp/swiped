@@ -8,6 +8,7 @@
 import Foundation
 import StoreKit
 import SwiftUI
+import SwiftData
 import Combine
 import os
 
@@ -68,7 +69,9 @@ class ServerController: NSObject, ObservableObject {
 #endif
 	
 	static let server = URL(string: "https://swiped.pics/")!
-	
+
+	public var modelContainer: ModelContainer?
+
 	@Published var syncFailed = true
 	
 	private var syncPublisher: AnyCancellable?
@@ -151,17 +154,20 @@ class ServerController: NSObject, ObservableObject {
 	
 	func doSync() async {
 		if (!sync) {
-//			let db = DatabaseController.shared
-			let db = DatabaseController()
+			guard let modelContainer = modelContainer else {
+				return
+			}
+
+			let db = DatabaseController(modelContainer: modelContainer)
 			let receipt = await getReceipt()
-			let data = SyncRequest(receipt: receipt,
-														 totalKept: db.getTotalKept(),
-														 totalDeleted: db.getTotalDeleted(),
-														 totalPhotoDeleted: db.getTotalPhotoDeleted(),
-														 totalVideoDeleted: db.getTotalVideoDeleted(),
-														 spaceSaved: Int(db.getSpaceSaved()),
-														 swipeScore: db.calcSwipeScore())
-			
+			let data = await SyncRequest(receipt: receipt,
+																	 totalKept: db.getTotalKept(),
+																	 totalDeleted: db.getTotalDeleted(),
+																	 totalPhotoDeleted: db.getTotalPhotoDeleted(),
+																	 totalVideoDeleted: db.getTotalVideoDeleted(),
+																	 spaceSaved: Int(db.getSpaceSaved()),
+																	 swipeScore: db.calcSwipeScore())
+
 			var request = URLRequest(url: Self.server.appendingPathComponent("sync"))
 			request.httpMethod = "POST"
 			request.setValue("application/json", forHTTPHeaderField: "Content-Type")

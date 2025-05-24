@@ -14,14 +14,14 @@ struct SwipedApp: App {
 
 	@State var needsMigration = false
 
-	private let db = DatabaseController()
+	private let db: DatabaseController
 
 	init() {
 		do {
 			let config = ModelConfiguration(url: URL.documentsDirectory.appending(path: "swiped-v2.sqlite3"),
 																			cloudKitDatabase: .private("iCloud.com.ma.swipeddata"))
 			modelContainer = try ModelContainer(for: Photo.self, configurations: config)
-			db.modelContext = modelContainer.mainContext
+			db = DatabaseController(modelContainer: modelContainer)
 		} catch {
 			fatalError("Failed to configure SwiftData container.")
 		}
@@ -31,7 +31,7 @@ struct SwipedApp: App {
 		if needsMigration {
 			Task {
 				try? await Task.sleep(for: .milliseconds(100))
-				self.db.migrate()
+				await self.db.migrate()
 
 				await MainActor.run {
 					self.needsMigration = false
@@ -44,7 +44,9 @@ struct SwipedApp: App {
 		return WindowGroup {
 			ContentView()
 				.onAppear {
-					self.needsMigration = db.needsMigration()
+					Task {
+						self.needsMigration = db.needsMigration()
+					}
 				}
 				.sheet(isPresented: $needsMigration, content: {
 					MigrationUI()

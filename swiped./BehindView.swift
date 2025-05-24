@@ -12,7 +12,6 @@ struct SummaryGridView: SwiftUI.View {
 
 	let totalKept: Int
 	let totalDeleted: Int
-	let summary: Bool
 
 	var body: some SwiftUI.View {
 		let total = totalKept + totalDeleted
@@ -52,11 +51,11 @@ struct BehindView: SwiftUI.View {
 			return AnyView(EmptyView())
 		}
 
-		let db = DatabaseController()
-		db.modelContext = modelContext
+		let db = DatabaseController(modelContainer: modelContext.container)
 
 		return AnyView(VStack(alignment: .center, spacing: 10) {
-			SummaryGridView(totalKept: db.getTotalKept(), totalDeleted: db.getTotalDeleted(), summary: cardInfo.summary)
+			SummaryGridView(totalKept: db.getTotalKept(),
+											totalDeleted: db.getTotalDeleted())
 
 			VStack(alignment: .leading, spacing: 10) {
 		

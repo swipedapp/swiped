@@ -76,7 +76,7 @@ class PhotosController {
 			throw PhotoError.noPhotosAvailable
 		}
 
-		if fetchResult.count == db.getTotalKept() {
+		if await fetchResult.count == db.getTotalKept() {
 			throw PhotoError.noPhotosLeft
 		}
 
@@ -96,7 +96,7 @@ class PhotosController {
 					continue
 				}
 				
-				if let oldPhoto = db.getPhoto(id: asset.localIdentifier),
+				if let oldPhoto = await db.getPhoto(id: asset.localIdentifier),
 					 oldPhoto.choice != .skip {
 					continue
 				}

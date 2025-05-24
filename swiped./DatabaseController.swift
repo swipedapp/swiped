@@ -9,22 +9,17 @@ import Foundation
 import Photos
 import SwiftData
 
-class DatabaseController {
-
-	var modelContext: ModelContext!
-
-	init(modelContext: ModelContext? = nil) {
-		self.modelContext = modelContext
-	}
+@ModelActor
+actor DatabaseController {
 
 	func needsMigration() -> Bool {
 		let migrator = DatabaseMigrator()
 		return migrator.needsMigration()
 	}
 
-	func migrate() {
+	func migrate() async {
 		let migrator = DatabaseMigrator()
-		migrator.migrate(dbController: self)
+		await migrator.migrate(dbController: self)
 	}
 
 	func reset() {

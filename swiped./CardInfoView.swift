@@ -38,7 +38,7 @@ struct CardInfoView: View {
 
 	@Environment(\.modelContext) var modelContext {
 		didSet {
-			photosController.db = DatabaseController(modelContext: modelContext)
+			photosController.db = DatabaseController(modelContainer: modelContext.container)
 		}
 	}
 

@@ -44,7 +44,7 @@ class DatabaseMigrator {
 		return try! db.scalar(photos.count) > 0
 	}
 
-	func migrate(dbController: DatabaseController) {
+	func migrate(dbController: DatabaseController) async {
 		let query = photos.select(*)
 
 		for row in try! db.prepare(query) {
@@ -55,7 +55,7 @@ class DatabaseMigrator {
 			photo.creationDate = Date(timeIntervalSince1970: row[creationDate])
 			photo.swipeDate = Date(timeIntervalSince1970: row[swipeDate])
 
-			dbController.addPhoto(photo: photo)
+			await dbController.addPhoto(photo: photo)
 		}
 
 		try! db.run(photos.delete())
