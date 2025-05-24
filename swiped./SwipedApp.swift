@@ -41,8 +41,6 @@ struct SwipedApp: App {
 	}
 
 	var body: some Scene {
-		print(needsMigration)
-
 		return WindowGroup {
 			ContentView()
 				.onAppear {
