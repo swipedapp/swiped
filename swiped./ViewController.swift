@@ -17,9 +17,11 @@ import os
 // add this class for managing the sheet
 class SheetManager: ObservableObject {
 	@Published var showImportantInfo = false
+	@Published var json: SettingsJson?
 
 	func triggerImportantInfo(json: SettingsJson) {
 		showImportantInfo = true
+		self.json = json
 	}
 }
 
