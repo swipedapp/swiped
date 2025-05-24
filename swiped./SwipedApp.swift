@@ -19,7 +19,7 @@ struct SwipedApp: App {
 	init() {
 		do {
 			let config = ModelConfiguration(url: URL.documentsDirectory.appending(path: "swiped.sqlite3"),
-																			cloudKitDatabase: .automatic)
+																			cloudKitDatabase: .private("iCloud.com.ma.swipedapp"))
 			modelContainer = try ModelContainer(for: Photo.self, configurations: config)
 			db.modelContext = modelContainer.mainContext
 		} catch {
