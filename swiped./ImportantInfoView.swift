@@ -20,14 +20,9 @@ struct ImportantInfoView: View {
 							.font(.custom("LoosExtended-Regular", size: 14))
 						}
 					})
-				
-			
-		
-						
 		NavigationView {
-			
 			VStack {
-				
+	
 				Image(systemName: "exclamationmark.shield.fill")
 					.font(.system(size: 80))
 					.foregroundColor(.primary)
