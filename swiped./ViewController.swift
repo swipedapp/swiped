@@ -67,9 +67,7 @@ class ViewController: UIViewController {
 		
 		photosController.db = db
 		
-#if !INTERNAL
 		fetchAlert()
-#endif
 		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
