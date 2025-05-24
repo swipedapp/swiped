@@ -191,7 +191,7 @@ class ViewController: UIViewController {
 		let url = URL(string: "https://swiped.pics")!
 #endif
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
-			self.showUnsupportedMessage()
+			
 			if let error = error {
 				os_log(.error, "⚠️ \(error.localizedDescription)")
 				return
@@ -217,6 +217,7 @@ class ViewController: UIViewController {
 			}
 			
 			DispatchQueue.main.async {
+				self.showUnsupportedMessage()
 				if let appliesToVersion = json.appliesToVersion,
 					 self.version.compare(appliesToVersion, options: .numeric) != .orderedDescending {
 					if let buildNumber = Int(self.build),
