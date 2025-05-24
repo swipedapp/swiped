@@ -70,7 +70,7 @@ class DatabaseMigrator {
 			await dbController.addPhoto(photo: photo)
 		}
 
-		try! db.run(photos.delete())
+		try! FileManager.default.removeItem(at: url)
 	}
 
 }
