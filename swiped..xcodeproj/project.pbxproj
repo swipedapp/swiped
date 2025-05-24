@@ -174,7 +174,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				32D99B862DC48324003285A5 /* XCRemoteSwiftPackageReference "SQLite" */,
-				329749F52DE05753008D7C56 /* XCLocalSwiftPackageReference "../reShuffled" */,
+				32E31D982DE16BD800C76132 /* XCRemoteSwiftPackageReference "reShuffled" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3269A8B12DC4593200215B83 /* Products */;
@@ -656,13 +656,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		329749F52DE05753008D7C56 /* XCLocalSwiftPackageReference "../reShuffled" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../reShuffled;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		32D99B862DC48324003285A5 /* XCRemoteSwiftPackageReference "SQLite" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -670,6 +663,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.15.3;
+			};
+		};
+		32E31D982DE16BD800C76132 /* XCRemoteSwiftPackageReference "reShuffled" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swipedapp/reShuffled";
+			requirement = {
+				branch = master;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

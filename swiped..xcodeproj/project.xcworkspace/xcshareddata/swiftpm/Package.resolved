@@ -1,0 +1,24 @@
+{
+  "originHash" : "9c1337c28245bbf076e99abc7757626e4c6e96b7b9838c8864ddccc0079521ca",
+  "pins" : [
+    {
+      "identity" : "reshuffled",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swipedapp/reShuffled",
+      "state" : {
+        "branch" : "master",
+        "revision" : "0c6d3b937017f9ea64ca8ce9a9cf82b4bbfc3e7d"
+      }
+    },
+    {
+      "identity" : "sqlite.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stephencelis/SQLite.swift",
+      "state" : {
+        "revision" : "a95fc6df17d108bd99210db5e8a9bac90fe984b8",
+        "version" : "0.15.3"
+      }
+    }
+  ],
+  "version" : 3
+}
