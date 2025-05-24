@@ -48,10 +48,14 @@ struct BehindView: SwiftUI.View {
 	weak var delegate: Delegate?
 
 	var body: some SwiftUI.View {
+		if !cardInfo.summary {
+			return AnyView(EmptyView())
+		}
+
 		let db = DatabaseController()
 		db.modelContext = modelContext
 
-		return VStack(alignment: .center, spacing: 10) {
+		return AnyView(VStack(alignment: .center, spacing: 10) {
 			SummaryGridView(totalKept: db.getTotalKept(), totalDeleted: db.getTotalDeleted(), summary: cardInfo.summary)
 
 			VStack(alignment: .leading, spacing: 10) {
@@ -91,7 +95,7 @@ struct BehindView: SwiftUI.View {
 			.padding(.bottom, 40)
 			.opacity(cardInfo.summary ? 1 : 0)
 			.animation(.easeOut(duration: cardInfo.summary ? 0.5 : 0), value: cardInfo.summary)
-			.contentTransition(.numericText())
+			.contentTransition(.numericText()))
 	}
 }
 
