@@ -42,18 +42,21 @@ struct SwipedApp: App {
 
 	var body: some Scene {
 		return WindowGroup {
-			ContentView()
-				.onAppear {
-					Task {
-						self.needsMigration = await db.needsMigration()
-					}
-				}
-				.sheet(isPresented: $needsMigration, content: {
-					MigrationUI()
-						.onAppear {
-							migrate()
+			NavigationView {
+				ContentView()
+					.onAppear {
+						Task {
+							self.needsMigration = await db.needsMigration()
 						}
-				})
+					}
+					.sheet(isPresented: $needsMigration, content: {
+						MigrationUI()
+							.onAppear {
+								migrate()
+							}
+					})
+			}
+				.toolbar(.hidden)
 		}
 			.modelContainer(modelContainer)
 	}

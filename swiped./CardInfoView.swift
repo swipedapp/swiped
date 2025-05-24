@@ -190,18 +190,13 @@ struct CardInfoView: View {
 				view = AnyView(Text(date, format: Date.FormatStyle(date: .abbreviated)))
 			}
 			
-			if #available(iOS 17, *) {
-				return AnyView(view
-					.textCase(.uppercase)
-					.contentTransition(.numericText(value: -date.timeIntervalSince1970)))
-			} else {
-				return AnyView(view
-					.textCase(.uppercase)
-					.contentTransition(.numericText()))
-			}
+			return AnyView(view
+				.textCase(.uppercase)
+				.contentTransition(.numericText(value: -date.timeIntervalSince1970)))
 		} else {
-			return AnyView(Text("SWIPED") + Text(".")
+			return AnyView((Text("SWIPED") + Text(".")
 				.foregroundColor(Color("brandGreen")))
+				.contentTransition(.opacity))
 		}
 	}
 	
@@ -209,7 +204,6 @@ struct CardInfoView: View {
 		if cardInfo.summary {
 			return AnyView(HStack(alignment: .center, spacing: 8) {
 				Text("Summary")
-					.contentTransition(.numericText())
 			})
 		} else if let asset = cardInfo.card?.asset {
 			return AnyView(HStack(alignment: .center, spacing: 8) {
@@ -303,7 +297,7 @@ struct CardInfoView: View {
 				Spacer()
 				
 				shareButton
-				
+
 				Button(action: {
 					showSettings = true
 				}, label: {
@@ -315,9 +309,9 @@ struct CardInfoView: View {
 			}
 			
 			subhead
+				.id("subhead")
 				.font(.custom("LoosExtended-Regular", size: 18))
 				.lineLimit(1)
-				.contentTransition(.numericText())
 		}
 		.padding(.horizontal, 20)
 		.frame(height: 77)
