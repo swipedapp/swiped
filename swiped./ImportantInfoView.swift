@@ -20,7 +20,7 @@ struct ImportantInfoView: View {
 					.textCase(.uppercase)
 					.font(.custom("LoosExtended-Regular", size: 14))
 					.foregroundColor(Color(uiColor: .secondaryLabel))
-					.padding(.top, 15)
+					.padding(.top, 17)
 				}
 
 				Image(systemName: "exclamationmark.shield.fill")
