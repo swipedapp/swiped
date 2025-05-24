@@ -55,9 +55,7 @@ class ViewController: UIViewController {
 	private var previewItem: URL?
 	override func viewDidLoad() {
 		super.viewDidLoad()
-#if !INTERNAL
 		fetchAlert()
-#endif
 		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
@@ -177,7 +175,7 @@ class ViewController: UIViewController {
 		DispatchQueue.main.async {
 			self.showUnsupportedMessage()
 		}
-		
+
 #if RELEASE || DEBUG
 		let url = URL(string: "https://swiped.pics/beta/conf.json")!
 #else
