@@ -9,20 +9,20 @@ import SwiftUI
 
 struct ImportantInfoView: View {
 	var body: some View {
-			
-					Section(content: {}, header: {
-						ZStack(alignment: .top) {
-							HStack {
-								Image(systemName: "chevron.down")
-								Text("Swipe down to dismiss")
-								Image(systemName: "chevron.down")
-							}
-							.font(.custom("LoosExtended-Regular", size: 14))
-						}
-					})
 		NavigationView {
 			VStack {
-	
+				ZStack(alignment: .top) {
+					HStack {
+						Image(systemName: "chevron.down")
+						Text("Swipe down to dismiss")
+						Image(systemName: "chevron.down")
+					}
+					.textCase(.uppercase)
+					.font(.custom("LoosExtended-Regular", size: 14))
+					.foregroundColor(Color(uiColor: .secondaryLabel))
+					.padding(.top, 20)
+				}
+
 				Image(systemName: "exclamationmark.shield.fill")
 					.font(.system(size: 80))
 					.foregroundColor(.primary)
@@ -51,6 +51,7 @@ struct ImportantInfoView: View {
 			}
 		}
 		.background(Color(uiColor: .systemBackground))
+		.navigationBarHidden(true)
 	}
 }
 
