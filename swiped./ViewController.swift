@@ -14,12 +14,24 @@ import SwiftUI
 import os
 
 
+// add this class for managing the sheet
+class SheetManager: ObservableObject {
+	@Published var showImportantInfo = false
+
+	func triggerImportantInfo() {
+		showImportantInfo = true
+	}
+}
+
 class ViewController: UIViewController {
 	@State private var unsupportedios = true
+	// add the sheet manager
+	private let sheetManager = SheetManager()
+
 	var version: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 	}
-	
+
 	var build: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
 	}
@@ -35,16 +47,15 @@ class ViewController: UIViewController {
 	private var toDelete = [PhotoCard]()
 	private var loadingBatch = true
 	private var batchesLoaded = 0
-	
+
 	private let cardInfo = CardInfo()
-	
+
 	private var previewItem: URL?
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		#if !INTERNAL
+#if !INTERNAL
 		fetchAlert()
-		#endif
+#endif
 		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
@@ -53,16 +64,16 @@ class ViewController: UIViewController {
 		behindView = BehindView()
 		behindView.delegate = self
 		photosController.delegate = self
-		
+
 		configureNavigationBar()
 		layoutBehindView()
 		layoutButtonStackView()
 		layoutInfoView()
 		layoutCardStackView()
-		
-			
+
+
 		loadBatch()
-			
+
 		Task {
 			//await ServerController.shared.doRegister()
 			_ = createRepeatingTask(every: 30.0) {
@@ -78,11 +89,11 @@ class ViewController: UIViewController {
 			}
 		}
 	}
-	
+
 	private func configureNavigationBar() {
 		navigationController?.setNavigationBarHidden(true, animated: false)
 	}
-	
+
 	private func layoutButtonStackView() {
 		view.addSubview(buttonStackView)
 		buttonStackView.anchor(left: view.safeAreaLayoutGuide.leftAnchor,
@@ -92,7 +103,7 @@ class ViewController: UIViewController {
 													 paddingBottom: 12,
 													 paddingRight: 24)
 	}
-	
+
 	private func layoutCardStackView() {
 		view.addSubview(cardStack)
 		cardStack.anchor(top: infoHostingController.view.bottomAnchor,
@@ -100,11 +111,10 @@ class ViewController: UIViewController {
 										 bottom: buttonStackView.topAnchor,
 										 right: view.safeAreaLayoutGuide.rightAnchor)
 	}
-	
+
 	private func layoutInfoView() {
 		infoHostingController = UIHostingController(rootView: AnyView(
-			infoView
-				.environmentObject(cardInfo)
+			InfoViewWrapper(cardInfo: cardInfo, sheetManager: sheetManager, modelContext: modelContext)
 		))
 		infoHostingController.willMove(toParent: self)
 		view.addSubview(infoHostingController.view)
@@ -112,7 +122,7 @@ class ViewController: UIViewController {
 																			left: view.safeAreaLayoutGuide.leftAnchor,
 																			right: view.safeAreaLayoutGuide.rightAnchor)
 	}
-	
+
 	private func layoutBehindView() {
 		behindViewHostingController = UIHostingController(rootView: AnyView(
 			behindView
@@ -125,23 +135,23 @@ class ViewController: UIViewController {
 																						bottom: view.safeAreaLayoutGuide.bottomAnchor,
 																						right: view.safeAreaLayoutGuide.rightAnchor)
 	}
-	
+
 	private func loadBatch() {
 		loadingBatch = true
 		batchesLoaded += 1
-		
+
 		var newCards = [PhotoCard]()
 		for _ in 0..<20  {
 			newCards.append(PhotoCard())
 		}
-		
+
 		photosController.loadRandomPhotos(for: newCards) {
 			for card in newCards {
 				card.id = self.cards.count
 				self.cards.append(card)
 				self.cardStack.appendCards(atIndices: [card.id])
 			}
-			
+
 			if self.loadingBatch {
 				UIView.animate(withDuration: 0.3) {
 					self.cardStack.alpha = 1
@@ -152,14 +162,14 @@ class ViewController: UIViewController {
 			}
 		}
 	}
-	
+
 	private func updateCurrentItem() {
 		if cards.count > 0 {
 			let index = cardStack.topCardIndex ?? 0
 			cardInfo.setCard(cards[index], summary: false)
 		}
 	}
-	
+
 	private func fetchAlert() {
 #if RELEASE || DEBUG
 		let url = URL(string: "https://swiped.pics/beta/conf.json")!
@@ -172,35 +182,35 @@ class ViewController: UIViewController {
 				print("Error: \(error.localizedDescription)")
 				return
 			}
-			
+
 			guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
 				print("Could not fetch config")
 				return
 			}
-			
+
 			guard let data = data else {
 				print("Error: No data received")
 				return
 			}
-			
+
 			guard let json = try? JSONDecoder().decode(SettingsJson.self, from: data) else {
 				os_log(.error, "⚠️ Failed to parse JSON request.")
 				return
 			}
-			
+
 			if !json.isAlertEnabled {
 				return
 			}
-			
+
 			DispatchQueue.main.async {
 				if let appliesToVersion = json.appliesToVersion,
 					 self.version.compare(appliesToVersion, options: .numeric) != .orderedDescending {
 					if let buildNumber = Int(self.build),
 						 let appliesToBuild = Int(json.appliesToBuild ?? ""),
 						 appliesToBuild >= buildNumber {
-						
+
 						let alert = UIAlertController(title: json.alertTitle, message: json.alertContents, preferredStyle: .alert)
-						
+
 						if let buttonText = json.alertButtonText {
 							alert.addAction(UIAlertAction(title: buttonText, style: .default, handler: { _ in
 								if let buttonURL = json.alertButtonURL,
@@ -209,11 +219,11 @@ class ViewController: UIViewController {
 								}
 							}))
 						}
-						
+
 						self.present(alert, animated: true)
 					}
 				}
-				
+
 			}
 		}
 		task.resume()
@@ -226,28 +236,28 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 	func didLoadThumbnail(for card: PhotoCard, image: UIImage) {
 		//print("loaded thumbnail for \(card.id)")
 		card.thumbnail = image
-		
+
 		if let swipeCard = cardStack.card(forIndexAt: card.id),
 			 let contentView = swipeCard.content as? CardContentView {
 			contentView.updateCard()
 		}
 	}
-	
+
 	func didLoadFullImage(for card: PhotoCard, image: UIImage) {
 		//print("loaded full image for \(card.id)")
 		card.fullImage = image
-		
+
 		if let swipeCard = cardStack.card(forIndexAt: card.id),
 			 let contentView = swipeCard.content as? CardContentView {
 			contentView.updateCard()
 		}
-		
+
 		updateCurrentItem()
 	}
-	
+
 	func didFail(error: PhotosController.PhotoError) {
 		print("Photo controller error: \(error.localizedDescription)")
-		
+
 		switch error {
 		case .noAccessToPhotoLibrary, .noPhotosAvailable:
 			let alert = UIAlertController(title: "No Photos!", message: "Your Photos library is empty, or you limited access.", preferredStyle: .alert)
@@ -255,22 +265,22 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 				UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
 			}))
 			present(alert, animated: true)
-			
+
 		case .noPhotosLeft:
-			let alert = UIAlertController(title: "You’ve swiped all your photos", message: "Come back later when you need to clean up!", preferredStyle: .alert)
+			let alert = UIAlertController(title: "You've swiped all your photos", message: "Come back later when you need to clean up!", preferredStyle: .alert)
 			alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
 			present(alert, animated: true)
-			
+
 			didSwipeAllCards(cardStack)
-			
+
 		case .failedToDelete:
 			let alert = UIAlertController(title: "Failed to delete photo", message: nil, preferredStyle: .alert)
 			alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
 			present(alert, animated: true)
-			
+
 		case .failedToFetchPhoto:
 			let idiom = UIDevice.current.userInterfaceIdiom
-			
+
 			if idiom == .phone {
 				let alert = UIAlertController(title: "Oh Bugger!🪲", message: "We couldn't load your photo library. Please try again later.", preferredStyle: .alert)
 				present(alert, animated: true)
@@ -281,14 +291,14 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 				// It's something else
 			}
 			/*
-			 
+
 			 */
 			break
 		}
 	}
 }
 extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, ButtonStackView.Delegate, BehindView.Delegate {
-	
+
 	func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
 		let card = SwipeCard()
 		card.footerHeight = 80
@@ -296,19 +306,19 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 		for direction in card.swipeDirections {
 			card.setOverlay(CardOverlay(direction: direction), forDirection: direction)
 		}
-		
+
 		card.content = CardContentView(card: cards[index])
-		
+
 		return card
 	}
-	
+
 	func numberOfCards(in cardStack: SwipeCardStack) -> Int {
 		return cards.count
 	}
-	
+
 	func didSwipeAllCards(_ cardStack: SwipeCardStack) {
 		print("Swiped all cards!")
-		
+
 		photosController.delete(cards: toDelete) { success in
 			if !success {
 				for card in self.toDelete {
@@ -318,13 +328,13 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 					}
 				}
 			}
-			
+
 			self.toDelete.removeAll()
 		}
-		
+
 		cardStack.isUserInteractionEnabled = false
 		buttonStackView.isUserInteractionEnabled = false
-		
+
 		Task {
 			await ServerController.shared.doSync()
 		}
@@ -339,54 +349,54 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			self.cardInfo.setCard(nil, summary: true)
 		}
 	}
-	
+
 	func cardStack(_ cardStack: SwipeCardStack, didUndoCardAt index: Int, from direction: SwipeDirection) {
 		print("Undo")
 		updateCurrentItem()
 	}
-	
+
 	func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
 		print("Swiped \(direction)")
 		let card = cards[index]
-		
+
 		var choice: Photo.Choice
 		switch direction {
 		case .left:
 			choice = .delete
 			toDelete.append(cards[index])
-			
+
 		case .right:
 			choice = .keep
 			toDelete.removeAll(where: { $0.id == card.id })
-			
+
 		case .up:
 			choice = .skip
-			
+
 		case .down:
 			fatalError()
 		}
-		
+
 		guard let photo = card.photo else {
 			return
 		}
-		
+
 		photo.choice = choice
 		photo.swipeDate = Date()
 		DatabaseController.shared.addPhoto(photo: photo)
-		
+
 		if direction == .up {
 			if let image = card.fullImage ?? card.thumbnail {
 				let shareSheet = UIActivityViewController(activityItems: [image], applicationActivities: [])
 				present(shareSheet, animated: true)
 			}
 		}
-		
+
 		updateCurrentItem()
 	}
-	
+
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
 		print("Card tapped")
-		
+
 		do {
 			let card = cards[index]
 			if let asset = card.asset {
@@ -403,7 +413,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 						let temp = FileManager.default.temporaryDirectory.appendingPathComponent("Photo.png")
 						try data.write(to: temp)
 						previewItem = temp
-						
+
 						let quickLook = QLPreviewController()
 						quickLook.delegate = self
 						quickLook.dataSource = self
@@ -415,7 +425,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			print("Error in quick look \(error.localizedDescription)")
 		}
 	}
-	
+
 	func didTapButton(action: ButtonStackView.Action) {
 		switch action {
 		case .undo:
@@ -426,11 +436,12 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			cardStack.swipe(.right, animated: true)
 		}
 	}
+
+	// updated this function to use the sheet manager
 	func showUnsupportedMessage() {
-		Color.purple.sheet(isPresented: $unsupportedios, content: {
-			ImportantInfoView()
-		})
+		sheetManager.triggerImportantInfo()
 	}
+
 	func didTapContinue() {
 		cardStack.isUserInteractionEnabled = true
 		buttonStackView.isUserInteractionEnabled = true
@@ -447,13 +458,13 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			UserDefaults.standard.set(true, forKey: "requestedReview")
 			AppStore.requestReview(in: self.view.window!.windowScene!)
 		}
-		
+
 		// Release all but the last card from memory
 		let oldCount = cards.count
 		if oldCount != 0 {
 			let allButLast = 0..<oldCount - 1
 			cards.removeSubrange(allButLast)
-			
+
 			var indices = [Int]()
 			for i in allButLast {
 				indices.append(i)
@@ -461,18 +472,18 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			cardStack.deleteCards(atIndices: indices)
 		}
 	}
-	
+
 }
 
 extension ViewController: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
 	func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
 		return 1
 	}
-	
+
 	func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> any QLPreviewItem {
 		return previewItem! as QLPreviewItem
 	}
-	
+
 	func previewControllerWillDismiss(_ controller: QLPreviewController) {
 		if let previewItem = previewItem {
 			try? FileManager.default.removeItem(at: previewItem)
@@ -481,3 +492,19 @@ extension ViewController: QLPreviewControllerDataSource, QLPreviewControllerDele
 	}
 }
 
+// swiftui wrapper to handle the sheet binding properly
+struct InfoViewWrapper: View {
+	let cardInfo: CardInfo
+	@ObservedObject var sheetManager: SheetManager
+	let modelContext: ModelContext
+
+	var body: some View {
+		CardInfoView()
+			.environmentObject(cardInfo)
+			.modelContext(modelContext)
+			.sheet(isPresented: $sheetManager.showImportantInfo) {
+				ImportantInfoView()
+					.environmentObject(sheetManager)
+			}
+	}
+}
