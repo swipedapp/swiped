@@ -15,6 +15,7 @@ import os
 import SwiftData
 
 class ViewController: UIViewController {
+	@State private var unsupportedios = true
 	var version: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 	}
@@ -64,15 +65,16 @@ class ViewController: UIViewController {
 		behindView = BehindView()
 		behindView.delegate = self
 		photosController.delegate = self
-		ImportantInfoView()
+		showUnsupportedMessage()
 		configureNavigationBar()
 		layoutBehindView()
 		layoutButtonStackView()
 		layoutInfoView()
 		layoutCardStackView()
 		
+			
 		loadBatch()
-		
+			
 		Task {
 			//await ServerController.shared.doRegister()
 			_ = createRepeatingTask(every: 30.0) {
@@ -442,7 +444,11 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Butt
 			cardStack.swipe(.right, animated: true)
 		}
 	}
-	
+	func showUnsupportedMessage() {
+		Color.purple.sheet(isPresented: $unsupportedios, content: {
+			ImportantInfoView()
+		})
+	}
 	func didTapContinue() {
 		cardStack.isUserInteractionEnabled = true
 		buttonStackView.isUserInteractionEnabled = true
