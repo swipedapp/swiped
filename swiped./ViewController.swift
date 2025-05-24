@@ -112,7 +112,7 @@ class ViewController: UIViewController {
 
 	private func layoutInfoView() {
 		infoHostingController = UIHostingController(rootView: AnyView(
-			InfoViewWrapper(cardInfo: cardInfo, sheetManager: sheetManager, modelContext: modelContext)
+			InfoViewWrapper(cardInfo: cardInfo, sheetManager: sheetManager)
 		))
 		infoHostingController.willMove(toParent: self)
 		view.addSubview(infoHostingController.view)
@@ -494,12 +494,10 @@ extension ViewController: QLPreviewControllerDataSource, QLPreviewControllerDele
 struct InfoViewWrapper: View {
 	let cardInfo: CardInfo
 	@ObservedObject var sheetManager: SheetManager
-	let modelContext: ModelContext
 
 	var body: some View {
 		CardInfoView()
 			.environmentObject(cardInfo)
-			.modelContext(modelContext)
 			.sheet(isPresented: $sheetManager.showImportantInfo) {
 				ImportantInfoView()
 					.environmentObject(sheetManager)
