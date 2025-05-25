@@ -263,52 +263,55 @@ struct CardInfoView: View {
 	}
 	
 	var body: some View {
-		ZStack {
-			VStack(alignment: .leading, spacing: 4) {
-				HStack(alignment: .lastTextBaseline, spacing: 0) {
-					title
-						.font(.custom("LoosExtended-Bold", size: 24))
-						.onTapGesture {
-							timestamps = !timestamps
-						}
+			ZStack {
+				VStack(alignment: .leading, spacing: 4) {
+					HStack(alignment: .lastTextBaseline, spacing: 0) {
+						title
+							.font(.custom("LoosExtended-Bold", size: 24))
+							.onTapGesture {
+								timestamps = !timestamps
+							}
+						
+						Spacer()
+						
+						shareButton
+						
+						Button(action: {
+							showSettings = true
+						}, label: {
+							Image(systemName: "gear")
+								.font(.custom("LoosExtended-Bold", size: 20))
+						})
+						.frame(width: 40, height: 40, alignment: .center)
+					}
 					
-					Spacer()
-					
-					shareButton
-					
-					Button(action: {
-						showSettings = true
-					}, label: {
-						Image(systemName: "gear")
-							.font(.custom("LoosExtended-Bold", size: 20))
-					})
-					.frame(width: 40, height: 40, alignment: .center)
+					subhead
+						.font(.custom("LoosExtended-Regular", size: 18))
+						.contentTransition(.numericText())
+				}
+				.padding(.horizontal, 20)
+				.padding(.vertical, 18)
+				.foregroundColor(.primary)
+				.sheet(isPresented: $showSettings) {
+					SettingsView()
 				}
 				
-				subhead
-					.font(.custom("LoosExtended-Regular", size: 18))
-					.contentTransition(.numericText())
-			}
-			.padding(.horizontal, 20)
-			.padding(.vertical, 18)
-			.foregroundColor(.primary)
-			.sheet(isPresented: $showSettings) {
-				SettingsView()
-			}
-			VStack {
-				HStack {
+				// branding overlay positioned near dynamic island
+				VStack {
+					HStack {
+						Spacer()
+						Text("swiped.")
+							.font(.system(size: 11, weight: .medium, design: .monospaced))
+							.foregroundColor(.white.opacity(0.9))
+							.shadow(color: .black.opacity(0.3), radius: 1, x: 0, y: 1)
+							.padding(.top, 15) // closer to dynamic island
+							.padding(.trailing, 20)
+					}
 					Spacer()
-					Text("test")
-						.font(.caption2)
-						.foregroundColor(.secondary)
-						.padding(.top, 50) // position below dynamic island
-						.padding(.trailing, 16)
 				}
-				Spacer()
+				.ignoresSafeArea(.all, edges: .top)
 			}
-			.ignoresSafeArea(.all, edges: .top)
 		}
-	}
 }
 
 #Preview {
