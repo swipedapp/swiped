@@ -229,7 +229,7 @@ struct CardInfoView: View {
 			})
 		}
 		
-		return AnyView(EmptyView())
+		return AnyView(Text(" "))
 	}
 	
 	var shareButton: some View {
@@ -305,7 +305,6 @@ struct CardInfoView: View {
 							.foregroundColor(.white.opacity(0.9))
 							.shadow(color: .black.opacity(0.3), radius: 1, x: 0, y: 1)
 							.padding(.top, 15) // closer to dynamic island
-							.padding(.trailing, 20)
 						Spacer()
 					}
 					Spacer()
