@@ -229,7 +229,7 @@ struct CardInfoView: View {
 			})
 		}
 		
-		return AnyView(EmptyView()
+		return AnyView(Color.clear
 			.frame(height: 20))
 	}
 	
