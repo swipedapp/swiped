@@ -57,7 +57,12 @@ struct BehindView: SwiftUI.View {
 				Text("\(db.getTotalDeleted().formatted()) deleted")
 				Text("\(Self.fileSizeFormatter.string(fromByteCount: Int64(db.getSpaceSaved()))) saved")
 				HStack {
-					Image(systemName: "medal.star.fill")
+					if #available(iOS 17.4, *) {
+						// Use the correct symbol for this. Just saving my ass from a blank symbol :sob:
+						Image(systemName: "medal.star.fill")
+					} else {
+						Image(systemName: "trophy.fill")
+					}
 					Text("\(db.calcSwipeScore().formatted()) SwipeScore").font(.custom("LoosExtended-Medium", size: 18))
 				}
 				
