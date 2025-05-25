@@ -229,7 +229,7 @@ struct CardInfoView: View {
 			})
 		}
 		
-		return AnyView(Text(" "))
+		return AnyView(EmptyView())
 	}
 	
 	var shareButton: some View {
