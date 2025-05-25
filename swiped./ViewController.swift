@@ -118,7 +118,7 @@ class ViewController: UIViewController {
 		))
 		infoHostingController.willMove(toParent: self)
 		view.addSubview(infoHostingController.view)
-		infoHostingController.view.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+		infoHostingController.view.anchor(top: view.topAnchor,
 																			left: view.safeAreaLayoutGuide.leftAnchor,
 																			right: view.safeAreaLayoutGuide.rightAnchor)
 	}
