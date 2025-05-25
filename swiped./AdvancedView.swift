@@ -37,7 +37,7 @@ struct AdvancedView: View {
 				}
 #endif
 				
-				Section {
+				/*Section {
 					Toggle(isOn: $sync) {
 						Text("Disable Sync")
 							.font(.custom("LoosExtended-Regular", size: 16))
@@ -48,6 +48,7 @@ struct AdvancedView: View {
 					#endif
 					
 				}
+				 */
 			}
 			.scrollContentBackground(.hidden)
 			.background(Color(uiColor: .systemBackground))

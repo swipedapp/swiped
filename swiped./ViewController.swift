@@ -116,7 +116,7 @@ class ViewController: UIViewController {
 		
 		var newCards = [PhotoCard]()
 		/// Defines number of cards to show. CSN
-		for _ in 0..<3 {
+		for _ in 0..<20 {
 			newCards.append(PhotoCard())
 		}
 		
