@@ -1,13 +1,13 @@
 {
-  "originHash" : "baa1e0e357bfc400388fbb1fb9ca27fe3e2ed4c615b7a078eec05afac351af77",
+  "originHash" : "988f3d65251cb54f9f04ef2e316a28c6af2633e1ef9b83b16e76e54054e979da",
   "pins" : [
     {
-      "identity" : "reshuffled",
+      "identity" : "shuffle",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swipedapp/reShuffled",
+      "location" : "https://github.com/mac-gallagher/Shuffle",
       "state" : {
         "branch" : "master",
-        "revision" : "0c6d3b937017f9ea64ca8ce9a9cf82b4bbfc3e7d"
+        "revision" : "df246b9cd6b8b5e021b23c80706b4a4571785c1b"
       }
     },
     {
