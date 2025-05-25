@@ -263,51 +263,52 @@ struct CardInfoView: View {
 	}
 	
 	var body: some View {
-		VStack(alignment: .leading, spacing: 4) {
-			HStack(alignment: .lastTextBaseline, spacing: 0) {
-				title
-					.font(.custom("LoosExtended-Bold", size: 24))
-					.onTapGesture {
-						timestamps = !timestamps
-					}
+		ZStack {
+			VStack(alignment: .leading, spacing: 4) {
+				HStack(alignment: .lastTextBaseline, spacing: 0) {
+					title
+						.font(.custom("LoosExtended-Bold", size: 24))
+						.onTapGesture {
+							timestamps = !timestamps
+						}
+					
+					Spacer()
+					
+					shareButton
+					
+					Button(action: {
+						showSettings = true
+					}, label: {
+						Image(systemName: "gear")
+							.font(.custom("LoosExtended-Bold", size: 20))
+					})
+					.frame(width: 40, height: 40, alignment: .center)
+				}
 				
-				Spacer()
-				
-				shareButton
-				
-				Button(action: {
-					showSettings = true
-				}, label: {
-					Image(systemName: "gear")
-						.font(.custom("LoosExtended-Bold", size: 20))
-				})
-				.frame(width: 40, height: 40, alignment: .center)
+				subhead
+					.font(.custom("LoosExtended-Regular", size: 18))
+					.contentTransition(.numericText())
 			}
-			
-			subhead
-				.font(.custom("LoosExtended-Regular", size: 18))
-				.contentTransition(.numericText())
-		}
-		.padding(.horizontal, 20)
-		.padding(.vertical, 18)
-		.foregroundColor(.primary)
-		.sheet(isPresented: $showSettings) {
-			SettingsView()
-		}
-		VStack {
-			HStack {
-				Spacer()
-				Text("test")
-					.font(.caption2)
-					.foregroundColor(.secondary)
-					.padding(.top, 50) // position below dynamic island
-					.padding(.trailing, 16)
+			.padding(.horizontal, 20)
+			.padding(.vertical, 18)
+			.foregroundColor(.primary)
+			.sheet(isPresented: $showSettings) {
+				SettingsView()
 			}
-			Spacer()
+			VStack {
+				HStack {
+					Spacer()
+					Text("test")
+						.font(.caption2)
+						.foregroundColor(.secondary)
+						.padding(.top, 50) // position below dynamic island
+						.padding(.trailing, 16)
+				}
+				Spacer()
+			}
+			.ignoresSafeArea(.all, edges: .top)
 		}
-		.ignoresSafeArea(.all, edges: .top)
 	}
-	
 }
 
 #Preview {
