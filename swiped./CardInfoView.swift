@@ -263,7 +263,7 @@ struct CardInfoView: View {
 	}
 	
 	var body: some View {
-			ZStack {
+//			ZStack {
 				VStack(alignment: .leading, spacing: 4) {
 					HStack(alignment: .lastTextBaseline, spacing: 0) {
 						title
@@ -297,20 +297,20 @@ struct CardInfoView: View {
 				}
 				
 				// branding overlay positioned near dynamic island
-				VStack {
-					HStack {
-						Spacer()
-						Text("swiped.")
-							.font(.system(size: 11, weight: .medium, design: .monospaced))
-							.foregroundColor(.white.opacity(0.9))
-							.shadow(color: .black.opacity(0.3), radius: 1, x: 0, y: 1)
-							.padding(.top, 15) // closer to dynamic island
-						Spacer()
-					}
-					Spacer()
-				}
-				.ignoresSafeArea(.all, edges: .top)
-			}
+//				VStack {
+//					HStack {
+//						Spacer()
+//						Text("swiped.")
+//							.font(.system(size: 11, weight: .medium, design: .monospaced))
+//							.foregroundColor(.white.opacity(0.9))
+//							.shadow(color: .black.opacity(0.3), radius: 1, x: 0, y: 1)
+//							.padding(.top, 15) // closer to dynamic island
+//						Spacer()
+//					}
+//					Spacer()
+//				}
+//				.ignoresSafeArea(.all, edges: .top)
+//			}
 		}
 }
 
