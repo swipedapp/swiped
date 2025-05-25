@@ -263,6 +263,13 @@ struct CardInfoView: View {
 	}
 	
 	var body: some View {
+		Text("test")
+			.font(.caption)
+			.foregroundColor(.white.opacity(0.8))
+			.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+			.ignoresSafeArea(.all, edges: .top)
+			.padding(.top, 8)
+			.padding(.trailing, 60)
 		VStack(alignment: .leading, spacing: 4) {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
 				title
