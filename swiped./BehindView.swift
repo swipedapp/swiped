@@ -69,7 +69,13 @@ struct BehindView: SwiftUI.View {
 				Text("\(Self.fileSizeFormatter.string(fromByteCount: spaceSaved)) saved")
 					.frame(maxWidth: .infinity, alignment: .leading)
 				HStack {
-					Image(systemName: "medal.star.fill")
+					if #available(iOS 17.4, *) {
+						// Use the correct symbol for this. Just saving my ass from a blank symbol :sob:
+							Image(systemName: "medal.star.fill")
+					} else {
+						Image(systemName: "trophy.fill")
+					}
+					
 					Text("\(swipeScore.formatted()) SwipeScore").font(.custom("LoosExtended-Medium", size: 18))
 						.frame(maxWidth: .infinity, alignment: .leading)
 				}
