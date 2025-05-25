@@ -276,13 +276,15 @@ struct CardInfoView: View {
 						
 						shareButton
 						
-						Button(action: {
-							showSettings = true
-						}, label: {
-							Image(systemName: "gear")
-								.font(.custom("LoosExtended-Bold", size: 20))
-						})
-						.frame(width: 40, height: 40, alignment: .center)
+						if cardInfo.summary || cardInfo.card?.asset != nil {
+							Button(action: {
+								showSettings = true
+							}, label: {
+								Image(systemName: "gear")
+									.font(.custom("LoosExtended-Bold", size: 20))
+							})
+							.frame(width: 40, height: 40, alignment: .center)
+						}
 					}
 					
 					subhead
