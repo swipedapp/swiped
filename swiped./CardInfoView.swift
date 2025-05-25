@@ -306,6 +306,7 @@ struct CardInfoView: View {
 							.shadow(color: .black.opacity(0.3), radius: 1, x: 0, y: 1)
 							.padding(.top, 15) // closer to dynamic island
 							.padding(.trailing, 20)
+						Spacer()
 					}
 					Spacer()
 				}
