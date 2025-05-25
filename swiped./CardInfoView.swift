@@ -263,13 +263,6 @@ struct CardInfoView: View {
 	}
 	
 	var body: some View {
-		Text("test")
-			.font(.caption)
-			.foregroundColor(.white.opacity(0.8))
-			.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-			.ignoresSafeArea(.all, edges: .top)
-			.padding(.top, 8)
-			.padding(.trailing, 60)
 		VStack(alignment: .leading, spacing: 4) {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
 				title
@@ -301,6 +294,18 @@ struct CardInfoView: View {
 		.sheet(isPresented: $showSettings) {
 			SettingsView()
 		}
+		VStack {
+			HStack {
+				Spacer()
+				Text("test")
+					.font(.caption2)
+					.foregroundColor(.secondary)
+					.padding(.top, 50) // position below dynamic island
+					.padding(.trailing, 16)
+			}
+			Spacer()
+		}
+		.ignoresSafeArea(.all, edges: .top)
 	}
 	
 }
