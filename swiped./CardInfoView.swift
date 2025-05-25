@@ -229,7 +229,8 @@ struct CardInfoView: View {
 			})
 		}
 		
-		return AnyView(EmptyView())
+		return AnyView(EmptyView()
+			.frame(height: 20))
 	}
 	
 	var shareButton: some View {
