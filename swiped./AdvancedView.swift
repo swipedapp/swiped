@@ -9,6 +9,11 @@ import SwiftUI
 import Combine
 
 struct AdvancedView: View {
+
+	var version: String {
+		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+	}
+
 	@State private var showRestriction = false
 #if !INTERNAL
 	@AppStorage("sync")
@@ -18,6 +23,19 @@ struct AdvancedView: View {
 	var sync: Bool = true
 #endif
 	@StateObject var serverController = ServerController.shared
+
+	@EnvironmentObject var sheetManager: SheetManager
+
+	@AppStorage("supportAlertLastVersion")
+	var supportAlertLastVersion: String = ""
+
+	var showSupportAlert: Binding<Bool> {
+		return Binding(get: {
+			return self.supportAlertLastVersion != self.version
+		}, set: { value, _ in
+			self.supportAlertLastVersion = value ? "" : self.version
+		})
+	}
 
 	
 	var body: some View {
@@ -47,6 +65,17 @@ struct AdvancedView: View {
 					.disabled(true)
 					#endif
 					
+				}
+
+				if let minimumiOSVersion = sheetManager.json?.minimumiOSVersion,
+					 UIDevice.current.systemVersion.compare(minimumiOSVersion, options: .numeric) == .orderedAscending {
+					Section {
+						Toggle(isOn: showSupportAlert) {
+							Text("Show Support Alerts")
+								.font(.custom("LoosExtended-Regular", size: 16))
+						}
+					}
+						.listRowBackground(Color("listRowBackground"))
 				}
 			}
 			.scrollContentBackground(.hidden)
@@ -88,5 +117,6 @@ struct AdvancedView: View {
 
 #Preview {
 	AdvancedView()
+		.environmentObject(SheetManager())
 }
 
