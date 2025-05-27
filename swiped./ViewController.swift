@@ -14,7 +14,22 @@ import SwiftUI
 import os
 import SwiftData
 
+// add this class for managing the sheet
+class SheetManager: ObservableObject {
+	@Published var showImportantInfo = false
+	@Published var json: SettingsJson?
+
+	func triggerImportantInfo(json: SettingsJson) {
+		showImportantInfo = true
+		self.json = json
+	}
+}
+
 class ViewController: UIViewController {
+	@State private var unsupportedios = true
+	// add the sheet manager
+	private let sheetManager = SheetManager()
+
 	var version: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 	}
@@ -56,7 +71,7 @@ class ViewController: UIViewController {
 		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
-		mainView = MainView()
+		mainView = MainView(sheetManager: sheetManager)
 		mainView.delegate = self
 		photosController.delegate = self
 		
@@ -176,6 +191,13 @@ class ViewController: UIViewController {
 			}
 			
 			DispatchQueue.main.async {
+				if let minimumiOSVersion = json.minimumiOSVersion,
+					 UIDevice.current.systemVersion.compare(minimumiOSVersion, options: .numeric) == .orderedAscending,
+					 UserDefaults.standard.object(forKey: "supportAlertLastVersion") as? String != self.version {
+					self.showUnsupportedMessage(json: json)
+					return
+				}
+
 				if let appliesToVersion = json.appliesToVersion,
 					 self.version.compare(appliesToVersion, options: .numeric) != .orderedDescending {
 					if let buildNumber = Int(self.build),
@@ -184,7 +206,8 @@ class ViewController: UIViewController {
 						
 						let alert = UIAlertController(title: json.alertTitle, message: json.alertContents, preferredStyle: .alert)
 						
-						if let buttonText = json.alertButtonText {
+						if json.isButtonEnabled,
+							 let buttonText = json.alertButtonText {
 							alert.addAction(UIAlertAction(title: buttonText, style: .default, handler: { _ in
 								if let buttonURL = json.alertButtonURL,
 									 let url = URL(string: buttonURL) {
@@ -370,8 +393,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
-		
-		do {
+				do {
 			let card = cards[index]
 			if let asset = card.asset {
 				if asset.mediaType == .video {
@@ -411,6 +433,11 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 		}
 	}
 	
+	// updated this function to use the sheet manager
+	func showUnsupportedMessage(json: SettingsJson) {
+		sheetManager.triggerImportantInfo(json: json)
+	}
+
 	func didTapContinue() {
 		cardStack.isUserInteractionEnabled = true
 
@@ -458,4 +485,3 @@ extension ViewController: QLPreviewControllerDataSource, QLPreviewControllerDele
 		}
 	}
 }
-
