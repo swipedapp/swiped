@@ -27,6 +27,8 @@ struct MainView: View {
 
 	@EnvironmentObject var cardInfo: CardInfo
 
+	@EnvironmentObject var sheetManager: SheetManager
+
 	@State private var trigger = 0
 
 	func bottomButton(text: Text, action: Action) -> some View {
@@ -95,6 +97,7 @@ struct MainView: View {
 
 	return MainView()
 		.environmentObject(cardInfo)
+		.environmentObject(SheetManager())
 		.onAppear {
 			Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { _ in
 				cardInfo.setCard(nil, summary: !cardInfo.summary)
@@ -108,6 +111,7 @@ struct MainView: View {
 
 	return MainView()
 		.environmentObject(cardInfo)
+		.environmentObject(SheetManager())
 }
 
 #Preview {
@@ -116,4 +120,5 @@ struct MainView: View {
 
 	return MainView()
 		.environmentObject(cardInfo)
+		.environmentObject(SheetManager())
 }

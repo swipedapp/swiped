@@ -71,7 +71,7 @@ class ViewController: UIViewController {
 		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
-		mainView = MainView(sheetManager: sheetManager)
+		mainView = MainView()
 		mainView.delegate = self
 		photosController.delegate = self
 		
@@ -115,6 +115,7 @@ class ViewController: UIViewController {
 		mainHostingController = UIHostingController(rootView: AnyView(
 			mainView
 				.environmentObject(cardInfo)
+				.environmentObject(sheetManager)
 				.modelContext(modelContext)
 		))
 		mainHostingController.willMove(toParent: self)
