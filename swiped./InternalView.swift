@@ -29,7 +29,7 @@ struct InternalView: View {
 						showImportantInfo = true
 					}
 					.sheet(isPresented: $showImportantInfo) {
-						RestrictionView()
+						ImportantInfoView()
 					}
 					
 				.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
