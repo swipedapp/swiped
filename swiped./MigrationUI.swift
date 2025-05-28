@@ -12,13 +12,14 @@ struct MigrationUI: View {
 		NavigationView {
 			VStack {
 				
-				Text("Completing Update")
+				Text("Updating..")
 				//.font(.custom("LoosExtended-Bold", size: 23))
 					.font(.custom("LoosExtended-Bold", size: 23))
-				Text("Please wait..")
+				Text("Moving Database to SwiftData")
 				//.font(.custom("LoosExtended-Bold", size: 23))
 					.font(.custom("LoosExtended-Medium", size: 16))
 				ProgressView()
+					.controlSize(.large)
 				}
 
 				.scrollContentBackground(.hidden)
