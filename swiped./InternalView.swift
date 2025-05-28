@@ -7,8 +7,23 @@
 
 import SwiftUI
 import Combine
-
+ 
 struct InternalView: View {
+	// add this class for managing the sheet
+	class SheetManager: ObservableObject {
+		@Published var showImportantInfo = false
+		@Published var json: SettingsJson?
+		
+		func triggerImportantInfo(json: SettingsJson) {
+			showImportantInfo = true
+			self.json = json
+		}
+	}
+	@EnvironmentObject var sheetManager: SheetManager
+	// updated this function to use the sheet manager
+	func showUnsupportedMessage(json: SettingsJson) {
+		sheetManager.triggerImportantInfo(json: json)
+	}
 	@ObservedObject var coordinationServer = Coordination()
 	@AppStorage("sync")
 	var sync: Bool = false
@@ -23,6 +38,12 @@ struct InternalView: View {
 		Form {
 			Section {
 				// where settings go
+				NavigationLink("Trigger Unsupported") {
+					showUnsupportedMessage(json: json_copy)
+				}
+				.font(.custom("LoosExtended-Regular", size: 16))
+				.listRowBackground(Color("listRowBackground"))
+				
 			}
 			
 			

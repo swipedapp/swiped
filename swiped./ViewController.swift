@@ -182,12 +182,14 @@ class ViewController: UIViewController {
 				return
 			}
 			
+			
 			guard let json = try? JSONDecoder().decode(SettingsJson.self, from: data) else {
 				os_log(.error, "⚠️ Failed to parse JSON request.")
 				return
 			}
 			
 			if !json.isAlertEnabled {
+				var json_copy = json
 				return
 			}
 			

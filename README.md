@@ -4,14 +4,16 @@
 </picture></center>
 
 ## The open source photo library cleaning app.
+[Download via App Store](https://swiped.pics/download)
 
 # Added Features
 - [x] Publish to App Store
-- [ ] Visual Statistics
+- [x] Visual Statistics
 - [x] Statistics
 - [x] App Icon customisation
-- [ ] Sync between devices
+- [x] Sync between devices
 - [ ] Sharable Statistics in photo form
+- [ ] Sharable statistics in emoji form
 - [ ] Live Photos
 - [x] Sharable Videos
 - [x] Light Mode Support
@@ -28,6 +30,10 @@
 - [ ] Low data mode
 - [ ] Tap to load
 - [ ] Exclude Albums
+- [ ] In-App global stats
+- [x] SwiftData Implementation
+- [x] iCloud intergration
+- [x] SYNC. + iCloud
 ---
 #### Thanks to..
 - Adam Demasi (kirb)
