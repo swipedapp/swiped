@@ -11,8 +11,8 @@ struct ImportantInfoView: View {
 
 	@EnvironmentObject var sheetManager: SheetManager
 
-	var json: SettingsJson {
-		return sheetManager.json!
+	var json: SettingsJson? {
+		return sheetManager.json
 	}
 
 	var body: some View {
@@ -30,9 +30,9 @@ struct ImportantInfoView: View {
 					.padding(.top, 17)
 				}
 
-				Image(systemName: json.hasDroppedSupport ? "xmark.shield.fill" : "exclamationmark.shield.fill")
+				Image(systemName: json?.hasDroppedSupport ?? false ? "xmark.shield.fill" : "exclamationmark.shield.fill")
 					.font(.system(size: 80))
-					.foregroundColor(json.hasDroppedSupport ? .brandRed : .primary)
+					.foregroundColor(json?.hasDroppedSupport ?? false ? .brandRed : .primary)
 					.padding([.bottom, .top], 20)
 				Spacer()
 				Text("You're on iOS \(UIDevice.current.systemVersion)")
@@ -41,8 +41,8 @@ struct ImportantInfoView: View {
 					.padding(.bottom, 20)
 
 				VStack(alignment: .leading) {
-					if json.hasDroppedSupport {
-						Text("As we continue to pave the way for the future of this app, we sometimes need new tools. Tools that simply don't exist on your version of iOS.\n\nWe have discontinued support for your version of iOS. Meaning you will no longer receive quality updates. Please update iOS or switch to a device that is compatible with iOS \(json.minimumiOSVersion!) or later.")
+					if json?.hasDroppedSupport ?? false {
+						Text("As we continue to pave the way for the future of this app, we sometimes need new tools. Tools that simply don't exist on your version of iOS.\n\nWe have discontinued support for your version of iOS. Meaning you will no longer receive quality updates. Please update iOS or switch to a device that is compatible with iOS \(json?.minimumiOSVersion ?? "17.0") or later.")
 					} else {
 						Text("As we continue to pave the way for the future of this app, we sometimes need new tools. Tools that simply don't exist on your version of iOS.\n\nWe unfortunately will be dropping support for your version of iOS to adapt to the evolution of tomorrows tech. We know it's not ideal, but we recommend you update to a later version of iOS to get future updates from this app.")
 					}

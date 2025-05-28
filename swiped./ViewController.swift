@@ -18,10 +18,8 @@ import SwiftData
 class SheetManager: ObservableObject {
 	@Published var showImportantInfo = false
 	@Published var json: SettingsJson?
-
 	func triggerImportantInfo(json: SettingsJson) {
 		showImportantInfo = true
-		self.json = json
 	}
 }
 
@@ -193,6 +191,7 @@ class ViewController: UIViewController {
 			}
 			
 			DispatchQueue.main.async {
+				self.sheetManager.json = json
 				if let minimumiOSVersion = json.minimumiOSVersion,
 					 UIDevice.current.systemVersion.compare(minimumiOSVersion, options: .numeric) == .orderedAscending,
 					 UserDefaults.standard.object(forKey: "supportAlertLastVersion") as? String != self.version {
