@@ -189,7 +189,6 @@ class ViewController: UIViewController {
 			}
 			
 			if !json.isAlertEnabled {
-				var json_copy = json
 				return
 			}
 			
