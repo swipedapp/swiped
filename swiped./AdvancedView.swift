@@ -56,18 +56,18 @@ struct AdvancedView: View {
 #endif
 				
 				/*Section {
-					Toggle(isOn: $sync) {
-						Text("Disable Sync")
-							.font(.custom("LoosExtended-Regular", size: 16))
-					}
-					.listRowBackground(Color("listRowBackground"))
-					#if INTERNAL
-					.disabled(true)
-					#endif
-					
-				}
+				 Toggle(isOn: $sync) {
+				 Text("Disable Sync")
+				 .font(.custom("LoosExtended-Regular", size: 16))
+				 }
+				 .listRowBackground(Color("listRowBackground"))
+				 #if INTERNAL
+				 .disabled(true)
+				 #endif
+				 
+				 }
 				 */
-
+				
 				if let minimumiOSVersion = sheetManager.json?.minimumiOSVersion,
 					 UIDevice.current.systemVersion.compare(minimumiOSVersion, options: .numeric) == .orderedAscending {
 					Section {
@@ -76,13 +76,12 @@ struct AdvancedView: View {
 								.font(.custom("LoosExtended-Regular", size: 16))
 						}
 					}
-						.listRowBackground(Color("listRowBackground"))
+					.listRowBackground(Color("listRowBackground"))
 				}
 			}
 			.scrollContentBackground(.hidden)
 			.background(Color("oled"))
 		}
-		.background(Color("oled"))
 	}
 	
 	var syncSection: some View {
