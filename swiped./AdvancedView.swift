@@ -39,8 +39,8 @@ struct AdvancedView: View {
 
 
 	var body: some View {
-		Spacer()
-		VStack {
+//		Spacer()
+//		VStack {
 			Form {
 				syncSection
 				
@@ -81,7 +81,7 @@ struct AdvancedView: View {
 			}
 			.scrollContentBackground(.hidden)
 			.background(Color("oled"))
-		}
+//		}
 	}
 	
 	var syncSection: some View {
