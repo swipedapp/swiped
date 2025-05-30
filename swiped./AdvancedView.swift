@@ -82,6 +82,7 @@ struct AdvancedView: View {
 			.scrollContentBackground(.hidden)
 			.background(Color("oled"))
 		}
+		.background(Color("oled"))
 	}
 	
 	var syncSection: some View {
