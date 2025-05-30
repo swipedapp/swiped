@@ -80,7 +80,7 @@ struct AdvancedView: View {
 				}
 			}
 			.scrollContentBackground(.hidden)
-			.background(Color(uiColor: .systemBackground))
+			.background(Color("oled"))
 		}
 	}
 	

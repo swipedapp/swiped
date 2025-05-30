@@ -68,7 +68,7 @@ struct SettingsIconView: View {
 				}
 			}
 		}
-		.background(Color(uiColor: .systemBackground))
+		.background(Color("oled"))
 		//.navigationTitle("Icons")
 	}
 	
