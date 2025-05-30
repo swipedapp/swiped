@@ -126,7 +126,7 @@ struct SettingsView: View {
 				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Regular", size: 16))
 			}
 			
-			.background(Color(uiColor: .systemBackground))
+			.background(Color("oled"))
 			.navigationBarTitleDisplayMode(.large)
 		}
 		.onAppear {
