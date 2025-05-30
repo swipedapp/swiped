@@ -104,7 +104,7 @@ struct SettingsView: View {
 					}
 				}
 				.scrollContentBackground(.hidden)
-				.background(Color(uiColor: .systemBackground))
+				.background(Color("oled"))
 				.alert("You will lose all statistics you have collected so far. Are you sure you want to do this?", isPresented: $showResetAlert, actions: {
 					Button("Continue", role: .destructive) {
 						Task {
