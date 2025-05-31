@@ -41,14 +41,6 @@ struct AboutView: View {
 				Form {
 					Section(content: {}, header: {
 						ZStack(alignment: .top) {
-							if swipeDownCount < 5 {
-								HStack {
-									Image(systemName: "chevron.down")
-									Text("Swipe down to dismiss")
-									Image(systemName: "chevron.down")
-								}
-								.font(.custom("LoosExtended-Regular", size: 14))
-							}
 							
 							HStack {
 								Spacer()
@@ -72,56 +64,7 @@ struct AboutView: View {
 					})
 					
 					
-					// Production flags
-					Toggle(isOn: $timestamps) {
-						
-						Text("Show relative timestamps")
-							.font(.custom("LoosExtended-Regular", size: 16))
-						
-					}.listRowBackground(Color("listRowBackground"))
-					NavigationLink("App Icons") {
-						SettingsIconView(collection: "main")
-					}.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
-					NavigationLink("Advanced") {
-						AdvancedView()
-							.environmentObject(sheetManager)
-					}
-					.font(.custom("LoosExtended-Regular", size: 16))
-					.listRowBackground(Color("listRowBackground"))
-					NavigationLink("About") {
-						AboutView()
-							.environmentObject(sheetManager)
-					}
-					.font(.custom("LoosExtended-Regular", size: 16))
-					.listRowBackground(Color("listRowBackground"))
-					
-					Section {
-						Button(action: {
-							showResetAlert = true
-						}, label: {
-							HStack {
-								Spacer()
-								Label("Reset Database", systemImage: "xmark.bin")
-									.font(.custom("LoosExtended-Medium", size: 16))
-								Spacer()
-							}
-						})
-						.foregroundColor(.red)
-						.listRowBackground(Color("listRowBackground"))
-					}
 				}
-				.scrollContentBackground(.hidden)
-				.background(Color("oled"))
-				.alert("You will lose all statistics you have collected so far. Are you sure you want to do this?", isPresented: $showResetAlert, actions: {
-					Button("Continue", role: .destructive) {
-						Task {
-							let db = DatabaseController(modelContainer: modelContext.container)
-							await db.reset()
-							self.swipeDownCount = 0
-						}
-					}
-					Button("Cancel", role: .cancel) {}
-				})
 				
 				Spacer()
 				
