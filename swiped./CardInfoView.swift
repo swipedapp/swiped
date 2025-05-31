@@ -12,11 +12,13 @@ import UniformTypeIdentifiers
 
 class CardInfo: ObservableObject {
 	@Published var summary = false
+	@Published var position = 0
 	@Published var card: PhotoCard?
 	
-	func setCard(_ card: PhotoCard?, summary: Bool) {
+	func setCard(_ card: PhotoCard?, position: Int, summary: Bool) {
 		withAnimation {
 			self.card = card
+			self.position = position
 			self.summary = summary
 		}
 	}
@@ -179,7 +181,12 @@ struct CardInfoView: View {
 		
 		return types.joined(separator: ", ")
 	}
-	
+
+	var isSummaryTransition: Bool {
+		print("index: \(cardInfo.position) of \(ViewController.cardsPerStack)")
+		return cardInfo.summary || cardInfo.position >= ViewController.cardsPerStack - 2
+	}
+
 	var title: AnyView {
 		if let asset = cardInfo.card?.asset {
 			let date = asset.creationDate ?? .distantPast
@@ -192,7 +199,7 @@ struct CardInfoView: View {
 			
 			return AnyView(view
 				.textCase(.uppercase)
-				.contentTransition(.numericText(value: -date.timeIntervalSince1970)))
+				.contentTransition(isSummaryTransition ? .opacity : .numericText(value: -date.timeIntervalSince1970)))
 		} else {
 			return AnyView((Text("SWIPED") + Text(".")
 				.foregroundColor(Color("brandGreen")))
@@ -289,12 +296,13 @@ struct CardInfoView: View {
 		VStack(alignment: .leading, spacing: 4) {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
 				title
+					.id("title")
 					.font(.custom("LoosExtended-Bold", size: 24))
 					.lineLimit(1)
 					.onTapGesture {
 						timestamps = !timestamps
 					}
-				
+
 				Spacer()
 				
 				shareButton

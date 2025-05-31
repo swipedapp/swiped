@@ -115,7 +115,7 @@ struct BehindView: SwiftUI.View {
 
 #Preview {
 	let info = CardInfo()
-	info.setCard(nil, summary: true)
+	info.setCard(nil, position: 0, summary: true)
 	
 	return BehindView()
 		.environmentObject(info)

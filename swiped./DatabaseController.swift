@@ -24,7 +24,10 @@ actor DatabaseController {
 	}
 	
 	func reset() {
-		modelContext.container.deleteAllData()
+		let descriptor = FetchDescriptor<Photo>()
+		try! modelContext.enumerate(descriptor) { photo in
+			modelContext.delete(photo)
+		}
 		try! modelContext.save()
 	}
 	

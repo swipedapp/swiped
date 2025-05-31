@@ -24,6 +24,13 @@ class SheetManager: ObservableObject {
 }
 
 class ViewController: UIViewController {
+
+#if INTERNAL
+	static let cardsPerStack = 3
+#else
+	static let cardsPerStack = 20
+#endif
+
 	@State private var unsupportedios = true
 	// add the sheet manager
 	private let sheetManager = SheetManager()
@@ -132,7 +139,7 @@ class ViewController: UIViewController {
 		
 		var newCards = [PhotoCard]()
 		/// Defines number of cards to show. CSN
-		for _ in 0..<20 {
+		for _ in 0..<Self.cardsPerStack {
 			newCards.append(PhotoCard())
 		}
 		
@@ -156,7 +163,8 @@ class ViewController: UIViewController {
 	private func updateCurrentItem() {
 		if cards.count > 0 {
 			let index = cardStack.topCardIndex ?? 0
-			cardInfo.setCard(cards[index], summary: false)
+			print("\(cardStack.swipedCards().count)")
+			cardInfo.setCard(cards[index], position: cardStack.swipedCards().count, summary: false)
 		}
 	}
 	
@@ -336,7 +344,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 				self.cardStack.alpha = 0
 			}
 			
-			self.cardInfo.setCard(nil, summary: true)
+			self.cardInfo.setCard(nil, position: 0, summary: true)
 		}
 	}
 	

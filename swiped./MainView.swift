@@ -93,22 +93,22 @@ struct MainView: View {
 
 #Preview {
 	let cardInfo = CardInfo()
-	cardInfo.setCard(nil, summary: false)
-	
+	cardInfo.setCard(nil, position: ViewController.cardsPerStack, summary: false)
+
 	return MainView()
 		.environmentObject(cardInfo)
 		.environmentObject(SheetManager())
 		.onAppear {
 			Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { _ in
-				cardInfo.setCard(nil, summary: !cardInfo.summary)
+				cardInfo.setCard(nil, position: ViewController.cardsPerStack, summary: !cardInfo.summary)
 			}
 		}
 }
 
 #Preview {
 	let cardInfo = CardInfo()
-	cardInfo.setCard(nil, summary: false)
-	
+	cardInfo.setCard(nil, position: 0, summary: false)
+
 	return MainView()
 		.environmentObject(cardInfo)
 		.environmentObject(SheetManager())
@@ -116,8 +116,8 @@ struct MainView: View {
 
 #Preview {
 	let cardInfo = CardInfo()
-	cardInfo.setCard(nil, summary: true)
-	
+	cardInfo.setCard(nil, position: 0, summary: true)
+
 	return MainView()
 		.environmentObject(cardInfo)
 		.environmentObject(SheetManager())
