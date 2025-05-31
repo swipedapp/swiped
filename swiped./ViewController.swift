@@ -125,8 +125,8 @@ class ViewController: UIViewController {
 	}
 	
 	private func loadBatch() {
-		let logger = Logger(subsystem: "Batch", category: "Cards")
-		logger.info("Loading cards..")
+		let logger = Logger(subsystem: "Batch Loader", category: "Cards")
+		logger.debug("Creating stack of cards..")
 		loadingBatch = true
 		batchesLoaded += 1
 		
@@ -174,18 +174,19 @@ class ViewController: UIViewController {
 			}
 			
 			guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-				os_log(.error, "⚠️ Could not fetch config")
+				logger.error("Could not fetch config.")
 				return
 			}
 			
 			guard let data = data else {
 				os_log(.error, "⚠️ Server returned no data")
+				logger.error("Server returned no data.")
 				return
 			}
 			
 			
 			guard let json = try? JSONDecoder().decode(SettingsJson.self, from: data) else {
-				os_log(.error, "⚠️ Failed to parse JSON request.")
+				logger.error("Server returned malformed JSON.")
 				return
 			}
 			
