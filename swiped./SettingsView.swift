@@ -87,6 +87,12 @@ struct SettingsView: View {
 					}
 					.font(.custom("LoosExtended-Regular", size: 16))
 					.listRowBackground(Color("listRowBackground"))
+					NavigationLink("About") {
+						AboutView()
+							.environmentObject(sheetManager)
+					}
+					.font(.custom("LoosExtended-Regular", size: 16))
+					.listRowBackground(Color("listRowBackground"))
 					
 					Section {
 						Button(action: {
