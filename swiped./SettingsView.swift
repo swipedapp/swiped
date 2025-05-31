@@ -123,17 +123,7 @@ struct SettingsView: View {
 				})
 				
 				Spacer()
-				
-#if INTERNAL
-				Text("For testing purposes only.").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
-#elseif DEBUG
-				Text("Candidate Release").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
-#endif
-				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Regular", size: 16))
 			}
-			
-			.background(Color("oled"))
-			.navigationBarTitleDisplayMode(.large)
 		}
 		.onAppear {
 			self.swipeDownCount += 1

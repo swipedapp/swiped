@@ -27,12 +27,6 @@ struct AboutView: View {
 	
 	
 	
-	@State
-	var showResetAlert: Bool = false
-	
-	@AppStorage("swipeDownCount")
-	var swipeDownCount = 0
-	
 	@Environment(\.modelContext) var modelContext
 	
 	var body: some View {
@@ -78,9 +72,6 @@ struct AboutView: View {
 			
 			.background(Color("oled"))
 			.navigationBarTitleDisplayMode(.large)
-		}
-		.onAppear {
-			self.swipeDownCount += 1
 		}
 	}
 	
