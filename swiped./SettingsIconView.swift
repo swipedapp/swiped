@@ -35,7 +35,7 @@ struct SettingsIconView: View {
 				Icon(name: "brat-s-general", title: "BRAT Simplified"),
 				Icon(name: "brat-s-nextgen", title: "BRAT Simplified Phase II")
 			]
-
+			
 		default:
 			fatalError()
 		}
@@ -89,7 +89,7 @@ struct SettingsIconView: View {
 			
 			Spacer()
 		}
-			.padding(15)
+		.padding(15)
 	}
 }
 

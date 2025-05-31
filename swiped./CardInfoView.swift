@@ -35,13 +35,13 @@ struct CardInfoView: View {
 	private let photosController = PhotosController()
 	
 	@EnvironmentObject var cardInfo: CardInfo
-
+	
 	@Environment(\.modelContext) var modelContext {
 		didSet {
 			photosController.db = DatabaseController(modelContainer: modelContext.container)
 		}
 	}
-
+	
 	@State var showSettings = false
 	
 	@AppStorage("timestamps")
@@ -138,12 +138,12 @@ struct CardInfoView: View {
 		
 		/// Deprecated in favor of having icons sit next to their parent icon.
 		/*
-		if asset.mediaSubtypes.contains(.photoScreenshot) {
-			types.append("Screenshot")
-		}
-		if asset.mediaSubtypes.contains(.photoLive) {
-			types.append("Live")
-		}
+		 if asset.mediaSubtypes.contains(.photoScreenshot) {
+		 types.append("Screenshot")
+		 }
+		 if asset.mediaSubtypes.contains(.photoLive) {
+		 types.append("Live")
+		 }
 		 */
 		
 		if types.isEmpty {
@@ -297,7 +297,7 @@ struct CardInfoView: View {
 				Spacer()
 				
 				shareButton
-
+				
 				Button(action: {
 					showSettings = true
 				}, label: {

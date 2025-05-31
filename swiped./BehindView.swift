@@ -9,19 +9,19 @@ import SwiftUI
 import SwiftData
 
 struct SummaryGridView: SwiftUI.View {
-
+	
 	let totalKept: Int
 	let totalDeleted: Int
-
+	
 	var body: some SwiftUI.View {
 		let total = totalKept + totalDeleted
 		let keptCount = total == 0 ? 0 : Int((Double(totalKept) / Double(total) * 100).rounded(.toNearestOrAwayFromZero))
-
+		
 		return VStack {
 			ForEach(0..<10) { i in
 				HStack {
 					ForEach(0..<10) { j in
-
+						
 						Circle()
 							.fill(Color((i * 10) + j < keptCount ? "brandGreen" : "brandRed"))
 					}
@@ -29,39 +29,39 @@ struct SummaryGridView: SwiftUI.View {
 			}
 		}
 	}
-
+	
 }
 
 struct BehindView: SwiftUI.View {
-
+	
 	protocol Delegate: AnyObject {
 		func didTapContinue()
 	}
-
+	
 	private static let fileSizeFormatter = ByteCountFormatter()
-
+	
 	@EnvironmentObject var cardInfo: CardInfo
-
+	
 	@Environment(\.modelContext) var modelContext
-
+	
 	@State var totalKept = 0
 	@State var totalDeleted = 0
 	@State var spaceSaved: Int64 = 0
 	@State var swipeScore: Int64 = 0
-
+	
 	weak var delegate: Delegate?
-
+	
 	var body: some SwiftUI.View {
 		if !cardInfo.summary {
 			return AnyView(EmptyView())
 		}
-
+		
 		return AnyView(VStack(alignment: .center, spacing: 10) {
 			SummaryGridView(totalKept: totalKept,
 											totalDeleted: totalDeleted)
-
+			
 			VStack(alignment: .leading, spacing: 10) {
-		
+				
 				Text("\(totalKept.formatted()) kept")
 					.frame(maxWidth: .infinity, alignment: .leading)
 				Text("\(totalDeleted.formatted()) deleted")
@@ -82,10 +82,10 @@ struct BehindView: SwiftUI.View {
 				
 				
 			}
-				.font(.custom("LoosExtended-Bold", size: 18))
-				.multilineTextAlignment(.leading)
-				.padding(.vertical, 20)
-
+			.font(.custom("LoosExtended-Bold", size: 18))
+			.multilineTextAlignment(.leading)
+			.padding(.vertical, 20)
+			
 			Button {
 				delegate?.didTapContinue()
 			} label: {
@@ -116,7 +116,7 @@ struct BehindView: SwiftUI.View {
 #Preview {
 	let info = CardInfo()
 	info.setCard(nil, summary: true)
-
+	
 	return BehindView()
 		.environmentObject(info)
 }

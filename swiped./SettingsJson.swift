@@ -16,7 +16,7 @@ class SettingsJson: Codable {
 	let alertButtonURL: String?
 	let appliesToBuild: String?
 	let appliesToVersion: String?
-
+	
 	let minimumiOSVersion: String?
 	let hasDroppedSupport: Bool
 }

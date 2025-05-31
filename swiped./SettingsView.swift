@@ -23,7 +23,7 @@ struct SettingsView: View {
 	
 	
 	@EnvironmentObject var sheetManager: SheetManager
-
+	
 	
 	
 	@State
@@ -31,9 +31,9 @@ struct SettingsView: View {
 	
 	@AppStorage("swipeDownCount")
 	var swipeDownCount = 0
-
+	
 	@Environment(\.modelContext) var modelContext
-
+	
 	var body: some View {
 		NavigationStack {
 			VStack {

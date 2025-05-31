@@ -24,16 +24,16 @@ extension XCTestCase {
 	}
 }
 final class swiped_UITests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
+	
+	override func setUpWithError() throws {
+		// Put setup code here. This method is called before the invocation of each test method in the class.
+		
+		// In UI tests it is usually best to stop immediately when a failure occurs.
+		continueAfterFailure = false
+		
+		// In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+	}
+	
 	override func tearDownWithError() throws {
 		// Put teardown code here. This method is called after the invocation of each test method in the class.
 	}
@@ -44,12 +44,12 @@ final class swiped_UITests: XCTestCase {
 		app.resetAuthorizationStatus(for: .photos)
 		app.launch()
 		app.activate()
-
+		
 		let springboardApp = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 		springboardApp.buttons["Allow Full Access"].tap()
 		sleep(5)
 		takeScreenshot(of: app, named: "Launch")
-
+		
 		let keepStaticText = app.staticTexts["Keep"]
 		sleep(1)
 		keepStaticText.tap()
@@ -97,27 +97,27 @@ final class swiped_UITests: XCTestCase {
 			springboardApp.buttons["Delete"].tap()
 		}
 		
-
+		
 		takeScreenshot(of: app, named: "Summary")
 		let settingsButton = app.buttons["settingsButton"]
 		settingsButton.tap()
 		takeScreenshot(of: app, named: "Settings")
 		app.terminate()
-
+		
 		let icon = springboardApp.icons["swiped."]
 		if icon.exists {
 			icon.press(forDuration: 1)
-
+			
 			let buttonRemoveApp = springboardApp.buttons["Remove App"]
 			if buttonRemoveApp.waitForExistence(timeout: 5) {
 				buttonRemoveApp.tap()
 			}
-
+			
 			let buttonDeleteApp = springboardApp.alerts.buttons["Delete App"]
 			if buttonDeleteApp.waitForExistence(timeout: 5) {
 				buttonDeleteApp.tap()
 			}
-
+			
 			let buttonDelete = springboardApp.alerts.buttons["Delete"]
 			if buttonDelete.waitForExistence(timeout: 5) {
 				buttonDelete.tap()
@@ -126,12 +126,12 @@ final class swiped_UITests: XCTestCase {
 	}
 	
 	
-
-    @MainActor
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
-    }
+	
+	@MainActor
+	func testLaunchPerformance() throws {
+		// This measures how long it takes to launch your application.
+		measure(metrics: [XCTApplicationLaunchMetric()]) {
+			XCUIApplication().launch()
+		}
+	}
 }

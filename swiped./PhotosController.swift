@@ -27,9 +27,9 @@ class PhotosController {
 	}
 	
 	weak var delegate: PhotoLoadDelegate?
-
+	
 	var db: DatabaseController!
-
+	
 	func loadRandomPhotos(for cards: [PhotoCard], callback: @escaping () -> Void) {
 		// Request permission to access photo library
 		PHPhotoLibrary.requestAuthorization { status in
@@ -75,11 +75,11 @@ class PhotosController {
 		if fetchResult.count == 0 {
 			throw PhotoError.noPhotosAvailable
 		}
-
+		
 		if await fetchResult.count == db.getTotalKept() {
 			throw PhotoError.noPhotosLeft
 		}
-
+		
 		for card in cards {
 			// Pick a random photo
 			var asset: PHAsset!
@@ -109,7 +109,7 @@ class PhotosController {
 			let photo = Photo(id: asset.localIdentifier)
 			photo.creationDate = asset.creationDate
 			photo.type = Photo.AssetType(rawValue: asset.mediaType.rawValue) ?? .unknown
-
+			
 			card.photo = photo
 			
 			let resources = PHAssetResource.assetResources(for: asset)
@@ -168,20 +168,20 @@ class PhotosController {
 			if let error = error as? NSError {
 				os_log(.error, "⚠️ Could not delete photos. \(error)")
 			}
-
+			
 			if !success {
 				// Mark as skipped because the user likely pressed cancel
 				for card in cards {
 					if let photo = card.photo {
 						photo.choice = .skip
-
+						
 						Task {
 							await self.db.addPhoto(photo: photo)
 						}
 					}
 				}
 			}
-
+			
 			DispatchQueue.main.async {
 				if !success {
 					self.delegate?.didFail(error: .failedToDelete)

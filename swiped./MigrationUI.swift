@@ -20,17 +20,17 @@ struct MigrationUI: View {
 					.font(.custom("LoosExtended-Medium", size: 16))
 				ProgressView()
 					.controlSize(.large)
-				}
-
-				.scrollContentBackground(.hidden)
-				.background(Color(uiColor: .systemBackground))
-				Spacer()
 			}
-				.interactiveDismissDisabled()
+			
+			.scrollContentBackground(.hidden)
+			.background(Color(uiColor: .systemBackground))
+			Spacer()
 		}
-		//.background(Color(uiColor: .systemBackground))
+		.interactiveDismissDisabled()
 	}
+	//.background(Color(uiColor: .systemBackground))
+}
 
 #Preview {
-    MigrationUI()
+	MigrationUI()
 }

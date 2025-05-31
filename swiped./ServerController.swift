@@ -36,27 +36,27 @@ struct SyncRequest: Codable {
 }
 // INTERNAL BUILDS
 /*#if INTERNAL
-class ServerController: NSObject {
-
-	
-	static let shared = ServerController()
-
-	var syncFailed = false
-	
-	func getReceipt() async -> String? {
-		return "Internal Build"
-	}
-	
-	func doRegister() async {
-		var syncFailed = true
-	}
-	
-	func doSync() async {
-		var syncFailed = true
-	}
-	
-}
-*///#else
+ class ServerController: NSObject {
+ 
+ 
+ static let shared = ServerController()
+ 
+ var syncFailed = false
+ 
+ func getReceipt() async -> String? {
+ return "Internal Build"
+ }
+ 
+ func doRegister() async {
+ var syncFailed = true
+ }
+ 
+ func doSync() async {
+ var syncFailed = true
+ }
+ 
+ }
+ *///#else
 // Release Builds
 class ServerController: NSObject, ObservableObject {
 	
@@ -69,14 +69,14 @@ class ServerController: NSObject, ObservableObject {
 #endif
 	
 	static let server = URL(string: "https://swiped.pics/")!
-
+	
 	@Published var syncFailed = true
 	
 	private var syncPublisher: AnyCancellable?
 	
 	override init() {
 		super.init()
-
+		
 		syncPublisher = UserDefaults.standard.publisher(for: \.sync)
 			.sink { _ in
 				if self.sync {
@@ -119,7 +119,7 @@ class ServerController: NSObject, ObservableObject {
 		await MainActor.run {
 			self.syncFailed = true
 		}
-
+		
 		let syncFailed: Bool
 		if (!sync) {
 			print("🌐 Connecting with \(Self.server)")
@@ -143,7 +143,7 @@ class ServerController: NSObject, ObservableObject {
 		} else {
 			syncFailed = false
 		}
-
+		
 		
 		await MainActor.run {
 			self.syncFailed = syncFailed
@@ -160,7 +160,7 @@ class ServerController: NSObject, ObservableObject {
 																	 totalVideoDeleted: db.getTotalVideoDeleted(),
 																	 spaceSaved: Int(db.getSpaceSaved()),
 																	 swipeScore: db.calcSwipeScore())
-
+			
 			var request = URLRequest(url: Self.server.appendingPathComponent("sync"))
 			request.httpMethod = "POST"
 			request.setValue("application/json", forHTTPHeaderField: "Content-Type")

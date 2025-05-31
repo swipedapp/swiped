@@ -27,7 +27,7 @@ class ViewController: UIViewController {
 	@State private var unsupportedios = true
 	// add the sheet manager
 	private let sheetManager = SheetManager()
-
+	
 	var version: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 	}
@@ -35,19 +35,19 @@ class ViewController: UIViewController {
 	var build: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
 	}
-
+	
 	var modelContext: ModelContext! {
 		didSet {
 			db = DatabaseController(modelContainer: modelContext.container)
 		}
 	}
-
+	
 	private var db: DatabaseController!
-
+	
 	private let cardStack = SwipeCardStack()
 	private var mainView: MainView!
 	private var mainHostingController: UIHostingController<AnyView>!
-
+	
 	private let photosController = PhotosController()
 	private var cards = [PhotoCard]()
 	private var toDelete = [PhotoCard]()
@@ -60,12 +60,12 @@ class ViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
+		
 		photosController.db = db
-
-		#if !INTERNAL
+		
+#if !INTERNAL
 		fetchAlert()
-		#endif
+#endif
 		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
@@ -198,7 +198,7 @@ class ViewController: UIViewController {
 					self.showUnsupportedMessage(json: json)
 					return
 				}
-
+				
 				if let appliesToVersion = json.appliesToVersion,
 					 self.version.compare(appliesToVersion, options: .numeric) != .orderedDescending {
 					if let buildNumber = Int(self.build),
@@ -277,14 +277,14 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 		case .failedToFetchPhoto:
 			// This shows an alert if theres an issue loading the library.
 			let idiom = UIDevice.current.userInterfaceIdiom
-				let alert = UIAlertController(title: "Oh Bugger!🪲", message: "We couldn't load your photo library. Please try again later.", preferredStyle: .alert)
-				present(alert, animated: true)
+			let alert = UIAlertController(title: "Oh Bugger!🪲", message: "We couldn't load your photo library. Please try again later.", preferredStyle: .alert)
+			present(alert, animated: true)
 			break
 		}
 	}
 }
 extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, MainView.Delegate, BehindView.Delegate {
-
+	
 	func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
 		let card = SwipeCard()
 		card.footerHeight = 80
@@ -325,12 +325,12 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 		Task {
 			await ServerController.shared.doSync(db: db)
 		}
-
+		
 		DispatchQueue.main.async {
 			UIView.animate(withDuration: 0.3) {
 				self.cardStack.alpha = 0
 			}
-
+			
 			self.cardInfo.setCard(nil, summary: true)
 		}
 	}
@@ -367,11 +367,11 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 		
 		photo.choice = choice
 		photo.swipeDate = Date()
-
+		
 		Task {
 			await self.db.addPhoto(photo: photo)
 		}
-
+		
 		if direction == .up {
 			if let image = card.fullImage ?? card.thumbnail {
 				let shareSheet = UIActivityViewController(activityItems: [image], applicationActivities: [])
@@ -383,7 +383,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
-				do {
+		do {
 			let card = cards[index]
 			if let asset = card.asset {
 				if asset.mediaType == .video {
@@ -427,17 +427,17 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 	func showUnsupportedMessage(json: SettingsJson) {
 		sheetManager.triggerImportantInfo(json: json)
 	}
-
+	
 	func didTapContinue() {
 		cardStack.isUserInteractionEnabled = true
-
+		
 		UIView.animate(withDuration: 0.3) {
 			//self.cardStack.alpha = 1
 			//self.buttonStackView.alpha = 1
 		} completion: { _ in
 			self.loadBatch()
 		}
-
+		
 		if batchesLoaded == 4 && !UserDefaults.standard.bool(forKey: "requestedReview") {
 			UserDefaults.standard.set(true, forKey: "requestedReview")
 			AppStore.requestReview(in: self.view.window!.windowScene!)

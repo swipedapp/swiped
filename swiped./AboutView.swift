@@ -72,7 +72,7 @@ struct AboutView: View {
 			}
 			.scrollContentBackground(.hidden)
 			.background(Color("oled"))
-
+			
 		}
 		
 	}

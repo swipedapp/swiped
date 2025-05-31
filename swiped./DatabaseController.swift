@@ -11,44 +11,44 @@ import SwiftData
 
 @ModelActor
 actor DatabaseController {
-
+	
 	func needsMigration() -> Bool {
 		let migrator = DatabaseMigrator()
 		return migrator.needsMigration()
 	}
-
+	
 	func migrate() async {
 		let migrator = DatabaseMigrator()
 		await migrator.migrate(dbController: self)
 		
 	}
-
+	
 	func reset() {
 		modelContext.container.deleteAllData()
 		try! modelContext.save()
 	}
-
+	
 	func addPhoto(photo: Photo) {
 		if let photo2 = getPhoto(id: photo.id) {
 			modelContext.delete(photo2)
 		}
-
+		
 		modelContext.insert(photo)
 		try! modelContext.save()
 	}
-
+	
 	func getPhoto(id photoID: String) -> Photo? {
 		let descriptor = FetchDescriptor<Photo>(predicate: #Predicate {
 			$0.id == photoID
 		})
 		return try! modelContext.fetch(descriptor).first
 	}
-
+	
 	func getTotal() -> Int {
 		let descriptor = FetchDescriptor<Photo>()
 		return try! modelContext.fetchCount(descriptor)
 	}
-
+	
 	func getTotalKept() -> Int {
 		let keep = Photo.Choice.keep.rawValue
 		let descriptor = FetchDescriptor<Photo>(predicate: #Predicate {
@@ -56,7 +56,7 @@ actor DatabaseController {
 		})
 		return try! modelContext.fetchCount(descriptor)
 	}
-
+	
 	func getTotalDeleted() -> Int {
 		let delete = Photo.Choice.delete.rawValue
 		let descriptor = FetchDescriptor<Photo>(predicate: #Predicate {
@@ -64,7 +64,7 @@ actor DatabaseController {
 		})
 		return try! modelContext.fetchCount(descriptor)
 	}
-
+	
 	func getTotalPhotoDeleted() -> Int {
 		let delete = Photo.Choice.delete.rawValue
 		let image = Photo.AssetType.image.rawValue
@@ -81,7 +81,7 @@ actor DatabaseController {
 		})
 		return try! modelContext.fetchCount(descriptor)
 	}
-
+	
 	func getSpaceSaved() -> Double {
 		let delete = Photo.Choice.delete.rawValue
 		let descriptor = FetchDescriptor<Photo>(predicate: #Predicate {

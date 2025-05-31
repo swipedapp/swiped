@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Combine
- 
+
 struct InternalView: View {
 	@State var showImportantInfo = false
 	@ObservedObject var coordinationServer = Coordination()
@@ -31,8 +31,8 @@ struct InternalView: View {
 					.sheet(isPresented: $showImportantInfo) {
 						ImportantInfoView()
 					}
-					
-				.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
+				
+					.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
 			}
 			
 			
