@@ -196,10 +196,6 @@ struct CardInfoView: View {
 		return types.joined(separator: ", ")
 	}
 
-	var isSummaryTransition: Bool {
-		return logo
-	}
-
 	var title: AnyView {
 		if logo {
 			return AnyView((Text("SWIPED") + Text(".")
@@ -207,32 +203,31 @@ struct CardInfoView: View {
 				.contentTransition(.opacity))
 		}
 
+		let view: AnyView
 		if let asset = cardInfo.card?.asset {
+			let text: Text
 			let date = asset.creationDate ?? .distantPast
-			let view: AnyView
 			if timestamps {
-				view = AnyView(Text(date, format: Date.RelativeFormatStyle(presentation: .numeric, unitsStyle: .wide)))
+				text = Text(date, format: Date.RelativeFormatStyle(presentation: .numeric, unitsStyle: .wide))
 			} else {
-				view = AnyView(Text(date, format: Date.FormatStyle(date: .abbreviated)))
+				text = Text(date, format: Date.FormatStyle(date: .abbreviated))
 			}
-			
-			return AnyView(view
-				.textCase(.uppercase)
-				.contentTransition(isSummaryTransition ? .opacity : .numericText(value: -date.timeIntervalSince1970)))
+			view = AnyView(text
+				.contentTransition(.numericText(value: -date.timeIntervalSince1970)))
 		} else {
-			return AnyView(EmptyView())
+			view = AnyView(Text(" "))
 		}
+
+		return AnyView(view
+			.textCase(.uppercase))
 	}
 	
 	var subhead: AnyView {
 		if logo {
 			if cardInfo.summary {
-				return AnyView(HStack(alignment: .center, spacing: 8) {
-					Text("Summary")
-				})
+				return AnyView(Text("Summary"))
 			} else {
-				return AnyView(Color.clear
-					.frame(height: 20))
+				return AnyView(Text(" "))
 			}
 		}
 
@@ -281,8 +276,7 @@ struct CardInfoView: View {
 			})
 			
 		}
-		return AnyView(Color.clear
-			.frame(height: 20))
+		return AnyView(Text(" "))
 
 	}
 	
