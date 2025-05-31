@@ -152,6 +152,7 @@ class ServerController: NSObject, ObservableObject {
 	}
 	
 	func doSync(db: DatabaseController) async {
+		let logger = Logger(subsystem: "Sync", category: "SYNC.")
 		if (!sync) {
 			let receipt = await getReceipt()
 			let data = await SyncRequest(receipt: receipt,
