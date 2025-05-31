@@ -123,7 +123,7 @@ class ServerController: NSObject, ObservableObject {
 		
 		let syncFailed: Bool
 		if (!sync) {
-			logger.debug("🌐 Connecting with \(Self.server)")
+			logger.debug("Connecting with \(Self.server)")
 			let receipt = await getReceipt()
 			let data = RegisterRequest(receipt: receipt)
 			
@@ -176,7 +176,9 @@ class ServerController: NSObject, ObservableObject {
 			guard let res = res as? HTTPURLResponse else {
 				return
 			}
-			
+			if (res.statusCode != 200) {
+				logger.critical("Server rejected sync request with status code \(res.statusCode)")
+			}
 			syncFailed = res.statusCode != 200
 		}
 	}
