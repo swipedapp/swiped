@@ -307,7 +307,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 	}
 	
 	func didSwipeAllCards(_ cardStack: SwipeCardStack) {
-		print("Swiped all cards!")
+		let logger = Logger(subsystem: "Swiped all cards", category: "Cards")
+		logger.debug("Swiped all cards")
 		
 		photosController.delete(cards: toDelete) { success in
 			if !success {
@@ -345,7 +346,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
-		print("Swiped \(direction)")
+		let logger = Logger(subsystem: "Swipe Card", category: "Cards")
+		logger.debug("Swiped \(direction)")
 		let card = cards[index]
 		
 		var choice: Photo.Choice
@@ -387,6 +389,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
+		let logger = Logger(subsystem: "Quick Look", category: "Cards")
 		do {
 			let card = cards[index]
 			if let asset = card.asset {
@@ -412,7 +415,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 				}
 			}
 		} catch {
-			print("Error in quick look \(error.localizedDescription)")
+			logger.critical("Could not present quick look: \(error.localizedDescription)")
 		}
 	}
 	
