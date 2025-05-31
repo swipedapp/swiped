@@ -55,8 +55,9 @@ struct AboutView: View {
 							}
 							.padding(.vertical, 30)
 						}
+						
 					})
-					
+					.background(Color("oled"))
 					
 				}
 				
@@ -69,11 +70,13 @@ struct AboutView: View {
 #endif
 				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Regular", size: 16))
 			}
-			
+			.scrollContentBackground(.hidden)
 			.background(Color("oled"))
-			.navigationBarTitleDisplayMode(.large)
+
 		}
+		
 	}
+	
 	
 }
 
