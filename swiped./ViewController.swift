@@ -231,7 +231,7 @@ class ViewController: UIViewController {
 
 extension ViewController: PhotosController.PhotoLoadDelegate {
 	func didLoadThumbnail(for card: PhotoCard, image: UIImage) {
-		//print("loaded thumbnail for \(card.id)")
+		
 		card.thumbnail = image
 		
 		if let swipeCard = cardStack.card(forIndexAt: card.id),
@@ -241,7 +241,6 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 	}
 	
 	func didLoadFullImage(for card: PhotoCard, image: UIImage) {
-		//print("loaded full image for \(card.id)")
 		card.fullImage = image
 		
 		if let swipeCard = cardStack.card(forIndexAt: card.id),
@@ -276,20 +275,10 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 			present(alert, animated: true)
 			
 		case .failedToFetchPhoto:
+			// This shows an alert if theres an issue loading the library.
 			let idiom = UIDevice.current.userInterfaceIdiom
-			
-			if idiom == .phone {
 				let alert = UIAlertController(title: "Oh Bugger!🪲", message: "We couldn't load your photo library. Please try again later.", preferredStyle: .alert)
 				present(alert, animated: true)
-			} else if idiom == .pad {
-				let alert = UIAlertController(title: "swiped is not yet supported on this device.", message: "", preferredStyle: .alert)
-				present(alert, animated: true)
-			} else {
-				// It's something else
-			}
-			/*
-			 
-			 */
 			break
 		}
 	}

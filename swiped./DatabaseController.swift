@@ -20,6 +20,7 @@ actor DatabaseController {
 	func migrate() async {
 		let migrator = DatabaseMigrator()
 		await migrator.migrate(dbController: self)
+		
 	}
 
 	func reset() {
