@@ -54,6 +54,7 @@ struct SettingsView: View {
 								VStack(alignment: .center) {
 									Text("Settings")
 										.foregroundColor(.primary)
+										.textCase(nil)
 										.font(.custom("LoosExtended-Medium", size: 50))
 								}
 								Spacer()
