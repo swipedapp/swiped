@@ -257,7 +257,7 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 	
 	func didFail(error: PhotosController.PhotoError) {
 		let logger = Logger(subsystem: "didFail", category: "PhotoController")
-		logger.critical("PhotoController Error:  \(error.localizedDescription)")
+		logger.critical("PhotoController Error: \(error.localizedDescription)")
 		switch error {
 		case .noAccessToPhotoLibrary, .noPhotosAvailable:
 			let alert = UIAlertController(title: "No Photos!", message: "Your Photos library is empty, or you limited access.", preferredStyle: .alert)

@@ -31,6 +31,8 @@ class PhotosController {
 	var db: DatabaseController!
 	
 	func loadRandomPhotos(for cards: [PhotoCard], callback: @escaping () -> Void) {
+		let logger = Logger(subsystem: "Photos Loader", category: "PhotoController")
+		logger.debug("Loading photos..")
 		// Request permission to access photo library
 		PHPhotoLibrary.requestAuthorization { status in
 			switch status {
@@ -43,7 +45,7 @@ class PhotosController {
 							callback()
 						}
 					} catch {
-						os_log(.error, "⚠️ Error loading photos:  \(error)")
+						logger.critical("Failed to load photos. \(error)")
 						
 						await MainActor.run {
 							if let error = error as? PhotoError {
