@@ -141,6 +141,9 @@ class ServerController: NSObject, ObservableObject {
 			}
 			
 			syncFailed = res.statusCode != 200
+			if (res.statusCode != 200) {
+				logger.critical("Server rejected registration.")
+			}
 		} else {
 			syncFailed = false
 		}
