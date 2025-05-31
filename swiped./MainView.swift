@@ -45,10 +45,10 @@ struct MainView: View {
 			VStack(spacing: 0) {
 				ZStack {
 					CardInfoView()
-						.opacity(cardInfo.summary ? -value : value)
+						.opacity(cardInfo.card == nil || cardInfo.summary ? -value : value)
 
 					CardInfoView(logo: true)
-						.opacity(cardInfo.summary ? value : -value)
+						.opacity(cardInfo.card == nil || cardInfo.summary ? value : -value)
 				}
 
 				ZStack {

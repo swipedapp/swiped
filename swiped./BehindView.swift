@@ -52,16 +52,12 @@ struct BehindView: SwiftUI.View {
 	weak var delegate: Delegate?
 	
 	var body: some SwiftUI.View {
-		if !cardInfo.summary {
-			return AnyView(EmptyView())
-		}
-		
-		return AnyView(VStack(alignment: .center, spacing: 10) {
+		return VStack(alignment: .center, spacing: 10) {
 			SummaryGridView(totalKept: totalKept,
 											totalDeleted: totalDeleted)
-			
+
 			VStack(alignment: .leading, spacing: 10) {
-				
+
 				Text("\(totalKept.formatted()) kept")
 					.frame(maxWidth: .infinity, alignment: .leading)
 				Text("\(totalDeleted.formatted()) deleted")
@@ -75,17 +71,17 @@ struct BehindView: SwiftUI.View {
 					} else {
 						Image(systemName: "trophy.fill")
 					}
-					
+
 					Text("\(swipeScore.formatted()) SwipeScore").font(.custom("LoosExtended-Medium", size: 18))
 						.frame(maxWidth: .infinity, alignment: .leading)
 				}
-				
-				
+
+
 			}
 			.font(.custom("LoosExtended-Bold", size: 18))
 			.multilineTextAlignment(.leading)
 			.padding(.vertical, 20)
-			
+
 			Button {
 				delegate?.didTapContinue()
 			} label: {
@@ -100,15 +96,16 @@ struct BehindView: SwiftUI.View {
 			.frame(maxWidth: 450)
 			.padding(.horizontal, 20)
 			.padding(.vertical, 40)
-			.opacity(cardInfo.summary ? 1 : 0)
-			.animation(.easeOut(duration: cardInfo.summary ? 0.5 : 0), value: cardInfo.summary)
-			.contentTransition(.numericText())
-			.task {
-				let db = DatabaseController(modelContainer: modelContext.container)
-				self.totalKept = await db.getTotalKept()
-				self.totalDeleted = await db.getTotalDeleted()
-				self.spaceSaved = Int64(await db.getSpaceSaved())
-				self.swipeScore = await db.calcSwipeScore()
+			.onChange(of: cardInfo.summary, { oldValue, newValue in
+				if cardInfo.summary {
+					Task {
+						let db = DatabaseController(modelContainer: modelContext.container)
+						self.totalKept = await db.getTotalKept()
+						self.totalDeleted = await db.getTotalDeleted()
+						self.spaceSaved = Int64(await db.getSpaceSaved())
+						self.swipeScore = await db.calcSwipeScore()
+					}
+				}
 			})
 	}
 }
