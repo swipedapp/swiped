@@ -8,6 +8,7 @@
 
 import CoreTransferable
 import Photos
+import OSLog
 
 struct TransferableImage: Transferable {
 	let asset: PHAsset
@@ -15,6 +16,8 @@ struct TransferableImage: Transferable {
 	static var transferRepresentation: some TransferRepresentation {
 		DataRepresentation(exportedContentType: .jpeg) { item in
 			return try await withCheckedThrowingContinuation { continuation in
+				var logger = Logger(subsystem: "Photo", category: "ShareSheet Handler")
+				logger.debug("Called Share Photo")
 				let fullImageOptions = PHImageRequestOptions()
 				fullImageOptions.deliveryMode = .highQualityFormat
 				fullImageOptions.resizeMode = .exact
@@ -30,9 +33,10 @@ struct TransferableImage: Transferable {
 					
 					guard let data = imageData else {
 						continuation.resume(throwing: NSError(domain: "PhotoTransfer", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not load photo data"]))
+						logger.error("Could not load photo data")
 						return
 					}
-					
+					logger.debug("Opening ShareSheet..")
 					// For most cases, we can use the data directly
 					continuation.resume(returning: data)
 				}

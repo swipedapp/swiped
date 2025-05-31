@@ -183,7 +183,6 @@ struct CardInfoView: View {
 	}
 
 	var isSummaryTransition: Bool {
-		print("index: \(cardInfo.position) of \(ViewController.cardsPerStack)")
 		return cardInfo.summary || cardInfo.position >= ViewController.cardsPerStack - 2
 	}
 

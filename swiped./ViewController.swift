@@ -163,7 +163,6 @@ class ViewController: UIViewController {
 	private func updateCurrentItem() {
 		if cards.count > 0 {
 			let index = cardStack.topCardIndex ?? 0
-			print("\(cardStack.swipedCards().count)")
 			cardInfo.setCard(cards[index], position: cardStack.swipedCards().count, summary: false)
 		}
 	}
