@@ -163,7 +163,7 @@ class ViewController: UIViewController {
 	private func fetchAlert() {
 		let logger = Logger(subsystem: "Fetch Alert", category: "Initialization")
 #if RELEASE || DEBUG
-		let url = URL(string: "https://swiped.pics/beta/codnf.json")!
+		let url = URL(string: "https://swiped.pics/")!
 #else
 		let url = URL(string: "https://swiped.pics")!
 #endif
@@ -174,7 +174,7 @@ class ViewController: UIViewController {
 			}
 			
 			guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-				logger.error("Could not fetch config.")
+				logger.error("Server returned a response code other than 200.")
 				return
 			}
 			
