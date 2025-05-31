@@ -163,7 +163,7 @@ class ViewController: UIViewController {
 	private func fetchAlert() {
 		let logger = Logger(subsystem: "Fetch Alert", category: "Initialization")
 #if RELEASE || DEBUG
-		let url = URL(string: "https://swiped.pics/")!
+		let url = URL(string: "https://swiped.pics/beta/conf.json")!
 #else
 		let url = URL(string: "https://swiped.pics")!
 #endif
@@ -256,8 +256,8 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 	}
 	
 	func didFail(error: PhotosController.PhotoError) {
-		os_log(.error, "⚠️ PhotoController Error:  \(error.localizedDescription)")
-		
+		let logger = Logger(subsystem: "didFail", category: "PhotoController")
+		logger.critical("PhotoController Error:  \(error.localizedDescription)")
 		switch error {
 		case .noAccessToPhotoLibrary, .noPhotosAvailable:
 			let alert = UIAlertController(title: "No Photos!", message: "Your Photos library is empty, or you limited access.", preferredStyle: .alert)
