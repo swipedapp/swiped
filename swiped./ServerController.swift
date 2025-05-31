@@ -116,13 +116,14 @@ class ServerController: NSObject, ObservableObject {
 	}
 	
 	func doRegister() async {
+		let logger = Logger(subsystem: "Registration", category: "SYNC.")
 		await MainActor.run {
 			self.syncFailed = true
 		}
 		
 		let syncFailed: Bool
 		if (!sync) {
-			print("🌐 Connecting with \(Self.server)")
+			logger.debug("🌐 Connecting with \(Self.server)")
 			let receipt = await getReceipt()
 			let data = RegisterRequest(receipt: receipt)
 			
