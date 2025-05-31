@@ -61,6 +61,7 @@ struct SwipedApp: App {
 					})
 			}
 			.toolbar(.hidden)
+			.navigationViewStyle(.stack)
 		}
 		.modelContainer(modelContainer)
 	}

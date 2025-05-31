@@ -14,11 +14,21 @@ class CardInfo: ObservableObject {
 	@Published var summary = false
 	@Published var position = 0
 	@Published var card: PhotoCard?
-	
+
+	init(summary: Bool = false) {
+		self.summary = summary
+	}
+
 	func setCard(_ card: PhotoCard?, position: Int, summary: Bool) {
 		withAnimation {
 			self.card = card
 			self.position = position
+			self.summary = summary
+		}
+	}
+
+	func setSummary(_ summary: Bool) {
+		withAnimation {
 			self.summary = summary
 		}
 	}
@@ -35,7 +45,9 @@ struct CardInfoView: View {
 	private static let fileSizeFormatter = ByteCountFormatter()
 	
 	private let photosController = PhotosController()
-	
+
+	var logo = false
+
 	@EnvironmentObject var cardInfo: CardInfo
 	
 	@Environment(\.modelContext) var modelContext {
@@ -45,7 +57,9 @@ struct CardInfoView: View {
 	}
 	
 	@State var showSettings = false
-	
+
+	@State private var trigger = 0
+
 	@AppStorage("timestamps")
 	var timestamps = false
 	
@@ -183,10 +197,16 @@ struct CardInfoView: View {
 	}
 
 	var isSummaryTransition: Bool {
-		return cardInfo.summary || cardInfo.position >= ViewController.cardsPerStack - 2
+		return logo
 	}
 
 	var title: AnyView {
+		if logo {
+			return AnyView((Text("SWIPED") + Text(".")
+				.foregroundColor(Color("brandGreen")))
+				.contentTransition(.opacity))
+		}
+
 		if let asset = cardInfo.card?.asset {
 			let date = asset.creationDate ?? .distantPast
 			let view: AnyView
@@ -200,18 +220,23 @@ struct CardInfoView: View {
 				.textCase(.uppercase)
 				.contentTransition(isSummaryTransition ? .opacity : .numericText(value: -date.timeIntervalSince1970)))
 		} else {
-			return AnyView((Text("SWIPED") + Text(".")
-				.foregroundColor(Color("brandGreen")))
-				.contentTransition(.opacity))
+			return AnyView(EmptyView())
 		}
 	}
 	
 	var subhead: AnyView {
-		if cardInfo.summary {
-			return AnyView(HStack(alignment: .center, spacing: 8) {
-				Text("Summary")
-			})
-		} else if let asset = cardInfo.card?.asset {
+		if logo {
+			if cardInfo.summary {
+				return AnyView(HStack(alignment: .center, spacing: 8) {
+					Text("Summary")
+				})
+			} else {
+				return AnyView(Color.clear
+					.frame(height: 20))
+			}
+		}
+
+		if let asset = cardInfo.card?.asset {
 			return AnyView(HStack(alignment: .center, spacing: 8) {
 				Image(systemName: icon)
 					.frame(width: 20, height: 20, alignment: .center)
@@ -262,7 +287,8 @@ struct CardInfoView: View {
 	}
 	
 	var shareButton: some View {
-		if let card = cardInfo.card,
+		if !logo,
+			 let card = cardInfo.card,
 			 let asset = card.asset,
 			 asset.mediaType == .image || asset.mediaType == .video {
 			let preview =  SharePreview(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast),
@@ -303,9 +329,9 @@ struct CardInfoView: View {
 					}
 
 				Spacer()
-				
+
 				shareButton
-				
+
 				Button(action: {
 					showSettings = true
 				}, label: {
@@ -315,7 +341,7 @@ struct CardInfoView: View {
 				.frame(width: 40, height: 40, alignment: .center)
 				.accessibilityIdentifier("settingsButton")
 			}
-			
+
 			subhead
 				.id("subhead")
 				.font(.custom("LoosExtended-Regular", size: 18))

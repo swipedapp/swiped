@@ -48,7 +48,7 @@ struct BehindView: SwiftUI.View {
 	@State var totalDeleted = 0
 	@State var spaceSaved: Int64 = 0
 	@State var swipeScore: Int64 = 0
-	
+
 	weak var delegate: Delegate?
 	
 	var body: some SwiftUI.View {

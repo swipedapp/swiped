@@ -60,7 +60,8 @@ class ViewController: UIViewController {
 	private var toDelete = [PhotoCard]()
 	private var loadingBatch = true
 	private var batchesLoaded = 0
-	
+	private var swipedAll = false
+
 	private let cardInfo = CardInfo()
 	
 	private var previewItem: URL?
@@ -151,17 +152,18 @@ class ViewController: UIViewController {
 			}
 			
 			if self.loadingBatch {
-				UIView.animate(withDuration: 0.3) {
+				UIView.animate(withDuration: 0.3, delay: 0.3) {
 					self.cardStack.alpha = 1
 				}
 				self.loadingBatch = false
+				self.swipedAll = false
 				self.updateCurrentItem()
 			}
 		}
 	}
 	
 	private func updateCurrentItem() {
-		if cards.count > 0 {
+		if cards.count > 0 && !swipedAll {
 			let index = cardStack.topCardIndex ?? 0
 			cardInfo.setCard(cards[index], position: cardStack.swipedCards().count, summary: false)
 		}
@@ -287,7 +289,6 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 			
 		case .failedToFetchPhoto:
 			// This shows an alert if theres an issue loading the library.
-			let idiom = UIDevice.current.userInterfaceIdiom
 			let alert = UIAlertController(title: "Oh Bugger!🪲", message: "We couldn't load your photo library. Please try again later.", preferredStyle: .alert)
 			present(alert, animated: true)
 			break
@@ -316,7 +317,9 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 	func didSwipeAllCards(_ cardStack: SwipeCardStack) {
 		let logger = Logger(subsystem: "Swiped all cards", category: "Cards")
 		logger.debug("Swiped all cards")
-		
+
+		swipedAll = true
+
 		photosController.delete(cards: toDelete) { success in
 			if !success {
 				Task {
@@ -343,7 +346,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 				self.cardStack.alpha = 0
 			}
 			
-			self.cardInfo.setCard(nil, position: 0, summary: true)
+			self.cardInfo.setSummary(true)
 		}
 	}
 	
@@ -445,13 +448,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 	
 	func didTapContinue() {
 		cardStack.isUserInteractionEnabled = true
-		
-		UIView.animate(withDuration: 0.3) {
-			//self.cardStack.alpha = 1
-			//self.buttonStackView.alpha = 1
-		} completion: { _ in
-			self.loadBatch()
-		}
+
+		loadBatch()
 		
 		if batchesLoaded == 4 && !UserDefaults.standard.bool(forKey: "requestedReview") {
 			UserDefaults.standard.set(true, forKey: "requestedReview")

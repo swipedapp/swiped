@@ -41,14 +41,20 @@ struct MainView: View {
 	}
 	
 	var body: some View {
-		KeyframeAnimator(initialValue: 0, trigger: trigger) { value in
+		KeyframeAnimator(initialValue: 0.0, trigger: trigger) { value in
 			VStack(spacing: 0) {
-				CardInfoView()
-				
+				ZStack {
+					CardInfoView()
+						.opacity(cardInfo.summary ? -value : value)
+
+					CardInfoView(logo: true)
+						.opacity(cardInfo.summary ? value : -value)
+				}
+
 				ZStack {
 					BehindView(delegate: delegate)
 						.opacity(cardInfo.summary ? value : -value)
-					
+
 					Spacer()
 					
 					VStack(spacing: 0) {
@@ -76,9 +82,9 @@ struct MainView: View {
 			}
 		} keyframes: { _ in
 			KeyframeTrack(\.self) {
-				LinearKeyframe(0, duration: 0.3)
-				LinearKeyframe(0, duration: 0)
-				LinearKeyframe(1, duration: 0.3)
+				LinearKeyframe(0.0, duration: 0.3)
+				LinearKeyframe(0.0, duration: 0.0)
+				LinearKeyframe(1.0, duration: 0.3)
 			}
 		}
 		.onAppear {
