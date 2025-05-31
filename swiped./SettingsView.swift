@@ -38,6 +38,29 @@ struct SettingsView: View {
 		NavigationStack {
 			VStack {
 				Form {
+					Section(content: {}, header: {
+						ZStack(alignment: .top) {
+							if swipeDownCount < 5 {
+								HStack {
+									Image(systemName: "chevron.down")
+									Text("Swipe down to dismiss")
+									Image(systemName: "chevron.down")
+								}
+								.font(.custom("LoosExtended-Regular", size: 14))
+							}
+							
+							HStack {
+								Spacer()
+								VStack(alignment: .center) {
+									Text("Settings")
+										.foregroundColor(.primary)
+										.font(.custom("LoosExtended-Medium", size: 50))
+								}
+								Spacer()
+							}
+							.padding(.vertical, 30)
+						}
+					})
 					
 					
 					// Production flags
