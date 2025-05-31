@@ -249,9 +249,11 @@ struct CardInfoView: View {
 				Text(type)
 					.contentTransition(.numericText())
 			})
+			
 		}
-		
-		return AnyView(EmptyView())
+		return AnyView(Color.clear
+			.frame(height: 20))
+
 	}
 	
 	var shareButton: some View {
