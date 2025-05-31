@@ -38,37 +38,6 @@ struct SettingsView: View {
 		NavigationStack {
 			VStack {
 				Form {
-					Section(content: {}, header: {
-						ZStack(alignment: .top) {
-							if swipeDownCount < 5 {
-								HStack {
-									Image(systemName: "chevron.down")
-									Text("Swipe down to dismiss")
-									Image(systemName: "chevron.down")
-								}
-								.font(.custom("LoosExtended-Regular", size: 14))
-							}
-							
-							HStack {
-								Spacer()
-								VStack(alignment: .center) {
-									Text("SWIPED")
-										.foregroundColor(.primary)
-										.font(.custom("LoosExtended-Bold", size: 50))
-									+
-									Text(".")
-										.foregroundColor(Color("brandGreen"))
-										.font(.custom("LoosExtended-Bold", size: 50))
-#if !INTERNAL
-									Text("Version \(version) (\(build))")
-										.font(.custom("LoosExtended-Medium", size: 18))
-#endif
-								}
-								Spacer()
-							}
-							.padding(.vertical, 30)
-						}
-					})
 					
 					
 					// Production flags
