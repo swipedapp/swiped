@@ -34,30 +34,6 @@ struct SyncRequest: Codable {
 	let spaceSaved: Int
 	let swipeScore: Int64
 }
-// INTERNAL BUILDS
-/*#if INTERNAL
- class ServerController: NSObject {
- 
- 
- static let shared = ServerController()
- 
- var syncFailed = false
- 
- func getReceipt() async -> String? {
- return "Internal Build"
- }
- 
- func doRegister() async {
- var syncFailed = true
- }
- 
- func doSync() async {
- var syncFailed = true
- }
- 
- }
- *///#else
-// Release Builds
 class ServerController: NSObject, ObservableObject {
 	
 	static let shared = ServerController()

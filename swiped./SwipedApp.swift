@@ -7,11 +7,13 @@
 
 import SwiftUI
 import SwiftData
+import OSLog
 
 @main
 struct SwipedApp: App {
 	var modelContainer: ModelContainer
-	
+	let logger = Logger(subsystem: "Init", category: "SwiftData")
+
 	@State var needsMigration = false
 	
 	private let db: DatabaseController
@@ -23,12 +25,14 @@ struct SwipedApp: App {
 			modelContainer = try ModelContainer(for: Photo.self, configurations: config)
 			db = DatabaseController(modelContainer: modelContainer)
 		} catch {
-			fatalError("Failed to configure SwiftData container.")
+			logger.critical("Failed to configure SwiftData container.")
+			fatalError()
 		}
 	}
 	
 	private func migrate() {
 		if needsMigration {
+			logger.info("Starting migration..")
 			Task {
 				try? await Task.sleep(for: .milliseconds(100))
 				await self.db.migrate()

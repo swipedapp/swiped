@@ -341,7 +341,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didUndoCardAt index: Int, from direction: SwipeDirection) {
-		print("Undo")
+		let logger = Logger(subsystem: "Undo Card", category: "Cards")
+		logger.debug("Undid Swipe")
 		updateCurrentItem()
 	}
 	
