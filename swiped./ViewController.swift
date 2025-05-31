@@ -125,6 +125,8 @@ class ViewController: UIViewController {
 	}
 	
 	private func loadBatch() {
+		let logger = Logger(subsystem: "Batch", category: "Cards")
+		logger.info("Loading cards..")
 		loadingBatch = true
 		batchesLoaded += 1
 		
@@ -159,6 +161,7 @@ class ViewController: UIViewController {
 	}
 	
 	private func fetchAlert() {
+		let logger = Logger(subsystem: "Fetch Alert", category: "Initialization")
 #if RELEASE || DEBUG
 		let url = URL(string: "https://swiped.pics/beta/conf.json")!
 #else
