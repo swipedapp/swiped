@@ -60,14 +60,16 @@ struct AboutView: View {
 					Link("Website", destination: URL(string: "https://swiped.pics/")!)
 						.listRowBackground(Color("listRowBackground")).foregroundColor(.white)
 						.font(.custom("LoosExtended-Regular", size: 16))
-						
+						.colorScheme(.dark)
 					Link("GitHub", destination: URL(string: "https://github.com/swipedapp/swiped")!)
 						.listRowBackground(Color("listRowBackground")).foregroundColor(.white)
 						.font(.custom("LoosExtended-Regular", size: 16))
+						.colorScheme(.dark)
 						Link("Have an issue? Let us know.", destination: URL(string: "https://swiped.pics/support")!)
 					
 					.listRowBackground(Color("listRowBackground")).foregroundColor(.white)
 					.font(.custom("LoosExtended-Regular", size: 16))
+					.colorScheme(.dark)
 				}
 				
 				Spacer()
