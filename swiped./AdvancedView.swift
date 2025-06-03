@@ -81,7 +81,7 @@ struct AdvancedView: View {
 					Text("SYNC.")
 						.font(.custom("LoosExtended-Bold", size: 16))
 					Text(cloudKitStatus)
-						.font(.custom("LoosExtended-Regular", size: 16))
+						.font(.custom("LoosExtended-Regular", size: 8))
 				}
 				
 				Spacer()
