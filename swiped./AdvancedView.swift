@@ -80,13 +80,14 @@ struct AdvancedView: View {
 				VStack(alignment: .leading, spacing: 2) {
 					Text("SYNC.")
 						.font(.custom("LoosExtended-Bold", size: 16))
+					Text(cloudKitStatus)
+						.font(.custom("LoosExtended-Regular", size: 16))
 				}
 				
 				Spacer()
 				
 				if (!sync) {
-					Text(cloudKitStatus)
-						.font(.custom("LoosExtended-Regular", size: 16))
+					
 				} else {
 					Text("Disabled")
 						.font(.custom("LoosExtended-Regular", size: 16))
@@ -103,9 +104,9 @@ struct AdvancedView: View {
 			DispatchQueue.main.async {
 				switch accountStatus {
 				case .available:
-					self.cloudKitStatus = "icloud available"
+					self.cloudKitStatus = "Linked with iCloud"
 				case .noAccount:
-					self.cloudKitStatus = "no icloud account"
+					self.cloudKitStatus = "Signed out"
 				case .restricted:
 					self.cloudKitStatus = "icloud restricted"
 				case .couldNotDetermine:
