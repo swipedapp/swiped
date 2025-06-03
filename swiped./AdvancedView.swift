@@ -108,13 +108,13 @@ struct AdvancedView: View {
 				case .noAccount:
 					self.cloudKitStatus = "Signed out"
 				case .restricted:
-					self.cloudKitStatus = "icloud restricted"
+					self.cloudKitStatus = "Restricted"
 				case .couldNotDetermine:
-					self.cloudKitStatus = "status unknown"
+					self.cloudKitStatus = "Could not determine"
 				case .temporarilyUnavailable:
-					self.cloudKitStatus = "unavailable."
+					self.cloudKitStatus = "Unavailable"
 				@unknown default:
-					self.cloudKitStatus = "status unknown"
+					self.cloudKitStatus = "Could not determine"
 				}
 			}
 		}
