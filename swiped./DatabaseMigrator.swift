@@ -25,25 +25,21 @@ class DatabaseMigrator {
 	private let swipeDate = SQLite.Expression<TimeInterval>("swipeDate")
 	
 	init() {
-		do {
-			if !FileManager.default.fileExists(atPath: url.path) {
-				db = nil
-				return
-			}
-			
-			db = try Connection(url.path)
-			
-			try db!.run(photos.create(ifNotExists: true) { t in
-				t.column(id, primaryKey: true)
-				t.column(type)
-				t.column(size)
-				t.column(choice)
-				t.column(creationDate)
-				t.column(swipeDate)
-			})
-		} catch {
-			fatalError(error.localizedDescription)
+		if !FileManager.default.fileExists(atPath: url.path) {
+			db = nil
+			return
 		}
+
+		db = try! Connection(url.path)
+
+		try! db!.run(photos.create(ifNotExists: true) { t in
+			t.column(id, primaryKey: true)
+			t.column(type)
+			t.column(size)
+			t.column(choice)
+			t.column(creationDate)
+			t.column(swipeDate)
+		})
 	}
 	
 	func needsMigration() async -> Bool {

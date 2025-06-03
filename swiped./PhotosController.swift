@@ -9,6 +9,7 @@ import UIKit
 import Photos
 import CoreTransferable
 import os
+import Sentry
 
 class PhotosController {
 	
@@ -45,6 +46,7 @@ class PhotosController {
 							callback()
 						}
 					} catch {
+						SentrySDK.capture(error: error)
 						logger.critical("Failed to load photos. \(error)")
 						
 						await MainActor.run {
@@ -57,6 +59,7 @@ class PhotosController {
 				
 			default:
 				DispatchQueue.main.async {
+					SentrySDK.capture(error: PhotoError.noAccessToPhotoLibrary)
 					self.delegate?.didFail(error: .noAccessToPhotoLibrary)
 				}
 			}
@@ -89,6 +92,7 @@ class PhotosController {
 			while true {
 				loops += 1
 				if loops > 100 {
+					SentrySDK.capture(message: "PhotosController: Looped 100 times and found no photos")
 					throw PhotoError.noPhotosLeft
 				}
 				let randomIndex = Int.random(in: 0..<fetchResult.count)
@@ -168,6 +172,7 @@ class PhotosController {
 			PHAssetChangeRequest.deleteAssets(assets as NSFastEnumeration)
 		} completionHandler: { success, error in
 			if let error = error as? NSError {
+				SentrySDK.capture(error: error)
 				os_log(.error, "⚠️ Could not delete photos. \(error)")
 			}
 			

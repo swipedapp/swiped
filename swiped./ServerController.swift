@@ -11,6 +11,7 @@ import SwiftUI
 import SwiftData
 import Combine
 import os
+import Sentry
 
 extension UserDefaults {
 	@objc var sync: Bool {
@@ -74,6 +75,7 @@ class ServerController: NSObject, ObservableObject {
 		do {
 			result = try await AppTransaction.shared
 		} catch {
+			SentrySDK.capture(error: error)
 			os_log(.error, "⚠️ Failed transaction. \(error)")
 		}
 		
@@ -82,6 +84,7 @@ class ServerController: NSObject, ObservableObject {
 			break
 			
 		case .unverified(_, let verificationError):
+			SentrySDK.capture(error: verificationError)
 			os_log(.error, "⚠️ Could not verify app receipt. \(verificationError)")
 			
 		case .none:

@@ -7,6 +7,7 @@
 import SwiftUI
 import Combine
 import CloudKit
+import Sentry
 
 struct AdvancedView: View {
 	
@@ -113,12 +114,15 @@ struct AdvancedView: View {
 					self.cloudKitStatus = "Restricted"
 				case .couldNotDetermine:
 					isSyncOK = false
+					SentrySDK.capture(message: "iCloud status: Could not determine")
 					self.cloudKitStatus = "Could not determine"
 				case .temporarilyUnavailable:
 					isSyncOK = false
+					SentrySDK.capture(message: "iCloud status: Temporarily unavailable")
 					self.cloudKitStatus = "iCloud Unavailable"
 				@unknown default:
 					isSyncOK = false
+					SentrySDK.capture(message: "iCloud status: Unknown")
 					self.cloudKitStatus = "Could not determine"
 				}
 			}

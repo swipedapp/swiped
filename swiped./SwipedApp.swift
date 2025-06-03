@@ -53,7 +53,8 @@ struct SwipedApp: App {
 			db = DatabaseController(modelContainer: modelContainer)
 		} catch {
 			logger.critical("Failed to configure SwiftData container.")
-			fatalError()
+			SentrySDK.capture(error: error)
+			fatalError(error.localizedDescription)
 		}
 	}
 	

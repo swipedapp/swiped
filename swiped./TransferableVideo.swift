@@ -8,6 +8,7 @@
 import CoreTransferable
 import Photos
 import OSLog
+import Sentry
 
 struct TransferableVideo: Transferable {
 	let asset: PHAsset
@@ -15,7 +16,7 @@ struct TransferableVideo: Transferable {
 	static var transferRepresentation: some TransferRepresentation {
 		DataRepresentation(exportedContentType: .mpeg4Movie) { item in
 			return try await withCheckedThrowingContinuation { continuation in
-				var logger = Logger(subsystem: "Video", category: "ShareSheet Handler")
+				let logger = Logger(subsystem: "Video", category: "ShareSheet Handler")
 				logger.debug("Called Share Video")
 				let options = PHVideoRequestOptions()
 				options.version = .original
@@ -24,6 +25,7 @@ struct TransferableVideo: Transferable {
 				PHImageManager.default().requestAVAsset(forVideo: item.asset, options: options) { avAsset, _, _ in
 					guard let urlAsset = avAsset as? AVURLAsset else {
 						continuation.resume(throwing: NSError(domain: "VideoTransfer", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not load video"]))
+						SentrySDK.capture(message: "Could not load video")
 						logger.error("Could not load video")
 
 						return
@@ -37,6 +39,7 @@ struct TransferableVideo: Transferable {
 					
 					// Export the video
 					guard let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetHighestQuality) else {
+						SentrySDK.capture(message: "Could not create export session")
 						continuation.resume(throwing: NSError(domain: "VideoTransfer", code: 2, userInfo: [NSLocalizedDescriptionKey: "Could not create export session"]))
 						return
 					}
@@ -53,11 +56,14 @@ struct TransferableVideo: Transferable {
 								// Clean up temporary file
 								try? FileManager.default.removeItem(at: temporaryFileURL)
 							} catch {
+								SentrySDK.capture(error: error)
 								continuation.resume(throwing: error)
 							}
 						} else if let error = exportSession.error {
+							SentrySDK.capture(error: error)
 							continuation.resume(throwing: error)
 						} else {
+							SentrySDK.capture(message: "Video export failed")
 							continuation.resume(throwing: NSError(domain: "VideoTransfer", code: 3, userInfo: [NSLocalizedDescriptionKey: "Export failed"]))
 						}
 					}

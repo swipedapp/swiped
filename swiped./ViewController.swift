@@ -13,6 +13,7 @@ import AVKit
 import SwiftUI
 import os
 import SwiftData
+import Sentry
 
 // add this class for managing the sheet
 class SheetManager: ObservableObject {
@@ -178,23 +179,26 @@ class ViewController: UIViewController {
 #endif
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
 			if let error = error {
-				os_log(.error, "⚠️ \(error.localizedDescription)")
+				SentrySDK.capture(error: error)
+				logger.error("⚠️ \(error.localizedDescription)")
 				return
 			}
 			
 			guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+				SentrySDK.capture(message: "Server returned a response code other than 200.")
 				logger.error("Server returned a response code other than 200.")
 				return
 			}
 			
 			guard let data = data else {
-				os_log(.error, "⚠️ Server returned no data")
+				SentrySDK.capture(message: "Server returned no data.")
 				logger.error("Server returned no data.")
 				return
 			}
 			
 			
 			guard let json = try? JSONDecoder().decode(SettingsJson.self, from: data) else {
+				SentrySDK.capture(message: "Server returned malformed JSON.")
 				logger.error("Server returned malformed JSON.")
 				return
 			}
@@ -267,6 +271,7 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 	func didFail(error: PhotosController.PhotoError) {
 		let logger = Logger(subsystem: "didFail", category: "PhotoController")
 		logger.critical("PhotoController Error: \(error.localizedDescription)")
+
 		switch error {
 		case .noAccessToPhotoLibrary, .noPhotosAvailable:
 			let alert = UIAlertController(title: "No Photos!", message: "Your Photos library is empty, or you limited access.", preferredStyle: .alert)
@@ -426,6 +431,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 				}
 			}
 		} catch {
+			SentrySDK.capture(error: error)
 			logger.critical("Could not present quick look: \(error.localizedDescription)")
 		}
 	}
