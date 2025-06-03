@@ -80,7 +80,6 @@ struct AdvancedView: View {
 				VStack(alignment: .leading, spacing: 2) {
 					Text("SYNC.")
 						.font(.custom("LoosExtended-Bold", size: 16))
-						.foregroundColor(syncFailed ? .black : .primary)
 				}
 				
 				Spacer()
