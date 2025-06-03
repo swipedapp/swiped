@@ -1,4 +1,3 @@
-
 //
 //  AdvancedView.swift
 //  swiped.
@@ -7,6 +6,7 @@
 //
 import SwiftUI
 import Combine
+import CloudKit
 
 struct AdvancedView: View {
 	
@@ -15,6 +15,8 @@ struct AdvancedView: View {
 	}
 	
 	@State private var showRestriction = false
+	@State private var cloudKitStatus = "checking..."
+	
 #if !INTERNAL
 	@AppStorage("sync")
 	var sync: Bool = false
@@ -37,10 +39,7 @@ struct AdvancedView: View {
 		})
 	}
 	
-	
 	var body: some View {
-		//		Spacer()
-		//		VStack {
 		Form {
 			syncSection
 			
@@ -55,19 +54,6 @@ struct AdvancedView: View {
 			}
 #endif
 			
-			/*Section {
-			 Toggle(isOn: $sync) {
-			 Text("Disable Sync")
-			 .font(.custom("LoosExtended-Regular", size: 16))
-			 }
-			 .listRowBackground(Color("listRowBackground"))
-			 #if INTERNAL
-			 .disabled(true)
-			 #endif
-			 
-			 }
-			 */
-			
 			if let minimumiOSVersion = sheetManager.json?.minimumiOSVersion,
 				 UIDevice.current.systemVersion.compare(minimumiOSVersion, options: .numeric) == .orderedAscending {
 				Section {
@@ -81,7 +67,9 @@ struct AdvancedView: View {
 		}
 		.scrollContentBackground(.hidden)
 		.background(Color("oled"))
-		//		}
+		.onAppear {
+			checkCloudKitStatus()
+		}
 	}
 	
 	var syncSection: some View {
@@ -89,10 +77,18 @@ struct AdvancedView: View {
 		
 		return Section {
 			HStack {
-				Text("SYNC.")
-					.font(.custom("LoosExtended-Bold", size: 16))
-					.foregroundColor(syncFailed ? .black : .primary)
+				VStack(alignment: .leading, spacing: 2) {
+					Text("SYNC.")
+						.font(.custom("LoosExtended-Bold", size: 16))
+						.foregroundColor(syncFailed ? .black : .primary)
+					
+					Text(cloudKitStatus)
+						.font(.custom("LoosExtended-Regular", size: 12))
+						.foregroundColor(syncFailed ? .black : .secondary)
+				}
+				
 				Spacer()
+				
 				if (!sync) {
 					Text(syncFailed ? "Restricted." : "Connected")
 						.font(.custom("LoosExtended-Regular", size: 16))
@@ -114,10 +110,29 @@ struct AdvancedView: View {
 		}
 		.listRowBackground(syncFailed ? .yellow : Color("listRowBackground"))
 	}
+	
+	private func checkCloudKitStatus() {
+		let container = CKContainer.default()
+		container.accountStatus { (accountStatus, error) in
+			DispatchQueue.main.async {
+				switch accountStatus {
+				case .available:
+					self.cloudKitStatus = "icloud available"
+				case .noAccount:
+					self.cloudKitStatus = "no icloud account"
+				case .restricted:
+					self.cloudKitStatus = "icloud restricted"
+				case .couldNotDetermine:
+					self.cloudKitStatus = "status unknown"
+				@unknown default:
+					self.cloudKitStatus = "status unknown"
+				}
+			}
+		}
+	}
 }
 
 #Preview {
 	AdvancedView()
 		.environmentObject(SheetManager())
 }
-
