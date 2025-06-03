@@ -9,8 +9,7 @@ import SwiftUI
 
 struct AboutView: View {
 	@State var showRestriction = false
-	let commitInfo = Bundle.main.infoDictionary?["GitCommitHash"] as? String ?? "Unknown"
-	
+	let commitInfo = Bundle.main.infoDictionary?["GitCommitHash"] as? String ?? "swiped.pics"
 	@AppStorage("timestamps")
 	var timestamps: Bool = false
 	
@@ -40,7 +39,7 @@ struct AboutView: View {
 								Spacer()
 								VStack(alignment: .center) {
 									Text("SWIPED")
-										.foregroundColor(.primary)
+										.foregroundColor(.white)
 										.font(.custom("LoosExtended-Bold", size: 50))
 									+
 									Text(".")
@@ -48,7 +47,7 @@ struct AboutView: View {
 										.font(.custom("LoosExtended-Bold", size: 50))
 #if !INTERNAL
 									Text("Version \(version) (\(build))")
-										.font(.custom("LoosExtended-Medium", size: 18))
+										.foregroundColor(.white).opacity(0.7).font(.custom("LoosExtended-Medium", size: 18))
 #endif
 								}
 								Spacer()
@@ -58,7 +57,17 @@ struct AboutView: View {
 						
 					})
 					.background(.black)
+					Link("Website", destination: URL(string: "https://swiped.pics/")!)
+						.listRowBackground(Color("listRowBackground")).foregroundColor(.white)
+						.font(.custom("LoosExtended-Regular", size: 16))
+						
+					Link("GitHub", destination: URL(string: "https://github.com/swipedapp/swiped")!)
+						.listRowBackground(Color("listRowBackground")).foregroundColor(.white)
+						.font(.custom("LoosExtended-Regular", size: 16))
+						Link("Have an issue? Let us know.", destination: URL(string: "https://swiped.pics/support")!)
 					
+					.listRowBackground(Color("listRowBackground")).foregroundColor(.white)
+					.font(.custom("LoosExtended-Regular", size: 16))
 				}
 				
 				Spacer()
@@ -69,10 +78,11 @@ struct AboutView: View {
 				Text("Candidate Release").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
 #endif
 				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Regular", size: 16))
-				Text("Made with ❤️ by Toby Kohlhagen").opacity(1).font(.custom("LoosExtended-Regular", size: 16))
+				Text("Made in Australia").opacity(1).font(.custom("LoosExtended-Regular", size: 16))
 			}
 			.scrollContentBackground(.hidden)
 			.background(.black)
+			.foregroundColor(.white)
 			
 		}
 		
@@ -84,6 +94,7 @@ struct AboutView: View {
 
 #Preview {
 	AboutView()
+		.preferredColorScheme(.dark)
 		.environmentObject(SheetManager())
 }
 
