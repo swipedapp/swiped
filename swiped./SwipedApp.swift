@@ -32,7 +32,9 @@ struct SwipedApp: App {
 			// Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
 			// We recommend adjusting this value in production.
 			options.tracesSampleRate = 1.0
-			
+			options.sessionReplay.onErrorSampleRate = 1.0
+			options.sessionReplay.sessionSampleRate = 1.0
+			options.sessionReplay.maskAllImages = true
 			// Configure profiling. Visit https://docs.sentry.io/platforms/apple/profiling/ to learn more.
 			options.configureProfiling = {
 				$0.sessionSampleRate = 1.0 // We recommend adjusting this value in production.
