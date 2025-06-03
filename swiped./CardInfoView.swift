@@ -9,6 +9,7 @@ import UIKit
 import SwiftUI
 import Photos
 import UniformTypeIdentifiers
+import Sentry
 
 class CardInfo: ObservableObject {
 	@Published var summary = false
@@ -320,6 +321,7 @@ struct CardInfoView: View {
 					.lineLimit(1)
 					.onTapGesture {
 						timestamps = !timestamps
+
 					}
 
 				Spacer()

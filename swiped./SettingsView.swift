@@ -34,8 +34,6 @@ struct SettingsView: View {
 	@Environment(\.modelContext) var modelContext
 	
 	var body: some View {
-		fatalError("ded")
-
 		NavigationStack {
 			VStack {
 				Form {
