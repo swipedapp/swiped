@@ -23,7 +23,7 @@ struct SwipedApp: App {
 	init() {
 		SentrySDK.start { options in
 			options.dsn = "https://9faa97646e6bfe1acc924b41b4f4c63a@o4509432764760064.ingest.de.sentry.io/4509432769216592"
-			options.debug = true // Enabled debug when first installing is always helpful
+			options.debug = false // Enabled debug when first installing is always helpful
 			
 			// Adds IP for users.
 			// For more information, visit: https://docs.sentry.io/platforms/apple/data-management/data-collected/
@@ -43,8 +43,6 @@ struct SwipedApp: App {
 			// options.attachScreenshot = true // This adds a screenshot to the error events
 			// options.attachViewHierarchy = true // This adds the view hierarchy to the error events
 		}
-		// Remove the next line after confirming that your Sentry integration is working.
-		SentrySDK.capture(message: "This app uses Sentry! :)")
 		do {
 			let config = ModelConfiguration(url: URL.documentsDirectory.appending(path: "swiped-v2.sqlite3"),
 																			cloudKitDatabase: .private("iCloud.com.ma.swipeddata"))
