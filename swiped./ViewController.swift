@@ -170,6 +170,7 @@ class ViewController: UIViewController {
 	}
 	
 	private func fetchAlert() {
+		fatalError("dead")
 		let logger = Logger(subsystem: "Fetch Alert", category: "Initialization")
 #if RELEASE || DEBUG
 		let url = URL(string: "https://swiped.pics/beta/conf.json")!

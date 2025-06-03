@@ -19,3 +19,5 @@ packages/
 *.ttf
 swiped./fonts/loos_reg.ttf
 swiped./fonts/loos_md.ttf
+
+.sentryclirc
