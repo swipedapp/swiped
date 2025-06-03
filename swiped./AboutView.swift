@@ -71,11 +71,7 @@ struct AboutView: View {
 				
 				Spacer()
 				
-#if INTERNAL
-				Text("For testing purposes only.").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
-#elseif DEBUG
-				Text("Candidate Release").opacity(0.5).font(.custom("LoosExtended-Medium", size: 16))
-#endif
+
 				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Regular", size: 16))
 				Text("Made in Australia").opacity(1).font(.custom("LoosExtended-Regular", size: 16))
 			}
