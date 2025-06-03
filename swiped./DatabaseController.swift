@@ -11,10 +11,10 @@ import SwiftData
 
 @ModelActor
 actor DatabaseController {
-	
-	func needsMigration() -> Bool {
+
+	func needsMigration() async -> Bool {
 		let migrator = DatabaseMigrator()
-		return migrator.needsMigration()
+		return await migrator.needsMigration()
 	}
 	
 	func migrate() async {

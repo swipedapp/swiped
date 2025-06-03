@@ -7,6 +7,8 @@
 
 import Foundation
 import SQLite
+import CoreData
+import Combine
 
 class DatabaseMigrator {
 	
@@ -44,19 +46,53 @@ class DatabaseMigrator {
 		}
 	}
 	
-	func needsMigration() -> Bool {
+	func needsMigration() async -> Bool {
+		await waitForCloudKitSync()
+
 		guard let db = db else {
 			return false
 		}
-		
+
 		return try! db.scalar(photos.count) > 0
 	}
-	
+
+	func waitForCloudKitSync() async {
+		await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+			var cancellable: AnyCancellable?
+			var timeoutTask: Task<Void, Never>?
+			var hasFired = false
+
+			func callback() async {
+				try? await Task.sleep(for: .seconds(5))
+				if !hasFired {
+					hasFired = true
+					continuation.resume()
+					cancellable?.cancel()
+					timeoutTask?.cancel()
+				}
+			}
+
+			cancellable = NotificationCenter.default.publisher(for: NSPersistentCloudKitContainer.eventChangedNotification)
+				.sink { notification in
+					timeoutTask?.cancel()
+					timeoutTask = Task {
+						await callback()
+					}
+				}
+
+			timeoutTask = Task {
+				await callback()
+			}
+		}
+	}
+
 	func migrate(dbController: DatabaseController) async {
 		guard let db = db else {
 			return
 		}
-		
+
+		await waitForCloudKitSync()
+
 		let query = photos.select(*)
 		
 		for row in try! db.prepare(query) {
