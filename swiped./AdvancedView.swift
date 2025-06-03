@@ -124,6 +124,8 @@ struct AdvancedView: View {
 					self.cloudKitStatus = "icloud restricted"
 				case .couldNotDetermine:
 					self.cloudKitStatus = "status unknown"
+				case .temporarilyUnavailable:
+					self.cloudKitStatus = "unavailable."
 				@unknown default:
 					self.cloudKitStatus = "status unknown"
 				}
