@@ -81,26 +81,13 @@ struct AdvancedView: View {
 					Text("SYNC.")
 						.font(.custom("LoosExtended-Bold", size: 16))
 						.foregroundColor(syncFailed ? .black : .primary)
-					
-					Text(cloudKitStatus)
-						.font(.custom("LoosExtended-Regular", size: 12))
-						.foregroundColor(syncFailed ? .black : .secondary)
 				}
 				
 				Spacer()
 				
 				if (!sync) {
-					Text(syncFailed ? "Restricted." : "Connected")
+					Text(cloudKitStatus)
 						.font(.custom("LoosExtended-Regular", size: 16))
-						.foregroundColor(syncFailed ? .black : Color("syncStatus"))
-						.onTapGesture {
-							if syncFailed {
-								showRestriction = true
-							}
-						}
-						.sheet(isPresented: $showRestriction) {
-							RestrictionView()
-						}
 				} else {
 					Text("Disabled")
 						.font(.custom("LoosExtended-Regular", size: 16))
