@@ -34,6 +34,7 @@ struct SwipedApp: App {
 			options.tracesSampleRate = 1.0
 			options.sessionReplay.onErrorSampleRate = 1.0
 			options.sessionReplay.sessionSampleRate = 1.0
+			options.sessionReplay.maskAllText = false
 			options.sessionReplay.maskAllImages = true
 			// Configure profiling. Visit https://docs.sentry.io/platforms/apple/profiling/ to learn more.
 			options.configureProfiling = {
