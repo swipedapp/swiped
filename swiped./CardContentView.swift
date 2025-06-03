@@ -13,7 +13,7 @@ class CardContentView: UIView {
 	private let containerView = UIView()
 	private let imageView = UIImageView()
 	private let playImageView = UIImageView()
-	private let spinner = UIActivityIndicatorView(style: .medium)
+	private let spinner = UIActivityIndicatorView(style: .large)
 	
 	let card: PhotoCard
 	
@@ -77,14 +77,19 @@ class CardContentView: UIView {
 		
 		NSLayoutConstraint.activate([
 			imageView.centerXAnchor.constraint(equalTo: playImageView.centerXAnchor),
-			imageView.centerYAnchor.constraint(equalTo: playImageView.centerYAnchor),
+			imageView.centerYAnchor.constraint(equalTo: playImageView.centerYAnchor)
 		])
 		
 		NSLayoutConstraint.activate([
+			/*
 			spinner.widthAnchor.constraint(equalToConstant: 24),
 			spinner.heightAnchor.constraint(equalToConstant: 24),
 			spinner.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
 			spinner.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8)
+			 */
+			spinner.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+			spinner.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+			 
 		])
 		
 		updateCard()
