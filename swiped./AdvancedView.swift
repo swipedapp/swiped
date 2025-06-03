@@ -94,7 +94,7 @@ struct AdvancedView: View {
 				}
 			}
 		}
-		.listRowBackground(syncFailed ? .yellow : Color("listRowBackground"))
+		.listRowBackground(Color("listRowBackground"))
 	}
 	
 	private func checkCloudKitStatus() {
