@@ -15,7 +15,8 @@ struct AdvancedView: View {
 	}
 	
 	@State private var showRestriction = false
-	@State private var cloudKitStatus = "checking..."
+	@State private var isSyncOK = false
+	@State private var cloudKitStatus = "Checking.."
 	
 #if !INTERNAL
 	@AppStorage("sync")
@@ -78,8 +79,12 @@ struct AdvancedView: View {
 		return Section {
 			HStack {
 				VStack(alignment: .leading, spacing: 2) {
-					Text("SYNC.")
+					Text("SYNC")
 						.font(.custom("LoosExtended-Bold", size: 16))
+					+
+					Text(".")
+						.font(.custom("LoosExtended-Bold", size: 16))
+						.foregroundColor(isSyncOK ? Color("brandGreen") : Color("brandRed"))
 					Text(cloudKitStatus)
 						.font(.custom("LoosExtended-Regular", size: 14))
 				}
@@ -104,16 +109,22 @@ struct AdvancedView: View {
 			DispatchQueue.main.async {
 				switch accountStatus {
 				case .available:
+					isSyncOK = true
 					self.cloudKitStatus = "Linked with iCloud"
 				case .noAccount:
-					self.cloudKitStatus = "Signed out"
+					isSyncOK = false
+					self.cloudKitStatus = "Disabled"
 				case .restricted:
+					isSyncOK = false
 					self.cloudKitStatus = "Restricted"
 				case .couldNotDetermine:
+					isSyncOK = false
 					self.cloudKitStatus = "Could not determine"
 				case .temporarilyUnavailable:
-					self.cloudKitStatus = "Unavailable"
+					isSyncOK = false
+					self.cloudKitStatus = "iCloud Unavailable"
 				@unknown default:
+					isSyncOK = false
 					self.cloudKitStatus = "Could not determine"
 				}
 			}
