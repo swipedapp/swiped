@@ -92,13 +92,6 @@ struct AdvancedView: View {
 				}
 				
 				Spacer()
-				if (!sync) {
-					
-				} else {
-					Text("Disabled")
-						.font(.custom("LoosExtended-Regular", size: 16))
-						.foregroundColor(.gray)
-				}
 			}
 		}
 		.listRowBackground(Color.black)
