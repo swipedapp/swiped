@@ -81,16 +81,17 @@ struct AdvancedView: View {
 				VStack(alignment: .leading, spacing: 2) {
 					Text("SYNC")
 						.font(.custom("LoosExtended-Bold", size: 16))
+						.foregroundColor(.white)
 					+
 					Text(".")
 						.font(.custom("LoosExtended-Bold", size: 16))
 						.foregroundColor(isSyncOK ? Color("brandGreen") : Color("brandRed"))
 					Text(cloudKitStatus)
 						.font(.custom("LoosExtended-Regular", size: 14))
+						.foregroundColor(.white)
 				}
 				
 				Spacer()
-				
 				if (!sync) {
 					
 				} else {
@@ -100,7 +101,7 @@ struct AdvancedView: View {
 				}
 			}
 		}
-		.listRowBackground(Color("listRowBackground"))
+		.listRowBackground(Color.black)
 	}
 	
 	private func checkCloudKitStatus() {
