@@ -12,7 +12,7 @@ struct KnownIssuesView: View {
 		NavigationView {
 			VStack {
 				
-				Image(systemName: "xmark.shield.fill")
+				Image(systemName: "exclamationmark.bubble")
 					.font(.system(size: 80))
 					.foregroundColor(.primary)
 					.padding([.bottom, .top], 20)
