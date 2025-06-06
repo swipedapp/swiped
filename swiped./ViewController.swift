@@ -71,10 +71,7 @@ class ViewController: UIViewController {
 		super.viewDidLoad()
 		
 		photosController.db = db
-		
-#if !INTERNAL
 		fetchAlert()
-#endif
 		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
@@ -172,11 +169,7 @@ class ViewController: UIViewController {
 	
 	private func fetchAlert() {
 		let logger = Logger(subsystem: "Fetch Alert", category: "Initialization")
-#if RELEASE || DEBUG
 		let url = URL(string: "https://swiped.pics/api/v1.2/conf.json")!
-#else
-		let url = URL(string: "https://swiped.pics")!
-#endif
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
 			if let error = error {
 				SentrySDK.capture(error: error)
