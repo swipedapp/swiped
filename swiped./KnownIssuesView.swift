@@ -25,7 +25,7 @@ struct KnownIssuesView: View {
 					
 						Text("\(Image(systemName: "exclamationmark.bubble")) Known issue")
 						Text("\(Image(systemName: "text.bubble.badge.clock")) Patching")
-					Text("\(Image(systemName: "checkmark.bubble.fill")) Patched in next update.")
+						Text("\(Image(systemName: "checkmark.bubble.fill")) Patched in next update")
 
 					
 					Spacer()
