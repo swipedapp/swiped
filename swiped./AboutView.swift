@@ -69,6 +69,8 @@ struct AboutView: View {
 					NavigationLink("Known Issues") {
 						KnownIssuesView()
 					}
+					.listRowBackground(Color("forced")).foregroundColor(.white)
+					.font(.custom("LoosExtended-Regular", size: 16))
 				}
 				
 				Spacer()
