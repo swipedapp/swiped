@@ -37,9 +37,9 @@ struct MainView: View {
 				let temp = FileManager.default.temporaryDirectory.appendingPathComponent("Photo.png")
 				try! data.write(to: temp)
 				//self.delegate?.didTapButton(action: action)
-				shareToPreview(
+				CreativeKit.shareToPreview(
 					clientID: Identifiers.CLIENT_ID,
-					mediaType: ShareMediaType.image,
+					mediaType: .image,
 					mediaData: data
 				)
 			}
