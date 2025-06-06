@@ -79,7 +79,7 @@ struct MainView: View {
 							
 							Spacer()
 							
-							bottomButton(text: Text("shar"), action:.keep)
+							bottomButton(text: Text("Cher"), action:.keep)
 							
 								.padding(.trailing, 35)
 						}
