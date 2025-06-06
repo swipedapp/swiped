@@ -173,7 +173,7 @@ class ViewController: UIViewController {
 	private func fetchAlert() {
 		let logger = Logger(subsystem: "Fetch Alert", category: "Initialization")
 #if RELEASE || DEBUG
-		let url = URL(string: "https://swiped.pics/beta/conf.json")!
+		let url = URL(string: "https://swiped.pics/api/v1.2/conf.json")!
 #else
 		let url = URL(string: "https://swiped.pics")!
 #endif
