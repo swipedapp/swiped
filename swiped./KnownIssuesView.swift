@@ -18,12 +18,15 @@ struct KnownIssuesView: View {
 					.padding([.bottom, .top], 20)
 				Spacer()
 				Text("Known Issues")
-				//.font(.custom("LoosExtended-Bold", size: 23))
 					.font(.custom("LoosExtended-Bold", size: 23))
 					.padding(.bottom, 20)
 				
 				VStack(alignment: .leading) {
-						Text("Hello World")
+					
+						Text("\(Image(systemName: "exclamationmark.bubble")) Known issue")
+						Text("\(Image(systemName: "text.bubble.badge.clock")) Patching")
+					Text("\(Image(systemName: "checkmark.bubble.fill")) Patched in next update.")
+
 					
 					Spacer()
 				}
