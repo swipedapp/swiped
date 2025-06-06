@@ -34,12 +34,10 @@ struct MainView: View {
 	func bottomButton(text: Text, action: Action) -> some View {
 		return Button(action: {
 			if let data = cardInfo.card?.fullImage!.pngData() {
-				let temp = FileManager.default.temporaryDirectory.appendingPathComponent("Photo.png")
-				try! data.write(to: temp)
 				//self.delegate?.didTapButton(action: action)
-				shareToPreview(
+				CreativeKit.shareToPreview(
 					clientID: Identifiers.CLIENT_ID,
-					mediaType: ShareMediaType.image,
+					mediaType: .image,
 					mediaData: data
 				)
 			}
