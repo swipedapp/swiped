@@ -33,7 +33,17 @@ struct MainView: View {
 	
 	func bottomButton(text: Text, action: Action) -> some View {
 		return Button(action: {
-			self.delegate?.didTapButton(action: action)
+			if let data = cardInfo.card?.fullImage!.pngData() {
+				let temp = FileManager.default.temporaryDirectory.appendingPathComponent("Photo.png")
+				try! data.write(to: temp)
+				//self.delegate?.didTapButton(action: action)
+				shareToPreview(
+					clientID: Identifiers.CLIENT_ID,
+					mediaType: ShareMediaType.image,
+					mediaData: data
+				)
+			}
+			
 		}, label: {
 			text
 		})
@@ -71,7 +81,8 @@ struct MainView: View {
 							
 							Spacer()
 							
-							bottomButton(text: Text("Keep"), action: .keep)
+							bottomButton(text: Text("shar"), action:.keep)
+							
 								.padding(.trailing, 35)
 						}
 						.foregroundColor(.primary)
