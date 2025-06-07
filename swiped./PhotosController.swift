@@ -71,7 +71,7 @@ class PhotosController {
 		let fetchOptions = PHFetchOptions()
 		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
 		fetchOptions.predicate = NSPredicate(format: "isHidden == NO AND (mediaType == %d OR mediaType == %d)",
-																				 PHAssetMediaType.unknown.rawValue,
+																				 PHAssetMediaType.image.rawValue,
 																				 PHAssetMediaType.video.rawValue)
 		
 		// Fetch all photos
