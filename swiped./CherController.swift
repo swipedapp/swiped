@@ -36,11 +36,13 @@ class CherController {
 								 } else {
 									 Task {
 										 if let data = try? await getVideo(cardInfo: cardInfo, photosController: photosController) {
-											 CreativeKit.shareToPreview(
-												clientID: Identifiers.CLIENT_ID,
-												mediaType: .video,
-												mediaData: data
-											 )
+											 await MainActor.run {
+												 CreativeKit.shareToPreview(
+													clientID: Identifiers.CLIENT_ID,
+													mediaType: .video,
+													mediaData: data
+												 )
+											 }
 										 }
 									 }
 								 }
