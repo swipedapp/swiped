@@ -59,6 +59,8 @@ struct CardInfoView: View {
 	
 	@State var showSettings = false
 
+	@State var showCher = false
+
 	@State private var trigger = 0
 
 	@AppStorage("timestamps")
@@ -282,50 +284,23 @@ struct CardInfoView: View {
 	}
 	
 	var shareButton: some View {
-		Button(action: {}, label: {
-			Image(systemName: "square.and.arrow.up")
+		if !logo,
+			 let asset = cardInfo.card?.asset,
+			 asset.mediaType == .image || asset.mediaType == .video {
+			let image = Image(systemName: "square.and.arrow.up")
 				.font(.custom("LoosExtended-Bold", size: 20))
 				.frame(width: 40, height: 40, alignment: .center)
-		})
-		.contextMenu {
-			Button(action: {
-				if let data = cardInfo.card?.fullImage!.pngData() {
-					//self.delegate?.didTapButton(action: action)
-					CreativeKit.shareToPreview(
-						clientID: Identifiers.CLIENT_ID,
-						mediaType: .image,
-						mediaData: data
-					)
-				}
-			}, label: {
-				Text("Snapchat")
-			})
-			
-			shareLink
-		}
-	}
-	
-	var shareLink: some View {
-		if !logo,
-			 let card = cardInfo.card,
-			 let asset = card.asset,
-			 asset.mediaType == .image || asset.mediaType == .video {
-			let preview =  SharePreview(Self.dateFormatter.string(from: asset.creationDate ?? .distantPast),
-																	image: Image(uiImage: card.thumbnail ?? UIImage()))
-			if asset.mediaType == .image {
-				return AnyView(ShareLink(
-					item: photosController.getShareImage(asset: asset),
-					preview: preview
-				) {
-					Text("Share…")
-				})
+			if CherController.hasAnySources {
+				return AnyView(Button(action: {
+					showCher = true
+				}, label: {
+					image
+				}))
 			} else {
-				return AnyView(ShareLink(
-					item: photosController.getShareVideo(asset: asset),
-					preview: preview
-				) {
-					Text("Share…")
-				})
+				return AnyView(CherController.shareLink(cardInfo: cardInfo,
+																								photosController: photosController, body: {
+					image
+				}))
 			}
 		} else {
 			return AnyView(EmptyView())
@@ -368,6 +343,9 @@ struct CardInfoView: View {
 		.foregroundColor(.primary)
 		.sheet(isPresented: $showSettings) {
 			SettingsView()
+		}
+		.sheet(isPresented: $showCher) {
+			CherView()
 		}
 	}
 	
