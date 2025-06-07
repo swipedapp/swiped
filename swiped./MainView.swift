@@ -71,8 +71,7 @@ struct MainView: View {
 							
 							Spacer()
 							
-							bottomButton(text: Text("Cher"), action:.keep)
-							
+							bottomButton(text: Text("Keep"), action:.keep)
 								.padding(.trailing, 35)
 						}
 						.foregroundColor(.primary)
