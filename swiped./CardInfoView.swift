@@ -282,6 +282,30 @@ struct CardInfoView: View {
 	}
 	
 	var shareButton: some View {
+		Button(action: {}, label: {
+			Image(systemName: "square.and.arrow.up")
+				.font(.custom("LoosExtended-Bold", size: 20))
+				.frame(width: 40, height: 40, alignment: .center)
+		})
+		.contextMenu {
+			Button(action: {
+				if let data = cardInfo.card?.fullImage!.pngData() {
+					//self.delegate?.didTapButton(action: action)
+					CreativeKit.shareToPreview(
+						clientID: Identifiers.CLIENT_ID,
+						mediaType: .image,
+						mediaData: data
+					)
+				}
+			}, label: {
+				Text("Snapchat")
+			})
+			
+			shareLink
+		}
+	}
+	
+	var shareLink: some View {
 		if !logo,
 			 let card = cardInfo.card,
 			 let asset = card.asset,
@@ -293,19 +317,15 @@ struct CardInfoView: View {
 					item: photosController.getShareImage(asset: asset),
 					preview: preview
 				) {
-					Image(systemName: "square.and.arrow.up")
-				}
-					.font(.custom("LoosExtended-Bold", size: 20))
-					.frame(width: 40, height: 40, alignment: .center))
+					Text("Share…")
+				})
 			} else {
 				return AnyView(ShareLink(
 					item: photosController.getShareVideo(asset: asset),
 					preview: preview
 				) {
-					Image(systemName: "square.and.arrow.up")
-				}
-					.font(.custom("LoosExtended-Bold", size: 20))
-					.frame(width: 40, height: 40, alignment: .center))
+					Text("Share…")
+				})
 			}
 		} else {
 			return AnyView(EmptyView())

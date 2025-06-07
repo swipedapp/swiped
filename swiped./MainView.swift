@@ -33,15 +33,7 @@ struct MainView: View {
 	
 	func bottomButton(text: Text, action: Action) -> some View {
 		return Button(action: {
-			if let data = cardInfo.card?.fullImage!.pngData() {
-				//self.delegate?.didTapButton(action: action)
-				CreativeKit.shareToPreview(
-					clientID: Identifiers.CLIENT_ID,
-					mediaType: .image,
-					mediaData: data
-				)
-			}
-			
+			self.delegate?.didTapButton(action: action)
 		}, label: {
 			text
 		})
