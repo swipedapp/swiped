@@ -44,7 +44,7 @@ struct CherView: View {
 				ForEach(CherController.sources) { source in
 					if source.isAvailable() {
 						Button(action: {
-							source.share(cardInfo)
+							source.share(cardInfo, photosController)
 							presentationMode.wrappedValue.dismiss()
 						}, label: {
 							buttonLabel(image: source.image,

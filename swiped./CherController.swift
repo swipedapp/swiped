@@ -11,7 +11,7 @@ struct CherSource: Identifiable {
 	var name: String
 	var image: Image
 	var isAvailable: () -> Bool
-	var share: (CardInfo) -> Void
+	var share: (CardInfo, PhotosController) -> Void
 
 	var id: String { name }
 }
@@ -24,14 +24,26 @@ class CherController {
 							 isAvailable: {
 								 return UIApplication.shared.canOpenURL(URL(string: "snapchat://")!)
 							 },
-							 share: { cardInfo in
-								if let data = cardInfo.card?.fullImage?.pngData() {
-									CreativeKit.shareToPreview(
-										clientID: Identifiers.CLIENT_ID,
-										mediaType: .image,
-										mediaData: data
-									)
-								}
+							 share: { cardInfo, photosController in
+								 if cardInfo.card?.asset?.mediaType == .image {
+									 if let data = cardInfo.card?.fullImage?.pngData() {
+										 CreativeKit.shareToPreview(
+											clientID: Identifiers.CLIENT_ID,
+											mediaType: .image,
+											mediaData: data
+										 )
+									 }
+								 } else {
+									 Task {
+										 if let data = try? await getVideo(cardInfo: cardInfo, photosController: photosController) {
+											 CreativeKit.shareToPreview(
+												clientID: Identifiers.CLIENT_ID,
+												mediaType: .video,
+												mediaData: data
+											 )
+										 }
+									 }
+								 }
 							 }),
 
 		CherSource(name: "Instagram",
@@ -39,7 +51,7 @@ class CherController {
 							 isAvailable: {
 								 return UIApplication.shared.canOpenURL(URL(string: "instagram://")!)
 							 },
-							 share: { cardInfo in
+							 share: { cardInfo, photosController in
 								 // TODO
 							 }),
 
@@ -48,7 +60,7 @@ class CherController {
 							 isAvailable: {
 								 return UIApplication.shared.canOpenURL(URL(string: "fb://")!)
 							 },
-							 share: { cardInfo in
+							 share: { cardInfo, photosController in
 								 // TODO
 							 })
 	]
@@ -86,6 +98,18 @@ class CherController {
 		} else {
 			// Fake button for testing
 			return AnyView(Button(action: {}, label: body))
+		}
+	}
+
+	static func getVideo(cardInfo: CardInfo, photosController: PhotosController) async throws -> Data? {
+		if #available(iOS 18.2, *) {
+			guard let asset = cardInfo.card?.asset else {
+				return nil
+			}
+
+			return try await photosController.getShareVideo(asset: asset).exported(as: .mpeg4Movie)
+		} else {
+			return nil
 		}
 	}
 
