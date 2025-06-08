@@ -50,7 +50,7 @@ struct CherView: View {
 							Button(action: {
 								if source.id == "Messages" {
 									if cardInfo.card?.asset?.mediaType == .image {
-										shareData = cardInfo.card?.fullImage?.jpegData(compressionQuality: 0.98)
+										shareData = (cardInfo.card?.thumbnail ?? cardInfo.card?.fullImage)?.jpegData(compressionQuality: 0.98)
 									} else {
 										// todo
 									}
