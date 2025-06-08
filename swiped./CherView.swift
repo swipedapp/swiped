@@ -90,15 +90,11 @@ struct CherView: View {
 	}
 
 	var messageComposeView: some View {
-		guard let item = shareItem else {
-			return AnyView(EmptyView())
-		}
-
 		return AnyView(MessageComposeView(
 			attachments: [
-				MessageComposeView.MessageAttachment(data: item.data,
-																						 typeIdentifier: item.type.identifier,
-																						 filename: "image.\(item.type.preferredFilenameExtension ?? "jpg")")
+				MessageComposeView.MessageAttachment(data: shareItem?.data ?? Data(),
+																						 typeIdentifier: (shareItem?.type ?? .data).identifier,
+																						 filename: "image.\((shareItem?.type ?? .data).preferredFilenameExtension ?? "jpg")")
 			],
 			isPresented: $showMessages
 		)
