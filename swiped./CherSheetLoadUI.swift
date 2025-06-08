@@ -7,17 +7,13 @@
 
 import SwiftUI
 
-struct MigrationUI: View {
+struct CherSheetLoadUI: View {
 	var body: some View {
 		NavigationView {
 			VStack {
 				
-				Text("Updating..")
-				//.font(.custom("LoosExtended-Bold", size: 23))
+				Text("Preparing..")
 					.font(.custom("LoosExtended-Bold", size: 23))
-				Text("Moving Database to SwiftData")
-				//.font(.custom("LoosExtended-Bold", size: 23))
-					.font(.custom("LoosExtended-Medium", size: 16))
 				ProgressView()
 					.controlSize(.large)
 			}
@@ -28,9 +24,9 @@ struct MigrationUI: View {
 		}
 		.interactiveDismissDisabled()
 	}
-	//.background(Color(uiColor: .systemBackground))
+
 }
 
 #Preview {
-	MigrationUI()
+	CherSheetLoadUI()
 }
