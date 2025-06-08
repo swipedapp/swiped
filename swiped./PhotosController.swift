@@ -230,7 +230,7 @@ class PhotosController {
 				}
 
 				guard let data = imageData,
-							let dataUTI = dataUTI else {
+							let type = UTType(dataUTI ?? "") else {
 					continuation.resume(throwing: NSError(domain: "PhotoTransfer", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not load photo data"]))
 					SentrySDK.capture(message: "Could not load photo data")
 					logger.error("Could not load photo data")
@@ -239,7 +239,7 @@ class PhotosController {
 
 				logger.debug("Opening ShareSheet..")
 				// For most cases, we can use the data directly
-				continuation.resume(returning: (data, UTType(importedAs: dataUTI)))
+				continuation.resume(returning: (data, type))
 			}
 		}
 	}
