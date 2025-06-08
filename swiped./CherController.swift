@@ -19,6 +19,15 @@ struct CherSource: Identifiable {
 class CherController {
 
 	static let sources = [
+		CherSource(name: "Messages",
+							 image: Image("messages"),
+							 isAvailable: {
+								 return UIApplication.shared.canOpenURL(URL(string: "sms://")!)
+							 },
+							 share: { cardInfo, photosController in
+								 // TODO
+							 }),
+		
 		CherSource(name: "Snapchat",
 							 image: Image("snap"),
 							 isAvailable: {
@@ -47,7 +56,22 @@ class CherController {
 									 }
 								 }
 							 }),
-
+		CherSource(name: "Bluesky",
+							 image: Image("bluesky"),
+							 isAvailable: {
+								 return UIApplication.shared.canOpenURL(URL(string: "bluesky://")!)
+							 },
+							 share: { cardInfo, photosController in
+								 // TODO
+							 }),
+		CherSource(name: "Ivory",
+							 image: Image("ivory"),
+							 isAvailable: {
+								 return UIApplication.shared.canOpenURL(URL(string: "ivory://")!)
+							 },
+							 share: { cardInfo, photosController in
+								 // TODO
+							 }),
 		CherSource(name: "Instagram",
 							 image: Image("ig"),
 							 isAvailable: {
