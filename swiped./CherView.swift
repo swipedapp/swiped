@@ -80,7 +80,8 @@ struct CherView: View {
 			Spacer()
 		}
 		.background(Color(.systemBackground))
-		.transition(.move(edge: .top).combined(with: .opacity))
+		.presentationDetents([.height(130)])
+		.presentationDragIndicator(.visible)
 		.sheet(isPresented: $showMessages) {
 			MessageComposeView(
 				attachments: [
