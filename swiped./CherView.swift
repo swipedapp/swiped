@@ -10,7 +10,7 @@
 import SwiftUI
 
 struct CherView: View {
-	@Environment(\.presentationMode) var presentationMode
+	let onDismiss: () -> Void
 	@EnvironmentObject var cardInfo: CardInfo
 	
 	private let photosController = PhotosController()
@@ -44,7 +44,7 @@ struct CherView: View {
 						if source.isAvailable() {
 							Button(action: {
 								source.share(cardInfo, photosController)
-								presentationMode.wrappedValue.dismiss()
+								onDismiss()  // changed this
 							}, label: {
 								buttonLabel(image: source.image,
 														text: Text(source.name))
@@ -58,7 +58,7 @@ struct CherView: View {
 												text: Text("Other"))
 					}
 																	 .onTapGesture {
-																		 presentationMode.wrappedValue.dismiss()
+																		 onDismiss()  // changed this
 																	 }
 				}
 			}
@@ -69,13 +69,14 @@ struct CherView: View {
 	}
 }
 
+
 #Preview {
 	let cardInfo = CardInfo()
 	cardInfo.card = PhotoCard()
 	
 	return Color.white
 		.sheet(isPresented: Binding(get: { true }, set: { _ in })) {
-			CherView()
+			CherView(onDismiss: {})
 				.environmentObject(cardInfo)
 		}
 }

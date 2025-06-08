@@ -352,7 +352,7 @@ struct CardInfoView: View {
 						.onTapGesture { showCher = false }
 					
 					VStack {
-						CherView()
+						CherView(onDismiss: { showCher = false })  // pass the closure
 							.environmentObject(cardInfo)
 						Spacer()
 					}
