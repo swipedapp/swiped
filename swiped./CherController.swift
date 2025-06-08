@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct CherSource: Identifiable {
 	var name: String
 	var image: Image
 	var isAvailable: () -> Bool
-	var share: (CardInfo, PhotosController) -> Void
+	var share: (CardInfo, PhotosController) async -> Void
 
 	var id: String { name }
 }
@@ -19,41 +20,18 @@ struct CherSource: Identifiable {
 class CherController {
 
 	static let sources = [
-		CherSource(name: "Messages",
-							 image: Image("messages"),
-							 isAvailable: {
-								 return MessageComposeView.isAvailable
-							 },
-							 share: { cardInfo, photosController in
-								 // TODO
-							 }),
-		
 		CherSource(name: "Snapchat",
 							 image: Image("snap"),
 							 isAvailable: {
 								 return UIApplication.shared.canOpenURL(URL(string: "snapchat://")!)
 							 },
 							 share: { cardInfo, photosController in
-								 if cardInfo.card?.asset?.mediaType == .image {
-									 if let data = cardInfo.card?.fullImage?.pngData() {
-										 CreativeKit.shareToPreview(
-											clientID: Identifiers.CLIENT_ID,
-											mediaType: .image,
-											mediaData: data
-										 )
-									 }
-								 } else {
-									 Task {
-										 if let data = try? await getVideo(cardInfo: cardInfo, photosController: photosController) {
-											 await MainActor.run {
-												 CreativeKit.shareToPreview(
-													clientID: Identifiers.CLIENT_ID,
-													mediaType: .video,
-													mediaData: data
-												 )
-											 }
-										 }
-									 }
+								 if let (data, type) = try? await getData(cardInfo: cardInfo, photosController: photosController) {
+									 CreativeKit.shareToPreview(
+										clientID: Identifiers.CLIENT_ID,
+										mediaType: type.isSubtype(of: .video) ? .video : .image,
+										mediaData: data
+									 )
 								 }
 							 }),
 		/*
@@ -129,13 +107,25 @@ class CherController {
 		}
 	}
 
-	static func getVideo(cardInfo: CardInfo, photosController: PhotosController) async throws -> Data? {
+	static func getData(cardInfo: CardInfo, photosController: PhotosController) async throws -> (Data, UTType)? {
 		if #available(iOS 18.2, *) {
 			guard let asset = cardInfo.card?.asset else {
 				return nil
 			}
 
-			return try await photosController.getShareVideo(asset: asset).exported(as: .mpeg4Movie)
+			switch asset.mediaType {
+			case .image:
+				return (try await photosController.getShareImage(asset: asset).exported(as: .jpeg), .jpeg)
+
+			case .video:
+				return (try await photosController.getShareVideo(asset: asset).exported(as: .mpeg4Movie), .mpeg4Movie)
+
+			case .unknown, .audio:
+				return nil
+
+			@unknown default:
+				return nil
+			}
 		} else {
 			return nil
 		}

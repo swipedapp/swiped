@@ -24,7 +24,7 @@ struct CherView: View {
 
 	@State var showMessages = false
 
-	@State var shareData: Data?
+	@State var shareData: (data: Data, type: UTType)?
 
 	func buttonLabel(image: Image, text: Text) -> some View {
 		VStack(alignment: .center) {
@@ -45,20 +45,24 @@ struct CherView: View {
 		VStack {
 			ScrollView(.horizontal, showsIndicators: false) {
 				HStack {
+					if MessageComposeView.isAvailable {
+						Button(action: {
+							Task {
+								shareData = try? await CherController.getData(cardInfo: cardInfo, photosController: photosController)
+								showMessages = true
+							}
+						}, label: {
+							buttonLabel(image: Image("messages"),
+													text: Text("Messages"))
+						})
+					}
+
 					ForEach(CherController.sources) { source in
 						if source.isAvailable() {
 							Button(action: {
-								if source.id == "Messages" {
-									if cardInfo.card?.asset?.mediaType == .image {
-										shareData = cardInfo.card?.fullImage?.jpegData(compressionQuality: 0.98)
-									} else {
-										// todo
-									}
-
-									showMessages = true
-								} else {
-									source.share(cardInfo, photosController)
-									onDismiss()  // changed this
+								Task {
+									await source.share(cardInfo, photosController)
+									onDismiss()
 								}
 							}, label: {
 								buttonLabel(image: source.image,
@@ -87,11 +91,15 @@ struct CherView: View {
 	}
 
 	var messageComposeView: some View {
-		MessageComposeView(
+		guard let (data, type) = shareData else {
+			return AnyView(EmptyView())
+		}
+
+		return AnyView(MessageComposeView(
 			attachments: [
-				MessageComposeView.MessageAttachment(data: shareData ?? Data(),
-																						 typeIdentifier: UTType.jpeg.identifier,
-																						 filename: "image.jpg")
+				MessageComposeView.MessageAttachment(data: data,
+																						 typeIdentifier: type.identifier,
+																						 filename: "image.\(type.preferredFilenameExtension ?? "jpg")")
 			],
 			isPresented: $showMessages
 		)
@@ -100,18 +108,25 @@ struct CherView: View {
 				if !newValue {
 					onDismiss()
 				}
-			})
+			}))
 	}
 }
 
 
 #Preview {
+	@Previewable @State var show = true
+
 	let cardInfo = CardInfo()
 	cardInfo.card = PhotoCard()
-	
+
 	return Color.white
-		.sheet(isPresented: Binding(get: { true }, set: { _ in })) {
-			CherView(onDismiss: {})
+		.onTapGesture(perform: {
+			show = true
+		})
+		.sheet(isPresented: $show) {
+			CherView(onDismiss: {
+				show = false
+			})
 				.environmentObject(cardInfo)
 		}
 }
