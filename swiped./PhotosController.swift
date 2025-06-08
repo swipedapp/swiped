@@ -210,7 +210,40 @@ class PhotosController {
 			}
 		}
 	}
-	
+
+	static func getFullImage(asset: PHAsset) async throws -> (Data, UTType)? {
+		return try await withCheckedThrowingContinuation { continuation in
+			let logger = Logger(subsystem: "Photo", category: "ShareSheet Handler")
+			logger.debug("Called Share Photo")
+			let fullImageOptions = PHImageRequestOptions()
+			fullImageOptions.deliveryMode = .highQualityFormat
+			fullImageOptions.resizeMode = .exact
+			fullImageOptions.isSynchronous = false
+			fullImageOptions.isNetworkAccessAllowed = true
+
+			// Request full quality image asynchronously
+			PHImageManager.default().requestImageDataAndOrientation(for: asset, options: fullImageOptions) { imageData, dataUTI, orientation, info in
+				if let error = info?[PHImageErrorKey] as? Error {
+					SentrySDK.capture(error: error)
+					continuation.resume(throwing: error)
+					return
+				}
+
+				guard let data = imageData,
+							let dataUTI = dataUTI else {
+					continuation.resume(throwing: NSError(domain: "PhotoTransfer", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not load photo data"]))
+					SentrySDK.capture(message: "Could not load photo data")
+					logger.error("Could not load photo data")
+					return
+				}
+
+				logger.debug("Opening ShareSheet..")
+				// For most cases, we can use the data directly
+				continuation.resume(returning: (data, UTType(importedAs: dataUTI)))
+			}
+		}
+	}
+
 	func getShareImage(asset: PHAsset) -> TransferableImage {
 		return TransferableImage(asset: asset)
 	}

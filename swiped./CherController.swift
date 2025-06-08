@@ -115,7 +115,7 @@ class CherController {
 
 			switch asset.mediaType {
 			case .image:
-				return (try await photosController.getShareImage(asset: asset).exported(as: .jpeg), .jpeg)
+				return try await PhotosController.getFullImage(asset: asset)
 
 			case .video:
 				return (try await photosController.getShareVideo(asset: asset).exported(as: .mpeg4Movie), .mpeg4Movie)
