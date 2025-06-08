@@ -49,7 +49,9 @@ struct CherView: View {
 						Button(action: {
 							Task {
 								shareData = try? await CherController.getData(cardInfo: cardInfo, photosController: photosController)
-								showMessages = true
+								await MainActor.run {
+									showMessages = true
+								}
 							}
 						}, label: {
 							buttonLabel(image: Image("messages"),
@@ -107,6 +109,7 @@ struct CherView: View {
 			.onChange(of: showMessages, { oldValue, newValue in
 				if !newValue {
 					onDismiss()
+					shareData = nil
 				}
 			}))
 	}
