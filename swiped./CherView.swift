@@ -8,6 +8,7 @@
 /// NOTE FOR LURKERS: This is the ShareView. But it's called CherView because... Cher. It's complicated...
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct CherView: View {
 	let onDismiss: () -> Void
@@ -20,7 +21,11 @@ struct CherView: View {
 			photosController.db = DatabaseController(modelContainer: modelContext.container)
 		}
 	}
-	
+
+	@State var showMessages = false
+
+	@State var shareData: Data?
+
 	func buttonLabel(image: Image, text: Text) -> some View {
 		VStack(alignment: .center) {
 			image
@@ -43,7 +48,17 @@ struct CherView: View {
 					ForEach(CherController.sources) { source in
 						if source.isAvailable() {
 							Button(action: {
-								source.share(cardInfo, photosController)
+								if source.id == "Messages" {
+									if cardInfo.card?.asset?.mediaType == .image {
+										shareData = cardInfo.card?.fullImage?.pngData()
+									} else {
+										// todo
+									}
+
+									showMessages = true
+								} else {
+									source.share(cardInfo, photosController)
+								}
 								onDismiss()  // changed this
 							}, label: {
 								buttonLabel(image: source.image,
@@ -66,6 +81,17 @@ struct CherView: View {
 		}
 		.background(Color(.systemBackground))
 		.transition(.move(edge: .top).combined(with: .opacity))
+		.sheet(isPresented: $showMessages) {
+			MessageComposeView(
+				attachments: [
+					MessageComposeView.MessageAttachment(data: shareData ?? Data(),
+																							 typeIdentifier: UTType.jpeg.identifier,
+																							 filename: "image.jpg")
+				],
+				isPresented: $showMessages
+			)
+				.ignoresSafeArea()
+		}
 	}
 }
 

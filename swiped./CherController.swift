@@ -22,7 +22,7 @@ class CherController {
 		CherSource(name: "Messages",
 							 image: Image("messages"),
 							 isAvailable: {
-								 return UIApplication.shared.canOpenURL(URL(string: "sms://")!)
+								 return MessageComposeView.isAvailable
 							 },
 							 share: { cardInfo, photosController in
 								 // TODO
