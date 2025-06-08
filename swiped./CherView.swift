@@ -9,7 +9,9 @@
 
 import SwiftUI
 
+
 struct CherView: View {
+	@State var showCher = false
 
 	@Environment(\.presentationMode) var presentationMode
 
@@ -41,6 +43,16 @@ struct CherView: View {
 	var body: some View {
 		return ScrollView(.horizontal, showsIndicators: false) {
 			HStack {
+				if showCher {
+					CherView()
+						.background(Color(.systemBackground))
+						.cornerRadius(16)
+						.shadow(radius: 10)
+						.padding()
+						.offset(y: showCher ? 0 : -300)
+						.opacity(showCher ? 1 : 0)
+						.animation(.spring(), value: showCher)
+				}
 				ForEach(CherController.sources) { source in
 					if source.isAvailable() {
 						Button(action: {
