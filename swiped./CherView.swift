@@ -24,7 +24,7 @@ struct CherView: View {
 
 	@State var showMessages = false
 
-	@State var shareData: (data: Data, type: UTType)?
+	@State var shareData: (Data, UTType)?
 
 	func buttonLabel(image: Image, text: Text) -> some View {
 		VStack(alignment: .center) {
@@ -48,8 +48,9 @@ struct CherView: View {
 					if MessageComposeView.isAvailable {
 						Button(action: {
 							Task {
-								shareData = try? await CherController.getData(cardInfo: cardInfo, photosController: photosController)
+								let result = try? await CherController.getData(cardInfo: cardInfo, photosController: photosController)
 								await MainActor.run {
+									shareData = result
 									showMessages = true
 								}
 							}
