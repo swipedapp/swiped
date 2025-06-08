@@ -11,7 +11,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct CherView: View {
-	let onDismiss: () -> Void
+
 	@EnvironmentObject var cardInfo: CardInfo
 	
 	private let photosController = PhotosController()
@@ -21,6 +21,8 @@ struct CherView: View {
 			photosController.db = DatabaseController(modelContainer: modelContext.container)
 		}
 	}
+
+	@Environment(\.presentationMode) var presentationMode
 
 	@State var showMessages = false
 
@@ -61,7 +63,7 @@ struct CherView: View {
 							Button(action: {
 								Task {
 									await source.share(cardInfo, photosController)
-									onDismiss()
+									presentationMode.wrappedValue.dismiss()
 								}
 							}, label: {
 								buttonLabel(image: source.image,
@@ -76,7 +78,7 @@ struct CherView: View {
 												text: Text("Other"))
 					}
 																	 .onTapGesture {
-																		 onDismiss()  // changed this
+																		 presentationMode.wrappedValue.dismiss()
 																	 }
 				}
 			}
@@ -101,7 +103,7 @@ struct CherView: View {
 			.ignoresSafeArea()
 			.onChange(of: showMessages, { oldValue, newValue in
 				if !newValue {
-					onDismiss()
+					presentationMode.wrappedValue.dismiss()
 					self.shareItem = nil
 				}
 			}))
@@ -120,9 +122,7 @@ struct CherView: View {
 			show = true
 		})
 		.sheet(isPresented: $show) {
-			CherView(onDismiss: {
-				show = false
-			})
+			CherView()
 				.environmentObject(cardInfo)
 		}
 }

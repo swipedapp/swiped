@@ -345,7 +345,7 @@ struct CardInfoView: View {
 			SettingsView()
 		}
 		.sheet(isPresented: $showCher) {
-			CherView(onDismiss: { showCher = false })  // pass the closure
+			CherView()
 				.environmentObject(cardInfo)
 		}
 	}
