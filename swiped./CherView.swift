@@ -49,6 +49,7 @@ struct CherView: View {
 						Button(action: {
 							Task {
 								let result = try? await CherController.getData(cardInfo: cardInfo, photosController: photosController)
+								await try? Task.sleep(for: .milliseconds(10))
 								await MainActor.run {
 									shareData = result
 									showMessages = true
