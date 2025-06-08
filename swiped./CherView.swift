@@ -50,7 +50,7 @@ struct CherView: View {
 							Button(action: {
 								if source.id == "Messages" {
 									if cardInfo.card?.asset?.mediaType == .image {
-										shareData = cardInfo.card?.fullImage?.pngData()
+										shareData = cardInfo.card?.fullImage?.jpegData(compressionQuality: 0.98)
 									} else {
 										// todo
 									}
@@ -58,8 +58,8 @@ struct CherView: View {
 									showMessages = true
 								} else {
 									source.share(cardInfo, photosController)
+									onDismiss()  // changed this
 								}
-								onDismiss()  // changed this
 							}, label: {
 								buttonLabel(image: source.image,
 														text: Text(source.name))
@@ -91,6 +91,11 @@ struct CherView: View {
 				isPresented: $showMessages
 			)
 				.ignoresSafeArea()
+				.onChange(of: showMessages, { oldValue, newValue in
+					if !newValue {
+						onDismiss()
+					}
+				})
 		}
 	}
 }
