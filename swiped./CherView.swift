@@ -55,7 +55,7 @@ struct CherView: View {
 
 				CherController.shareLink(cardInfo: cardInfo,
 																 photosController: photosController) {
-					buttonLabel(image: Image(systemName: "ellipsis.circle.fill"),
+					buttonLabel(image: Image("other"),
 											text: Text("Other"))
 				}
 					.onTapGesture {
