@@ -50,7 +50,7 @@ struct CherView: View {
 							Button(action: {
 								if source.id == "Messages" {
 									if cardInfo.card?.asset?.mediaType == .image {
-										shareData = (cardInfo.card?.thumbnail ?? cardInfo.card?.fullImage)?.jpegData(compressionQuality: 0.98)
+										shareData = cardInfo.card?.fullImage?.jpegData(compressionQuality: 0.98)
 									} else {
 										// todo
 									}
@@ -77,27 +77,30 @@ struct CherView: View {
 																	 }
 				}
 			}
-			Spacer()
 		}
 		.background(Color(.systemBackground))
 		.presentationDetents([.height(130)])
 		.presentationDragIndicator(.visible)
 		.sheet(isPresented: $showMessages) {
-			MessageComposeView(
-				attachments: [
-					MessageComposeView.MessageAttachment(data: shareData ?? Data(),
-																							 typeIdentifier: UTType.jpeg.identifier,
-																							 filename: "image.jpg")
-				],
-				isPresented: $showMessages
-			)
-				.ignoresSafeArea()
-				.onChange(of: showMessages, { oldValue, newValue in
-					if !newValue {
-						onDismiss()
-					}
-				})
+			messageComposeView
 		}
+	}
+
+	var messageComposeView: some View {
+		MessageComposeView(
+			attachments: [
+				MessageComposeView.MessageAttachment(data: shareData ?? Data(),
+																						 typeIdentifier: UTType.jpeg.identifier,
+																						 filename: "image.jpg")
+			],
+			isPresented: $showMessages
+		)
+			.ignoresSafeArea()
+			.onChange(of: showMessages, { oldValue, newValue in
+				if !newValue {
+					onDismiss()
+				}
+			})
 	}
 }
 
