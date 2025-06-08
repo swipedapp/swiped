@@ -56,6 +56,7 @@ class CherController {
 									 }
 								 }
 							 }),
+		/*
 		CherSource(name: "Bluesky",
 							 image: Image("bluesky"),
 							 isAvailable: {
@@ -89,6 +90,7 @@ class CherController {
 							 share: { cardInfo, photosController in
 								 // TODO
 							 })
+		 */
 	]
 
 	static let hasAnySources = {
