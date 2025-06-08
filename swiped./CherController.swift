@@ -26,11 +26,11 @@ class CherController {
 								 return UIApplication.shared.canOpenURL(URL(string: "snapchat://")!)
 							 },
 							 share: { cardInfo, photosController in
-								 if let (data, type) = try? await getData(cardInfo: cardInfo, photosController: photosController) {
+								 if let item = try? await getData(cardInfo: cardInfo, photosController: photosController) {
 									 CreativeKit.shareToPreview(
 										clientID: Identifiers.CLIENT_ID,
-										mediaType: type.isSubtype(of: .video) ? .video : .image,
-										mediaData: data
+										mediaType: item.type.isSubtype(of: .video) ? .video : .image,
+										mediaData: item.data
 									 )
 								 }
 							 }),
@@ -107,7 +107,7 @@ class CherController {
 		}
 	}
 
-	static func getData(cardInfo: CardInfo, photosController: PhotosController) async throws -> (Data, UTType)? {
+	static func getData(cardInfo: CardInfo, photosController: PhotosController) async throws -> PhotosController.ShareItem? {
 		if #available(iOS 18.2, *) {
 			guard let asset = cardInfo.card?.asset else {
 				return nil
@@ -118,7 +118,8 @@ class CherController {
 				return try await PhotosController.getFullImage(asset: asset)
 
 			case .video:
-				return (try await photosController.getShareVideo(asset: asset).exported(as: .mpeg4Movie), .mpeg4Movie)
+				return PhotosController.ShareItem(data: try await photosController.getShareVideo(asset: asset).exported(as: .mpeg4Movie),
+																					type: .mpeg4Movie)
 
 			case .unknown, .audio:
 				return nil

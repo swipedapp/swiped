@@ -211,7 +211,14 @@ class PhotosController {
 		}
 	}
 
-	static func getFullImage(asset: PHAsset) async throws -> (Data, UTType)? {
+	struct ShareItem: Identifiable {
+		var data: Data
+		var type: UTType
+
+		var id: Data { data }
+	}
+
+	static func getFullImage(asset: PHAsset) async throws -> ShareItem? {
 		return try await withCheckedThrowingContinuation { continuation in
 			let logger = Logger(subsystem: "Photo", category: "ShareSheet Handler")
 			logger.debug("Called Share Photo")
@@ -239,7 +246,7 @@ class PhotosController {
 
 				logger.debug("Opening ShareSheet..")
 				// For most cases, we can use the data directly
-				continuation.resume(returning: (data, type))
+				continuation.resume(returning: ShareItem(data: data, type: type))
 			}
 		}
 	}

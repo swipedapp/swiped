@@ -16,8 +16,8 @@ struct TransferableImage: Transferable {
 	
 	static var transferRepresentation: some TransferRepresentation {
 		DataRepresentation(exportedContentType: .jpeg) { item in
-			if let (data, _) = try await PhotosController.getFullImage(asset: item.asset) {
-				return data
+			if let item = try await PhotosController.getFullImage(asset: item.asset) {
+				return item.data
 			}
 			return Data()
 		}

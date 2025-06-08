@@ -24,7 +24,7 @@ struct CherView: View {
 
 	@State var showMessages = false
 
-	@State var shareData: (Data, UTType)?
+	@State var shareItem: PhotosController.ShareItem?
 
 	func buttonLabel(image: Image, text: Text) -> some View {
 		VStack(alignment: .center) {
@@ -48,12 +48,7 @@ struct CherView: View {
 					if MessageComposeView.isAvailable {
 						Button(action: {
 							Task {
-								let result = try? await CherController.getData(cardInfo: cardInfo, photosController: photosController)
-								await try? Task.sleep(for: .milliseconds(10))
-								await MainActor.run {
-									shareData = result
-									showMessages = true
-								}
+								shareItem = try? await CherController.getData(cardInfo: cardInfo, photosController: photosController)
 							}
 						}, label: {
 							buttonLabel(image: Image("messages"),
@@ -89,21 +84,21 @@ struct CherView: View {
 		.background(Color(.systemBackground))
 		.presentationDetents([.height(130)])
 		.presentationDragIndicator(.visible)
-		.sheet(isPresented: $showMessages) {
+		.sheet(item: $shareItem) { _ in
 			messageComposeView
 		}
 	}
 
 	var messageComposeView: some View {
-		guard let (data, type) = shareData else {
+		guard let item = shareItem else {
 			return AnyView(EmptyView())
 		}
 
 		return AnyView(MessageComposeView(
 			attachments: [
-				MessageComposeView.MessageAttachment(data: data,
-																						 typeIdentifier: type.identifier,
-																						 filename: "image.\(type.preferredFilenameExtension ?? "jpg")")
+				MessageComposeView.MessageAttachment(data: item.data,
+																						 typeIdentifier: item.type.identifier,
+																						 filename: "image.\(item.type.preferredFilenameExtension ?? "jpg")")
 			],
 			isPresented: $showMessages
 		)
@@ -111,7 +106,7 @@ struct CherView: View {
 			.onChange(of: showMessages, { oldValue, newValue in
 				if !newValue {
 					onDismiss()
-					shareData = nil
+					shareItem = nil
 				}
 			}))
 	}
