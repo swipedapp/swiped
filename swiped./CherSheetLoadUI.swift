@@ -23,6 +23,8 @@ struct CherSheetLoadUI: View {
 			Spacer()
 		}
 		.interactiveDismissDisabled()
+		.presentationDetents([.height(130)])
+		.presentationDragIndicator(.hidden)
 	}
 
 }
