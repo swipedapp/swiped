@@ -24,6 +24,8 @@ struct CherView: View {
 
 	@Environment(\.presentationMode) var presentationMode
 
+	@State var isLoading = false
+
 	@State var showMessages = false
 
 	@State var shareItem: PhotosController.ShareItem?
@@ -49,8 +51,10 @@ struct CherView: View {
 				HStack {
 					if MessageComposeView.isAvailable {
 						Button(action: {
+							isLoading = true
 							Task {
 								shareItem = try? await CherController.getData(cardInfo: cardInfo, photosController: photosController)
+								isLoading = false
 							}
 						}, label: {
 							buttonLabel(image: Image("messages"),
@@ -62,7 +66,9 @@ struct CherView: View {
 						if source.isAvailable() {
 							Button(action: {
 								Task {
+									isLoading = true
 									await source.share(cardInfo, photosController)
+									isLoading = false
 									presentationMode.wrappedValue.dismiss()
 								}
 							}, label: {
@@ -86,6 +92,9 @@ struct CherView: View {
 		.background(Color(.systemBackground))
 		.presentationDetents([.height(130)])
 		.presentationDragIndicator(.visible)
+		.sheet(isPresented: $isLoading, content: {
+			CherSheetLoadUI()
+		})
 		.sheet(item: $shareItem) { shareItem in
 			messageComposeView(shareItem: shareItem)
 		}
