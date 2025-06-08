@@ -84,17 +84,17 @@ struct CherView: View {
 		.background(Color(.systemBackground))
 		.presentationDetents([.height(130)])
 		.presentationDragIndicator(.visible)
-		.sheet(item: $shareItem) { _ in
-			messageComposeView
+		.sheet(item: $shareItem) { shareItem in
+			messageComposeView(shareItem: shareItem)
 		}
 	}
 
-	var messageComposeView: some View {
+	func messageComposeView(shareItem: PhotosController.ShareItem) -> some View {
 		return AnyView(MessageComposeView(
 			attachments: [
-				MessageComposeView.MessageAttachment(data: shareItem?.data ?? Data(),
-																						 typeIdentifier: (shareItem?.type ?? .data).identifier,
-																						 filename: "image.\((shareItem?.type ?? .data).preferredFilenameExtension ?? "jpg")")
+				MessageComposeView.MessageAttachment(data: shareItem.data,
+																						 typeIdentifier: shareItem.type.identifier,
+																						 filename: "image.\(shareItem.type.preferredFilenameExtension ?? "jpg")")
 			],
 			isPresented: $showMessages
 		)
@@ -102,7 +102,7 @@ struct CherView: View {
 			.onChange(of: showMessages, { oldValue, newValue in
 				if !newValue {
 					onDismiss()
-					shareItem = nil
+					self.shareItem = nil
 				}
 			}))
 	}
