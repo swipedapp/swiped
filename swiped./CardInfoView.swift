@@ -344,9 +344,22 @@ struct CardInfoView: View {
 		.sheet(isPresented: $showSettings) {
 			SettingsView()
 		}
-		.sheet(isPresented: $showCher) {
-			CherView()
-		}
+		.overlay(
+			ZStack {
+				if showCher {
+					Color.black.opacity(0.3)
+						.ignoresSafeArea()
+						.onTapGesture { showCher = false }
+					
+					VStack {
+						CherView()
+							.environmentObject(cardInfo)
+						Spacer()
+					}
+				}
+			}
+				.animation(.spring(response: 0.6, dampingFraction: 0.8), value: showCher)
+		)
 	}
 	
 }
