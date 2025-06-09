@@ -19,7 +19,7 @@ struct CherSource: Identifiable {
 
 class CherController {
 
-	static let sources = [
+	private static let baseSources = [
 		CherSource(name: "Snapchat",
 							 image: Image("snap"),
 							 isAvailable: {
@@ -34,7 +34,10 @@ class CherController {
 									 )
 								 }
 							 }),
-		/*
+		
+	]
+	#if INTERNAL
+	private static let unfinishedSources = [
 		CherSource(name: "Bluesky",
 							 image: Image("bluesky"),
 							 isAvailable: {
@@ -59,7 +62,7 @@ class CherController {
 							 share: { cardInfo, photosController in
 								 // TODO
 							 }),
-
+		
 		CherSource(name: "Facebook",
 							 image: Image("fb"),
 							 isAvailable: {
@@ -68,9 +71,12 @@ class CherController {
 							 share: { cardInfo, photosController in
 								 // TODO
 							 })
-		 */
 	]
-
+	#else
+	private static let unfinishedSources: [CherSource] = []
+	#endif
+	static let sources = baseSources + unfinishedSources
+	
 	static let hasAnySources = {
 		let count = sources.count(where: { $0.isAvailable() })
 		return count > 0

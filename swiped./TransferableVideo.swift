@@ -31,7 +31,7 @@ struct TransferableVideo: Transferable {
 						return
 					}
 					// Create a temporary file URL
-					logger.debug("Writing to a temporary file..")
+					logger.debug("Downloading and writing to a temporary file..")
 					let temporaryDirectoryURL = FileManager.default.temporaryDirectory
 					let temporaryFileURL = temporaryDirectoryURL
 						.appendingPathComponent(UUID().uuidString)
@@ -43,7 +43,7 @@ struct TransferableVideo: Transferable {
 						continuation.resume(throwing: NSError(domain: "VideoTransfer", code: 2, userInfo: [NSLocalizedDescriptionKey: "Could not create export session"]))
 						return
 					}
-					logger.debug("Opening ShareSheet..")
+					logger.debug("Sending back data..")
 					exportSession.outputURL = temporaryFileURL
 					exportSession.outputFileType = .mp4
 					
