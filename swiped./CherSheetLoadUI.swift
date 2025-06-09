@@ -10,12 +10,14 @@ import SwiftUI
 struct CherSheetLoadUI: View {
 	var body: some View {
 		NavigationView {
-			VStack {
+			HStack {
 				
 				Text("Preparing..")
-					.font(.custom("LoosExtended-Bold", size: 23))
+					.font(.custom("LoosExtended-Medium", size: 20))
+				
 				ProgressView()
-					.controlSize(.large)
+					//.controlSize(.large)
+					
 			}
 			
 			.scrollContentBackground(.hidden)
