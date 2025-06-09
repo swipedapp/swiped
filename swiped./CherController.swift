@@ -70,6 +70,38 @@ class CherController {
 							 },
 							 share: { cardInfo, photosController in
 								 // TODO
+							 }),
+		CherSource(name: "Messenger",
+							 image: Image("messenger"),
+							 isAvailable: {
+								 return UIApplication.shared.canOpenURL(URL(string: "fb-messenger://")!)
+							 },
+							 share: { cardInfo, photosController in
+								 // TODO
+							 }),
+		CherSource(name: "WhatsApp",
+							 image: Image("whatsapp"),
+							 isAvailable: {
+								 return UIApplication.shared.canOpenURL(URL(string: "whatsapp://")!)
+							 },
+							 share: { cardInfo, photosController in
+								 // TODO
+							 }),
+		CherSource(name: "Discord",
+							 image: Image("discord"),
+							 isAvailable: {
+								 return UIApplication.shared.canOpenURL(URL(string: "discord://")!)
+							 },
+							 share: { cardInfo, photosController in
+								 // TODO
+							 }),
+		CherSource(name: "TikTok",
+							 image: Image("tiktok"),
+							 isAvailable: {
+								 return UIApplication.shared.canOpenURL(URL(string: "tiktok://")!)
+							 },
+							 share: { cardInfo, photosController in
+								 // TODO
 							 })
 	]
 	#else
