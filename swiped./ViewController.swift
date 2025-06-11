@@ -55,7 +55,9 @@ class ViewController: UIViewController {
 	private let cardStack = SwipeCardStack()
 	private var mainView: MainView!
 	private var mainHostingController: UIHostingController<AnyView>!
-	
+	private var actionButtonsView: ActionButtonsView!
+	private var actionButtonsHostingController: UIHostingController<AnyView>!
+
 	private let photosController = PhotosController()
 	private var cards = [PhotoCard]()
 	private var toDelete = [PhotoCard]()
@@ -77,12 +79,15 @@ class ViewController: UIViewController {
 		cardStack.dataSource = self
 		mainView = MainView()
 		mainView.delegate = self
+		actionButtonsView = ActionButtonsView()
+		actionButtonsView.delegate = self
 		photosController.delegate = self
 		
 		configureNavigationBar()
 		layoutMainView()
 		layoutCardStackView()
-		
+		layoutActionButtonsView()
+
 		loadBatch()
 		
 		Task {
@@ -129,7 +134,23 @@ class ViewController: UIViewController {
 																			bottom: view.safeAreaLayoutGuide.bottomAnchor,
 																			right: view.safeAreaLayoutGuide.rightAnchor)
 	}
-	
+
+	private func layoutActionButtonsView() {
+		actionButtonsHostingController = UIHostingController(rootView: AnyView(
+			actionButtonsView
+				.environmentObject(cardInfo)
+				.modelContext(modelContext)
+		))
+		actionButtonsHostingController.view.isOpaque = false
+		actionButtonsHostingController.view.backgroundColor = .clear
+		actionButtonsHostingController.willMove(toParent: self)
+		view.addSubview(actionButtonsHostingController.view)
+		actionButtonsHostingController.view.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor,
+																							 right: view.safeAreaLayoutGuide.rightAnchor,
+																							 paddingBottom: 10,
+																							 paddingRight: 10)
+	}
+
 	private func loadBatch() {
 		let logger = Logger(subsystem: "Batch Loader", category: "Cards")
 		logger.debug("Creating stack of cards..")
@@ -293,8 +314,8 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 		}
 	}
 }
-extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, MainView.Delegate, BehindView.Delegate {
-	
+extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, ActionButtonsView.Delegate, BehindView.Delegate {
+
 	func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
 		let card = SwipeCard()
 		card.footerHeight = 80
@@ -429,7 +450,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Main
 		}
 	}
 	
-	func didTapButton(action: MainView.Action) {
+	func didTapButton(action: ActionButtonsView.Action) {
 		switch action {
 		case .undo:
 			cardStack.undoLastSwipe(animated: true)
