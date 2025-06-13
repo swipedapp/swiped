@@ -30,7 +30,7 @@ class CardOverlay: UIView {
 	
 	private func createLeftOverlay() {
 		let leftTextView = CardOverlayLabelView(withTitle: "DELETE",
-																						color: .sampleRed,
+																						color: UIColor(named: "hdrRed")!,
 																						rotation: CGFloat.pi / 10)
 		addSubview(leftTextView)
 		leftTextView.anchor(top: topAnchor,
@@ -41,7 +41,7 @@ class CardOverlay: UIView {
 	
 	private func createRightOverlay() {
 		let rightTextView = CardOverlayLabelView(withTitle: "KEEP",
-																						 color: .sampleGreen,
+																						 color: UIColor(named: "hdrGreen")!,
 																						 rotation: -CGFloat.pi / 10)
 		addSubview(rightTextView)
 		rightTextView.anchor(top: topAnchor,
@@ -91,10 +91,4 @@ extension NSAttributedString.Key {
 		NSAttributedString.Key.font: Fonts.overlay,
 		NSAttributedString.Key.kern: 5.0
 	]
-}
-
-extension UIColor {
-	static var sampleRed = UIColor(red: 300, green: 0 / 255, blue: 0 / 255, alpha: 1)
-	static var sampleGreen = UIColor(red: 0 / 255, green: 300, blue: 0 / 255, alpha: 1)
-	static var sampleBlue = UIColor(red: 0 / 255, green: 0 / 255, blue: 300, alpha: 1)
 }
