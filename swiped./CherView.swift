@@ -87,10 +87,10 @@ struct CherView: View {
 																		 presentationMode.wrappedValue.dismiss()
 																	 }
 				}
+					.padding(.horizontal, 10)
 			}
 		}
-		.background(Color(.systemBackground))
-		.presentationDetents([.height(130)])
+		.presentationDetents([.height(140)])
 		.presentationDragIndicator(.visible)
 		.sheet(isPresented: $isLoading, content: {
 			CherSheetLoadUI()

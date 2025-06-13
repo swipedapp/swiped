@@ -172,7 +172,10 @@ class PhotosController {
 			PHAssetChangeRequest.deleteAssets(assets as NSFastEnumeration)
 		} completionHandler: { success, error in
 			if let error = error as? NSError {
-				SentrySDK.capture(error: error)
+				if error.code != PHPhotosError.userCancelled.rawValue {
+					SentrySDK.capture(error: error)
+				}
+
 				os_log(.error, "⚠️ Could not delete photos. \(error)")
 			}
 			

@@ -145,8 +145,10 @@ class ViewController: UIViewController {
 		actionButtonsHostingController.view.backgroundColor = .clear
 		actionButtonsHostingController.willMove(toParent: self)
 		view.addSubview(actionButtonsHostingController.view)
-		actionButtonsHostingController.view.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor,
+		actionButtonsHostingController.view.anchor(left: view.safeAreaLayoutGuide.leftAnchor,
+																							 bottom: view.safeAreaLayoutGuide.bottomAnchor,
 																							 right: view.safeAreaLayoutGuide.rightAnchor,
+																							 paddingLeft: 10,
 																							 paddingBottom: 10,
 																							 paddingRight: 10)
 	}
@@ -458,6 +460,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 			cardStack.swipe(.left, animated: true)
 		case .keep:
 			cardStack.swipe(.right, animated: true)
+		case .share:
+			break
 		}
 	}
 	

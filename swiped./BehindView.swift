@@ -91,7 +91,7 @@ struct BehindView: SwiftUI.View {
 			}
 			.font(.custom("LoosExtended-Bold", size: 16))
 			.buttonStyle(.glass)
-			.background(Capsule().fill(Color("brandGreen")))
+			.background(Capsule().fill(Color("continueButton")))
 		}
 			.frame(maxWidth: 450)
 			.padding(.horizontal, 20)

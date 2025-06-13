@@ -9,10 +9,19 @@ import SwiftUI
 
 struct ActionButtonsView: View {
 
+	private static let dateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateStyle = .medium
+		return dateFormatter
+	}()
+
+	private let photosController = PhotosController()
+
 	enum Action: Int {
-		case undo = 1
-		case delete = 2
-		case keep = 3
+		case undo
+		case delete
+		case keep
+		case share
 	}
 
 	protocol Delegate: AnyObject {
@@ -23,7 +32,15 @@ struct ActionButtonsView: View {
 
 	@EnvironmentObject var cardInfo: CardInfo
 
+	@Environment(\.modelContext) var modelContext {
+		didSet {
+			photosController.db = DatabaseController(modelContainer: modelContext.container)
+		}
+	}
+
 	@Namespace private var namespace
+
+	@State var showCher = false
 
 	@State private var keepAnimation = false
 	@State private var undoAnimation = false
@@ -33,7 +50,12 @@ struct ActionButtonsView: View {
 	func bottomButton<T>(image: Image, text: Text, action: Action, animate: Binding<Bool>, effect: T) -> some View where T : IndefiniteSymbolEffect, T : SymbolEffect {
 		return Button(action: {
 			animate.wrappedValue = true
-			self.delegate?.didTapButton(action: action)
+
+			if action == .share {
+				showCher = true
+			} else {
+				self.delegate?.didTapButton(action: action)
+			}
 
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
 				animate.wrappedValue = false
@@ -59,10 +81,32 @@ struct ActionButtonsView: View {
 		.glassEffectID(1, in: namespace)
 	}
 
+	var shareButton: some View {
+		if let asset = cardInfo.card?.asset,
+			 asset.mediaType == .image || asset.mediaType == .video {
+			let button = bottomButton(image: Image(systemName: "square.and.arrow.up"),
+																text: Text("Share"),
+																action:.share,
+																animate: $shareAnimation,
+																effect: .drawOff)
+
+			if CherController.hasAnySources {
+				return AnyView(button)
+			} else {
+				return AnyView(CherController.shareLink(cardInfo: cardInfo,
+																								photosController: photosController,
+																								body: {
+					button
+				}))
+			}
+		} else {
+			return AnyView(EmptyView())
+		}
+	}
+
 	var body: some View {
 		GlassEffectContainer {
 			HStack {
-
 				bottomButton(image: Image(systemName: "xmark"),
 										 text: Text("Delete"),
 										 action: .delete,
@@ -77,7 +121,7 @@ struct ActionButtonsView: View {
 
 				bottomButton(image: Image(systemName: "square.and.arrow.up"),
 										 text: Text("Share"),
-										 action:.keep,
+										 action:.share,
 										 animate: $shareAnimation,
 										 effect: .drawOff)
 
@@ -88,7 +132,13 @@ struct ActionButtonsView: View {
 										 effect: .drawOff)
 			}
 		}
-		.glassEffectUnion(id: 1, namespace: namespace)
+			.opacity(cardInfo.summary ? 0 : 1)
+			.transition(.opacity.animation(.linear(duration: 0.3)))
+			.glassEffectUnion(id: 1, namespace: namespace)
+			.sheet(isPresented: $showCher) {
+				CherView()
+					.environmentObject(cardInfo)
+			}
 	}
 
 }

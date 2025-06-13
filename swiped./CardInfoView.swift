@@ -37,12 +37,6 @@ class CardInfo: ObservableObject {
 
 struct CardInfoView: View {
 	
-	private static let dateFormatter: DateFormatter = {
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateStyle = .medium
-		return dateFormatter
-	}()
-	
 	private static let fileSizeFormatter = ByteCountFormatter()
 	
 	private let photosController = PhotosController()
@@ -58,8 +52,6 @@ struct CardInfoView: View {
 	}
 	
 	@State var showSettings = false
-
-	@State var showCher = false
 
 	@State private var trigger = 0
 
@@ -201,8 +193,9 @@ struct CardInfoView: View {
 
 	var title: AnyView {
 		if logo {
-			return AnyView((Text("SWIPED") + Text(".")
-				.foregroundColor(Color("brandGreen")))
+			let dot = Text(".")
+				.foregroundColor(Color("brandGreen"))
+			return AnyView(Text("SWIPED\(dot)")
 				.contentTransition(.opacity))
 		}
 
@@ -283,30 +276,6 @@ struct CardInfoView: View {
 
 	}
 	
-	var shareButton: some View {
-		if !logo,
-			 let asset = cardInfo.card?.asset,
-			 asset.mediaType == .image || asset.mediaType == .video {
-			let image = Image(systemName: "square.and.arrow.up")
-				.font(.custom("LoosExtended-Bold", size: 20))
-				.frame(width: 40, height: 40, alignment: .center)
-			if CherController.hasAnySources {
-				return AnyView(Button(action: {
-					showCher = true
-				}, label: {
-					image
-				}))
-			} else {
-				return AnyView(CherController.shareLink(cardInfo: cardInfo,
-																								photosController: photosController, body: {
-					image
-				}))
-			}
-		} else {
-			return AnyView(EmptyView())
-		}
-	}
-	
 	var body: some View {
 		VStack(alignment: .leading, spacing: 4) {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
@@ -321,8 +290,6 @@ struct CardInfoView: View {
 
 				Spacer()
 
-				shareButton
-
 				Button(action: {
 					showSettings = true
 				}, label: {
@@ -331,6 +298,7 @@ struct CardInfoView: View {
 				})
 				.frame(width: 40, height: 40, alignment: .center)
 				.accessibilityIdentifier("settingsButton")
+				.buttonStyle(.glass)
 			}
 
 			subhead
@@ -343,10 +311,6 @@ struct CardInfoView: View {
 		.foregroundColor(.primary)
 		.sheet(isPresented: $showSettings) {
 			SettingsView()
-		}
-		.sheet(isPresented: $showCher) {
-			CherView()
-				.environmentObject(cardInfo)
 		}
 	}
 	
