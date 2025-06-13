@@ -90,8 +90,8 @@ struct BehindView: SwiftUI.View {
 					.frame(height: 44)
 			}
 			.font(.custom("LoosExtended-Bold", size: 16))
-			.background(Color("brandGreen").cornerRadius(8))
-			.foregroundColor(.black)
+			.buttonStyle(.glass)
+			.background(Capsule().fill(Color("brandGreen")))
 		}
 			.frame(maxWidth: 450)
 			.padding(.horizontal, 20)

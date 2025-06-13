@@ -4,9 +4,6 @@
 <dict>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>discord</string>
-		<string>tiktok</string>
-		<string>fb-messenger</string>
 		<string>whatsapp</string>
 		<string>bluesky</string>
 		<string>ivory</string>

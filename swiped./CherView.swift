@@ -38,7 +38,7 @@ struct CherView: View {
 				.font(.custom("LoosExtended-Regular", size: 28))
 				.frame(width: 40, height: 40, alignment: .center)
 			text
-				.font(.custom("LoosExtended-Regular", size: 14))
+				.font(.custom("LoosExtended-Regular", size: 16))
 				.lineLimit(1)
 		}
 		.frame(width: 110, alignment: .center)

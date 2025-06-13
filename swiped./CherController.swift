@@ -19,7 +19,7 @@ struct CherSource: Identifiable {
 
 class CherController {
 
-	private static let baseSources = [
+	static let sources = [
 		CherSource(name: "Snapchat",
 							 image: Image("snap"),
 							 isAvailable: {
@@ -34,10 +34,7 @@ class CherController {
 									 )
 								 }
 							 }),
-		
-	]
-	#if INTERNAL
-	private static let unfinishedSources = [
+		/*
 		CherSource(name: "Bluesky",
 							 image: Image("bluesky"),
 							 isAvailable: {
@@ -62,7 +59,7 @@ class CherController {
 							 share: { cardInfo, photosController in
 								 // TODO
 							 }),
-		
+
 		CherSource(name: "Facebook",
 							 image: Image("fb"),
 							 isAvailable: {
@@ -70,45 +67,10 @@ class CherController {
 							 },
 							 share: { cardInfo, photosController in
 								 // TODO
-							 }),
-		CherSource(name: "Messenger",
-							 image: Image("messenger"),
-							 isAvailable: {
-								 return UIApplication.shared.canOpenURL(URL(string: "fb-messenger://")!)
-							 },
-							 share: { cardInfo, photosController in
-								 // TODO
-							 }),
-		CherSource(name: "WhatsApp",
-							 image: Image("whatsapp"),
-							 isAvailable: {
-								 return UIApplication.shared.canOpenURL(URL(string: "whatsapp://")!)
-							 },
-							 share: { cardInfo, photosController in
-								 // TODO
-							 }),
-		CherSource(name: "Discord",
-							 image: Image("discord"),
-							 isAvailable: {
-								 return UIApplication.shared.canOpenURL(URL(string: "discord://")!)
-							 },
-							 share: { cardInfo, photosController in
-								 // TODO
-							 }),
-		CherSource(name: "TikTok",
-							 image: Image("tiktok"),
-							 isAvailable: {
-								 return UIApplication.shared.canOpenURL(URL(string: "tiktok://")!)
-							 },
-							 share: { cardInfo, photosController in
-								 // TODO
 							 })
+		 */
 	]
-	#else
-	private static let unfinishedSources: [CherSource] = []
-	#endif
-	static let sources = baseSources + unfinishedSources
-	
+
 	static let hasAnySources = {
 		let count = sources.count(where: { $0.isAvailable() })
 		return count > 0

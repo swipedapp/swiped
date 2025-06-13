@@ -75,7 +75,7 @@ struct AdvancedView: View {
 	}
 	
 	var syncSection: some View {
-		//let syncFailed = !sync && serverController.syncFailed
+		let syncFailed = !sync && serverController.syncFailed
 		
 		return Section {
 			HStack {
