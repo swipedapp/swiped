@@ -1,0 +1,85 @@
+{
+  "fill" : "system-dark",
+  "groups" : [
+    {
+      "blur-material" : 0.31000000000000005,
+      "layers" : [
+        {
+          "blend-mode" : "plus-darker",
+          "fill" : {
+            "solid" : "display-p3:0.99862,1.00000,0.97596,1.00000"
+          },
+          "glass-specializations" : [
+            {
+              "appearance" : "light",
+              "value" : true
+            }
+          ],
+          "image-name" : "swiped_app_sf_front.svg",
+          "name" : "swiped_app_sf_front"
+        }
+      ],
+      "lighting" : "individual",
+      "shadow" : {
+        "kind" : "layer-color",
+        "opacity" : 0.5
+      },
+      "specular" : true,
+      "translucency-specializations" : [
+        {
+          "value" : {
+            "enabled" : true,
+            "value" : 0.45
+          }
+        },
+        {
+          "appearance" : "tinted",
+          "value" : {
+            "enabled" : true,
+            "value" : 0.65
+          }
+        }
+      ]
+    },
+    {
+      "blur-material" : 0.31,
+      "layers" : [
+        {
+          "blend-mode-specializations" : [
+            {
+              "appearance" : "light",
+              "value" : "overlay"
+            }
+          ],
+          "fill" : "none",
+          "image-name" : "swiped_app_sf_back.svg",
+          "name" : "swiped_app_sf_back"
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency-specializations" : [
+        {
+          "value" : {
+            "enabled" : true,
+            "value" : 0.5
+          }
+        },
+        {
+          "appearance" : "tinted",
+          "value" : {
+            "enabled" : true,
+            "value" : 0.85
+          }
+        }
+      ]
+    }
+  ],
+  "supported-platforms" : {
+    "squares" : [
+      "iOS"
+    ]
+  }
+}
