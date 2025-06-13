@@ -13,11 +13,9 @@ struct MigrationUI: View {
 			VStack {
 				
 				Text("Updating..")
-				//.font(.custom("LoosExtended-Bold", size: 23))
-					.font(.custom("LoosExtended-Bold", size: 23))
+					.font(Fonts.title)
 				Text("Moving Database to SwiftData")
-				//.font(.custom("LoosExtended-Bold", size: 23))
-					.font(.custom("LoosExtended-Medium", size: 16))
+					.font(Fonts.bodyMedium)
 				ProgressView()
 					.controlSize(.large)
 			}

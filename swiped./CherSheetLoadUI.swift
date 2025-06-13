@@ -12,8 +12,8 @@ struct CherSheetLoadUI: View {
 		NavigationView {
 			VStack {
 				
-				Text("Preparing..")
-					.font(.custom("LoosExtended-Bold", size: 23))
+				Text("Preparing...")
+					.font(Fonts.title)
 				ProgressView()
 					.controlSize(.large)
 			}

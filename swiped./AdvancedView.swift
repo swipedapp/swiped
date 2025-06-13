@@ -51,7 +51,7 @@ struct AdvancedView: View {
 				NavigationLink("Internal") {
 					InternalView()
 				}
-				.font(.custom("LoosExtended-Regular", size: 16))
+				.font(Fonts.body)
 				.listRowBackground(Color("listRowBackground"))
 			}
 #endif
@@ -61,7 +61,7 @@ struct AdvancedView: View {
 				Section {
 					Toggle(isOn: showSupportAlert) {
 						Text("Show Support Alerts")
-							.font(.custom("LoosExtended-Regular", size: 16))
+							.font(Fonts.body)
 					}
 				}
 				.listRowBackground(Color("listRowBackground"))
@@ -76,19 +76,19 @@ struct AdvancedView: View {
 	
 	var syncSection: some View {
 		let syncFailed = !sync && serverController.syncFailed
-		
+
+		let dot = Text(".")
+			.foregroundColor(isSyncOK ? Color("brandGreen") : Color("brandRed"))
+
 		return Section {
 			HStack {
 				VStack(alignment: .leading, spacing: 2) {
-					Text("SYNC")
-						.font(.custom("LoosExtended-Bold", size: 16))
+					Text("SYNC\(dot)")
+						.font(Fonts.bodyBold)
 						.foregroundColor(.white)
-					+
-					Text(".")
-						.font(.custom("LoosExtended-Bold", size: 16))
-						.foregroundColor(isSyncOK ? Color("brandGreen") : Color("brandRed"))
+
 					Text(cloudKitStatus)
-						.font(.custom("LoosExtended-Regular", size: 14))
+						.font(Fonts.small)
 						.foregroundColor(.white)
 				}
 				

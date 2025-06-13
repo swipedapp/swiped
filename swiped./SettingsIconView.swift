@@ -84,7 +84,7 @@ struct SettingsIconView: View {
 				)
 			
 			Text(icon.title)
-				.font(.custom("LoosExtended-Regular", size: 16))
+				.font(Fonts.body)
 				.foregroundColor(.primary)
 			
 			Spacer()

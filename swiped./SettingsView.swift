@@ -45,7 +45,7 @@ struct SettingsView: View {
 									Text("Swipe down to dismiss")
 									Image(systemName: "chevron.down")
 								}
-								.font(.custom("LoosExtended-Regular", size: 14))
+								.font(Fonts.small)
 							}
 							
 							HStack {
@@ -54,7 +54,7 @@ struct SettingsView: View {
 									Text("Settings")
 										.foregroundColor(.primary)
 										.textCase(nil)
-										.font(.custom("LoosExtended-Medium", size: 50))
+										.font(Fonts.hugeTitle)
 								}
 								Spacer()
 							}
@@ -67,23 +67,27 @@ struct SettingsView: View {
 					Toggle(isOn: $timestamps) {
 						
 						Text("Show relative timestamps")
-							.font(.custom("LoosExtended-Regular", size: 16))
+							.font(Fonts.body)
 						
 					}.listRowBackground(Color("listRowBackground"))
 					NavigationLink("App Icons") {
 						SettingsIconView(collection: "main")
-					}.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
+					}.listRowBackground(Color("listRowBackground")).font(Fonts.body)
+					NavigationLink("Fonts") {
+						SettingsFontView()
+					}.listRowBackground(Color("listRowBackground")).font(Fonts.body)
+
 					NavigationLink("Advanced") {
 						AdvancedView()
 							.environmentObject(sheetManager)
 					}
-					.font(.custom("LoosExtended-Regular", size: 16))
+					.font(Fonts.body)
 					.listRowBackground(Color("listRowBackground"))
 					NavigationLink("About") {
 						AboutView()
 							.environmentObject(sheetManager)
 					}
-					.font(.custom("LoosExtended-Regular", size: 16))
+					.font(Fonts.body)
 					.listRowBackground(Color("listRowBackground"))
 					
 					Section {
@@ -93,7 +97,7 @@ struct SettingsView: View {
 							HStack {
 								Spacer()
 								Label("Reset Database", systemImage: "xmark.bin")
-									.font(.custom("LoosExtended-Medium", size: 16))
+									.font(Fonts.bodyMedium)
 								Spacer()
 							}
 						})
@@ -116,6 +120,7 @@ struct SettingsView: View {
 				
 				Spacer()
 			}
+			.background(Color("oled"))
 		}
 		.onAppear {
 			self.swipeDownCount += 1

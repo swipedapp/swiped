@@ -16,7 +16,7 @@ class CardOverlay: UIView {
 		case .left:
 			createLeftOverlay()
 		case .up:
-			createUpOverlay()
+			fatalError()
 		case .right:
 			createRightOverlay()
 		default:
@@ -37,15 +37,6 @@ class CardOverlay: UIView {
 												right: rightAnchor,
 												paddingTop: 60,
 												paddingRight: 44)
-	}
-	
-	private func createUpOverlay() {
-		let upTextView = CardOverlayLabelView(withTitle: "SHARE",
-																					color: .sampleBlue,
-																					rotation: -CGFloat.pi / 20)
-		addSubview(upTextView)
-		upTextView.anchor(bottom: bottomAnchor, paddingBottom: 50)
-		upTextView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
 	}
 	
 	private func createRightOverlay() {
@@ -97,7 +88,7 @@ private class CardOverlayLabelView: UIView {
 extension NSAttributedString.Key {
 	
 	static var overlayAttributes: [NSAttributedString.Key: Any] = [
-		NSAttributedString.Key.font: UIFont(name: "LoosExtended-Bold", size: 42)!,
+		NSAttributedString.Key.font: Fonts.overlay,
 		NSAttributedString.Key.kern: 5.0
 	]
 }

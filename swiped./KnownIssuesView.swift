@@ -18,7 +18,7 @@ struct KnownIssuesView: View {
 					.padding([.bottom, .top], 20)
 				Spacer()
 				Text("Known Issues")
-					.font(.custom("LoosExtended-Bold", size: 23))
+					.font(Fonts.title)
 					.padding(.bottom, 20)
 				
 				VStack(alignment: .leading) {
@@ -30,7 +30,7 @@ struct KnownIssuesView: View {
 					
 					Spacer()
 				}
-				.font(.custom("LoosExtended-Regular", size: 16))
+				.font(Fonts.body)
 				.padding(.horizontal, 30)
 				.padding(.vertical, 20)
 			}

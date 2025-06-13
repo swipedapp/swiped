@@ -38,16 +38,12 @@ struct AboutView: View {
 							HStack {
 								Spacer()
 								VStack(alignment: .center) {
-									Text("SWIPED")
+									Text("SWIPED\(Text(".").foregroundColor(Color("brandGreen")))")
 										.foregroundColor(.white)
-										.font(.custom("LoosExtended-Bold", size: 50))
-									+
-									Text(".")
-										.foregroundColor(Color("brandGreen"))
 										.font(.custom("LoosExtended-Bold", size: 50))
 #if !INTERNAL
 									Text("Version \(version) (\(build))")
-										.foregroundColor(.white).opacity(0.7).font(.custom("LoosExtended-Medium", size: 18))
+										.foregroundColor(.white).opacity(0.7).font(Fonts.summaryMedium)
 #endif
 								}
 								Spacer()
@@ -59,25 +55,25 @@ struct AboutView: View {
 					.background(.black)
 					Link("Website", destination: URL(string: "https://swiped.pics/")!)
 						.listRowBackground(Color("forced")).foregroundColor(.white)
-						.font(.custom("LoosExtended-Regular", size: 16))
+						.font(Fonts.body)
 					Link("GitHub", destination: URL(string: "https://github.com/swipedapp/swiped")!)
 						.listRowBackground(Color("forced")).foregroundColor(.white)
-						.font(.custom("LoosExtended-Regular", size: 16))
+						.font(Fonts.body)
 					Link("Have an issue? Let us know.", destination: URL(string: "https://swiped.pics/support")!)
 						.listRowBackground(Color("forced")).foregroundColor(.white)
-						.font(.custom("LoosExtended-Regular", size: 16))
+						.font(Fonts.body)
 					NavigationLink("Known Issues") {
 						KnownIssuesView()
 					}
 					.listRowBackground(Color("forced")).foregroundColor(.white)
-					.font(.custom("LoosExtended-Regular", size: 16))
+					.font(Fonts.body)
 				}
 				
 				Spacer()
 				
 
-				Text(commitInfo).opacity(0.5).font(.custom("LoosExtended-Regular", size: 16))
-				Text("Made in Australia").opacity(1).font(.custom("LoosExtended-Regular", size: 16))
+				Text(commitInfo).opacity(0.5).font(Fonts.body)
+				Text("Made in Australia").opacity(1).font(Fonts.body)
 			}
 			.scrollContentBackground(.hidden)
 			.background(.black)

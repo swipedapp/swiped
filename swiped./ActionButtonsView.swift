@@ -63,16 +63,11 @@ struct ActionButtonsView: View {
 		}, label: {
 			VStack(spacing: 2) {
 				image
-					.font(.custom("LoosExtended-Medium", size: 24))
+					.font(.system(size: 24))
 					.frame(width: 30, height: 30, alignment: .center)
 					.symbolEffect(effect, options: .speed(2), isActive: animate.wrappedValue)
 				text
-				.font(.custom("LoosExtended-Medium", size: 12))
-				/*
-					just testing sf expanded. it doesnt look too far off loos.
-					.font(.caption)
-					.fontWidth(.expanded)
-				 */
+					.font(Fonts.small)
 			}
 			.padding(4)
 			.frame(width: 60, height: 50)

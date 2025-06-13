@@ -25,7 +25,7 @@ struct ImportantInfoView: View {
 						Image(systemName: "chevron.down")
 					}
 					.textCase(.uppercase)
-					.font(.custom("LoosExtended-Regular", size: 14))
+					.font(Fonts.small)
 					.foregroundColor(Color(uiColor: .secondaryLabel))
 					.padding(.top, 17)
 				}
@@ -36,8 +36,7 @@ struct ImportantInfoView: View {
 					.padding([.bottom, .top], 20)
 				Spacer()
 				Text("You're on iOS \(UIDevice.current.systemVersion)")
-				//.font(.custom("LoosExtended-Bold", size: 23))
-					.font(.custom("LoosExtended-Bold", size: 23))
+					.font(Fonts.title)
 					.padding(.bottom, 20)
 				
 				VStack(alignment: .leading) {
@@ -51,7 +50,7 @@ struct ImportantInfoView: View {
 					
 					Spacer()
 				}
-				.font(.custom("LoosExtended-Regular", size: 16))
+				.font(Fonts.body)
 				.padding(.horizontal, 30)
 				.padding(.vertical, 20)
 			}

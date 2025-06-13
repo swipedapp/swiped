@@ -17,8 +17,7 @@ struct RestrictionView: View {
 					.padding([.bottom, .top], 20)
 				Spacer()
 				Text("About Restriction")
-				//.font(.custom("LoosExtended-Bold", size: 23))
-					.font(.custom("LoosExtended-Bold", size: 23))
+					.font(Fonts.title)
 					.padding(.bottom, 20)
 				Form {
 					Section {

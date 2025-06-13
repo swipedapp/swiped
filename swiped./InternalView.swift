@@ -16,9 +16,9 @@ struct InternalView: View {
 	var body: some View {
 		Spacer()
 		VStack {
-			Text("⚠️Be careful what you wish for!⚠️").font(.custom("LoosExtended-Bold", size: 16))
+			Text("⚠️Be careful what you wish for!⚠️").font(Fonts.bodyBold)
 				.padding()
-			Text("Things in here are experimental, and could fail.").font(.custom("LoosExtended-Regular", size: 16))
+			Text("Things in here are experimental, and could fail.").font(Fonts.body)
 		}
 		
 		Form {
@@ -32,7 +32,7 @@ struct InternalView: View {
 						ImportantInfoView()
 					}
 				
-					.listRowBackground(Color("listRowBackground")).font(.custom("LoosExtended-Regular", size: 16))
+					.listRowBackground(Color("listRowBackground")).font(Fonts.body)
 			}
 			
 			

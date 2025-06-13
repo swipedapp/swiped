@@ -72,13 +72,13 @@ struct BehindView: SwiftUI.View {
 						Image(systemName: "trophy.fill")
 					}
 
-					Text("\(swipeScore.formatted()) SwipeScore").font(.custom("LoosExtended-Medium", size: 18))
+					Text("\(swipeScore.formatted()) SwipeScore").font(Fonts.summaryMedium)
 						.frame(maxWidth: .infinity, alignment: .leading)
 				}
 
 
 			}
-			.font(.custom("LoosExtended-Bold", size: 18))
+			.font(Fonts.summaryBold)
 			.multilineTextAlignment(.leading)
 			.padding(.vertical, 20)
 
@@ -89,7 +89,7 @@ struct BehindView: SwiftUI.View {
 					.frame(maxWidth: .infinity)
 					.frame(height: 44)
 			}
-			.font(.custom("LoosExtended-Bold", size: 16))
+			.font(Fonts.bodyBold)
 			.buttonStyle(.glass)
 			.background(Capsule().fill(Color("continueButton")))
 		}

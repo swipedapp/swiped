@@ -35,10 +35,10 @@ struct CherView: View {
 			image
 				.resizable()
 				.aspectRatio(contentMode: .fit)
-				.font(.custom("LoosExtended-Regular", size: 28))
+				.font(.system(size: 28))
 				.frame(width: 40, height: 40, alignment: .center)
 			text
-				.font(.custom("LoosExtended-Regular", size: 16))
+				.font(Fonts.body)
 				.lineLimit(1)
 		}
 		.frame(width: 110, alignment: .center)

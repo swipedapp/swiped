@@ -196,6 +196,7 @@ struct CardInfoView: View {
 			let dot = Text(".")
 				.foregroundColor(Color("brandGreen"))
 			return AnyView(Text("SWIPED\(dot)")
+				.font(.custom("LoosExtended-Bold", size: 24))
 				.contentTransition(.opacity))
 		}
 
@@ -209,9 +210,11 @@ struct CardInfoView: View {
 				text = Text(date, format: Date.FormatStyle(date: .abbreviated))
 			}
 			view = AnyView(text
+				.font(Fonts.title)
 				.contentTransition(.numericText(value: -date.timeIntervalSince1970)))
 		} else {
-			view = AnyView(Text(" "))
+			view = AnyView(Text(" ")
+				.font(Fonts.title))
 		}
 
 		return AnyView(view
@@ -281,7 +284,6 @@ struct CardInfoView: View {
 			HStack(alignment: .lastTextBaseline, spacing: 0) {
 				title
 					.id("title")
-					.font(.custom("LoosExtended-Bold", size: 24))
 					.lineLimit(1)
 					.onTapGesture {
 						timestamps = !timestamps
@@ -294,16 +296,17 @@ struct CardInfoView: View {
 					showSettings = true
 				}, label: {
 					Image(systemName: "gear")
-						.font(.custom("LoosExtended-Bold", size: 20))
+						.font(.system(size: 20))
 				})
-				.frame(width: 40, height: 40, alignment: .center)
+				.frame(width: 44, height: 44, alignment: .center)
+				.accessibilityLabel("Settings")
 				.accessibilityIdentifier("settingsButton")
 				.buttonStyle(.glass)
 			}
 
 			subhead
 				.id("subhead")
-				.font(.custom("LoosExtended-Regular", size: 18))
+				.font(Fonts.subhead)
 				.lineLimit(1)
 		}
 		.padding(.horizontal, 20)
