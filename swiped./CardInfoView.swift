@@ -122,9 +122,6 @@ struct CardInfoView: View {
 		if asset.mediaSubtypes.contains(.photoPanorama) {
 			types.append("Panorama")
 		}
-		if asset.mediaSubtypes.contains(.photoDepthEffect) {
-			types.append("Portrait")
-		}
 		if asset.mediaSubtypes.contains(.spatialMedia) {
 			types.append("Spatial")
 		}
