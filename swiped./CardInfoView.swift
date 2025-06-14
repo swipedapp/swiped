@@ -260,16 +260,16 @@ struct CardInfoView: View {
 						.accessibilityLabel("Edited")
 						.frame(width: 20, height: 20, alignment: .center)
 				}
-				let resources = PHAssetResource.assetResources(for: asset)
-				if let resource = resources.first {
-					let fileName = resource.originalFilename
-					
-					if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
-						Image(systemName: "square.and.arrow.down")
-							.accessibilityLabel("Edited")
-							.frame(width: 20, height: 20, alignment: .center)
-					}
-				}
+//				let resources = PHAssetResource.assetResources(for: asset)
+//				if let resource = resources.first {
+//					let fileName = resource.originalFilename
+//					
+//					if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
+//						Image(systemName: "square.and.arrow.down")
+//							.accessibilityLabel("Imported")
+//							.frame(width: 20, height: 20, alignment: .center)
+//					}
+//				}
 				Text(type)
 					.contentTransition(.numericText())
 			})
