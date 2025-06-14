@@ -70,6 +70,13 @@ class Fonts {
 		case .sf:   return .system(size: 14, weight: .regular).width(.ourExpanded)
 		}
 	}
+	static var extraSmall: Font {
+		switch fontChoice {
+		case .loos: return .custom("LoosExtended-Regular", size: 12)
+		case .sf:   return .system(size: 12, weight: .regular).width(.ourExpanded)
+		}
+	}
+	
 
 	static var summaryMedium: Font {
 		switch fontChoice {

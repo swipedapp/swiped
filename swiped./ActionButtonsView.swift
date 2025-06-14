@@ -67,7 +67,7 @@ struct ActionButtonsView: View {
 					.frame(width: 30, height: 30, alignment: .center)
 					.symbolEffect(effect, options: .speed(2), isActive: animate.wrappedValue)
 				text
-					.font(Fonts.small)
+					.font(Fonts.extraSmall)
 			}
 			.padding(4)
 			.frame(width: 60, height: 50)
