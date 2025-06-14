@@ -421,6 +421,29 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
+		// testing
+		let card = cards[index]
+		Task {
+			let photos = try! await photosController.fetchPhotos(around: card)
+			let stack = PhotoCardStack()
+			stack.cards = photos
+			stack.mainPhotoIndex = photos.count / 2
+
+			await MainActor.run {
+				let hostingController = UIHostingController(rootView: AnyView(
+					NavigationView {
+						PhotoLibraryView()
+							.environmentObject(stack)
+					}
+				))
+				self.present(hostingController, animated: true)
+			}
+		}
+
+		return
+
+
+
 		let logger = Logger(subsystem: "Quick Look", category: "Cards")
 		do {
 			let card = cards[index]

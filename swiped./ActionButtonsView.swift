@@ -101,12 +101,14 @@ struct ActionButtonsView: View {
 
 	var body: some View {
 		GlassEffectContainer {
-			HStack {
+			HStack(spacing: 0) {
 				bottomButton(image: Image(systemName: "xmark"),
 										 text: Text("Delete"),
 										 action: .delete,
 										 animate: $deleteAnimation,
 										 effect: .drawOff)
+
+				Spacer()
 
 				bottomButton(image: Image(systemName: "arrow.uturn.backward"),
 										 text: Text("Undo"),
@@ -114,11 +116,15 @@ struct ActionButtonsView: View {
 										 animate: $undoAnimation,
 										 effect: .drawOff)
 
+				Spacer()
+
 				bottomButton(image: Image(systemName: "square.and.arrow.up"),
 										 text: Text("Share"),
 										 action:.share,
 										 animate: $shareAnimation,
 										 effect: .drawOff)
+
+				Spacer()
 
 				bottomButton(image: Image(systemName: "checkmark"),
 										 text: Text("Keep"),

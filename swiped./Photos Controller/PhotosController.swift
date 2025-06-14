@@ -65,7 +65,108 @@ class PhotosController {
 			}
 		}
 	}
-	
+
+	func fetchRecentPhotos() async throws -> [PhotoCard] {
+		// Get latest photo
+		let fetchOptions = PHFetchOptions()
+		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
+		fetchOptions.predicate = NSPredicate(format: "isHidden == NO AND (mediaType == %d OR mediaType == %d)",
+																				 PHAssetMediaType.image.rawValue,
+																				 PHAssetMediaType.video.rawValue)
+		fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+		fetchOptions.fetchLimit = 1
+
+		let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
+
+		if fetchResult.count == 0 {
+			throw PhotoError.noPhotosAvailable
+		}
+
+		let card = PhotoCard()
+		card.id = 0
+		card.asset = fetchResult[0]
+		return try await fetchPhotos(around: card)
+	}
+
+	func fetchPhotos(around card: PhotoCard) async throws -> [PhotoCard] {
+		guard let asset = card.asset else {
+			throw PhotoError.failedToFetchPhoto
+		}
+
+		let fetchOptions = PHFetchOptions()
+		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
+		fetchOptions.predicate = NSPredicate(format: "isHidden == NO AND (mediaType == %d OR mediaType == %d)",
+																				 PHAssetMediaType.image.rawValue,
+																				 PHAssetMediaType.video.rawValue)
+
+		// Fetch all photos
+		let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
+
+		if fetchResult.count == 0 {
+			throw PhotoError.noPhotosAvailable
+		}
+
+		let index = fetchResult.index(of: asset)
+		if index == NSNotFound {
+			throw PhotoError.failedToFetchPhoto
+		}
+
+		// Get before and after
+		var cards: [PhotoCard] = []
+		let from = max(0, index - 1)
+		let to = min(fetchResult.count, index + 1)
+
+		var i = 0
+		for resultIndex in from...to {
+			let asset = fetchResult.object(at: resultIndex)
+			let card = PhotoCard()
+			card.id = i
+			card.asset = asset
+			cards.append(card)
+
+			// Create thumbnail options
+			let thumbnailOptions = PHImageRequestOptions()
+			thumbnailOptions.deliveryMode = .fastFormat
+			thumbnailOptions.resizeMode = .fast
+			thumbnailOptions.isSynchronous = false
+
+			// Create full image options
+			let fullImageOptions = PHImageRequestOptions()
+			fullImageOptions.deliveryMode = .highQualityFormat
+			fullImageOptions.resizeMode = .fast
+			fullImageOptions.isSynchronous = false
+			fullImageOptions.isNetworkAccessAllowed = true
+
+			// Request thumbnail
+			PHImageManager.default().requestImage(
+				for: asset,
+				targetSize: CGSize(width: 200, height: 200),
+				contentMode: .aspectFill,
+				options: thumbnailOptions
+			) { thumbnailImage, thumbnailInfo in
+				DispatchQueue.main.async {
+					card.thumbnail = thumbnailImage ?? UIImage()
+				}
+			}
+
+			// Request full quality image asynchronously
+			PHImageManager.default().requestImage(
+				for: asset,
+				targetSize: PHImageManagerMaximumSize,
+				contentMode: .aspectFit,
+				options: fullImageOptions
+			) { fullImage, fullImageInfo in
+				DispatchQueue.main.async {
+					card.fullImage = fullImage ?? UIImage()
+				}
+			}
+
+			i += 1
+		}
+
+		return cards
+	}
+
 	private func fetchRandomPhotos(for cards: [PhotoCard]) async throws {
 		// Create fetch options
 		let fetchOptions = PHFetchOptions()
