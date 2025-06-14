@@ -73,9 +73,7 @@ struct SettingsView: View {
 					NavigationLink("App Icons") {
 						SettingsIconView(collection: "main")
 					}.listRowBackground(Color("listRowBackground")).font(Fonts.body)
-					NavigationLink("Fonts") {
-						SettingsFontView()
-					}.listRowBackground(Color("listRowBackground")).font(Fonts.body)
+				
 
 					NavigationLink("Advanced") {
 						AdvancedView()

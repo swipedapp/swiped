@@ -55,7 +55,9 @@ struct AdvancedView: View {
 				.listRowBackground(Color("listRowBackground"))
 			}
 #endif
-			
+			NavigationLink("Fonts") {
+				SettingsFontView()
+			}.listRowBackground(Color("listRowBackground")).font(Fonts.body)
 			if let minimumiOSVersion = sheetManager.json?.minimumiOSVersion,
 				 UIDevice.current.systemVersion.compare(minimumiOSVersion, options: .numeric) == .orderedAscending {
 				Section {
