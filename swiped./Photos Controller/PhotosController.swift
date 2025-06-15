@@ -88,6 +88,8 @@ class PhotosController {
 		return try await fetchPhotos(around: card)
 	}
 
+	private static let photosToFetchAround = 20
+
 	func fetchPhotos(around card: PhotoCard) async throws -> [PhotoCard] {
 		guard let asset = card.asset else {
 			throw PhotoError.failedToFetchPhoto
@@ -113,8 +115,8 @@ class PhotosController {
 
 		// Get before and after
 		var cards: [PhotoCard] = []
-		let from = max(0, index - 1)
-		let to = min(fetchResult.count - 1, index + 1)
+		let from = max(0, index - Self.photosToFetchAround)
+		let to = min(fetchResult.count - 1, index + Self.photosToFetchAround)
 
 		var i = 0
 		for resultIndex in from...to {

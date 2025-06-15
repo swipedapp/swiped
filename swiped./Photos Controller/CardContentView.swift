@@ -13,8 +13,20 @@ struct CardContentView: View {
 
 	@EnvironmentObject private var card: PhotoCard
 
+	private let photosController = PhotosController()
+
+	@Environment(\.modelContext) var modelContext {
+		didSet {
+			photosController.db = DatabaseController(modelContainer: modelContext.container)
+		}
+	}
+
 	@State var isScaling = false
 	@State var scale: CGFloat = 1
+
+	@State var libraryViewOpen = false
+	@State var libraryViewReady = false
+	@State var libraryViewStack = PhotoCardStack()
 
 	var body: some View {
 		let image = card.fullImage ?? card.thumbnail ?? UIImage()
@@ -52,20 +64,65 @@ struct CardContentView: View {
 				.padding(.horizontal, 25)
 				.padding(.vertical, 30)
 				.scaleEffect(scale)
+#if INTERNAL
+				// INTERNAL FUNCTION: Library view - not ready yet
 				.gesture(MagnifyGesture()
-						.onChanged({ value in
-							isScaling = true
-							scale = value.magnification
-						})
-						.onEnded({ value in
-							withAnimation(.bouncy(duration: 0.3)) {
-								scale = 1
-							} completion: {
-								isScaling = false
+					.onChanged({ value in
+						isScaling = true
+						scale = value.magnification
+
+						// Start loading early
+						if scale < 0.9 && !libraryViewReady {
+							Task {
+								await getLibraryViewPhotos()
 							}
-						}))
+						}
+					})
+					.onEnded({ value in
+						if libraryViewReady {
+							libraryViewOpen = true
+						}
+
+						withAnimation(.bouncy(duration: 0.3)) {
+							scale = 1
+						} completion: {
+							isScaling = false
+						}
+					}))
+#endif
 			}
 		}
+			.onChange(of: libraryViewReady) { oldValue, newValue in
+				if newValue && scale == 1 {
+					libraryViewOpen = true
+				}
+			}
+			.sheet(isPresented: $libraryViewOpen) {
+				NavigationView {
+					PhotoLibraryView()
+						.environmentObject(libraryViewStack)
+				}
+					.presentationBackground(.clear)
+			}
+			.onChange(of: libraryViewOpen) { oldValue, newValue in
+				if !newValue {
+					libraryViewReady = false
+					libraryViewStack.cards.removeAll()
+				}
+			}
+	}
+
+	private func getLibraryViewPhotos() async {
+		guard let photos = try? await photosController.fetchPhotos(around: card) else {
+			return
+		}
+
+		let stack = PhotoCardStack()
+		stack.cards = photos
+		stack.mainPhotoIndex = photos.count / 2
+		libraryViewStack = stack
+
+		libraryViewReady = true
 	}
 
 }

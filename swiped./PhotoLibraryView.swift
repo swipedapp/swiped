@@ -20,97 +20,69 @@ struct PhotoLibraryView: View {
 
 	@EnvironmentObject var stack: PhotoCardStack
 
-	@State var currentIndex = 0
-
-	@State private var position = ScrollPosition(edge: .leading)
-
-	@State private var offsetX: CGFloat = 0
+	@State private var position = ScrollPosition(edge: .top)
 
 	@Environment(\.presentationMode) var presentationMode
 
-	func card(_ card: PhotoCard, geometry: GeometryProxy) -> some View {
-		Image(uiImage: card.fullImage ?? card.thumbnail ?? UIImage())
-			.resizable()
-			.scaledToFill()
-			.frame(width: geometry.size.width - 40,
-						 height: geometry.size.height - 20,
-						 alignment: .center)
-			.background(.secondary)
+	func card(_ card: PhotoCard) -> some View {
+		Color(uiColor: .secondarySystemBackground)
 			.aspectRatio(contentMode: .fill)
-			.clipped()
-			.clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-			.overlay(RoundedRectangle(cornerRadius: 8, style: .continuous)
-				.fill(.clear)
-				.stroke(card.id == stack.mainPhotoIndex ? Color("brandGreen") : Color.clear))
-			.padding(.horizontal, 5)
-			.padding(.vertical, 10)
+			.overlay {
+				Image(uiImage: card.fullImage ?? card.thumbnail ?? UIImage())
+					.resizable()
+					.scaledToFill()
+					.aspectRatio(contentMode: .fill)
+					.clipped()
+			}
+				.clipped()
+				.border(card.id == stack.mainPhotoIndex ? Color("brandGreen") : .clear, width: 2)
 	}
 
 	var body: some View {
-		GeometryReader { geometry in
-			ScrollView(.horizontal) {
-				LazyHStack(spacing: 0) {
-					ForEach(stack.cards) { photo in
-						card(photo, geometry: geometry)
-							.id(photo.id)
+		ScrollView {
+			LazyVGrid(columns: columns, spacing: 2) {
+				ForEach(stack.cards) { card in
+					self.card(card)
+						.id(card.id)
+				}
+			}
+		}
+		.scrollPosition($position)
+		.animation(.default, value: position)
+		.onAppear {
+			if !stack.cards.isEmpty {
+				position.scrollTo(id: stack.cards[stack.mainPhotoIndex].id,
+													anchor: .center)
+			}
+		}
+			.navigationTitle("Photos")
+			.navigationBarTitleDisplayMode(.inline)
+			.toolbar {
+				ToolbarItem(placement: .primaryAction) {
+					Button(role: .close) {
+						presentationMode.wrappedValue.dismiss()
 					}
 				}
-				.scrollTargetLayout()
-				.padding(.horizontal, 15)
 			}
-			.scrollIndicators(.hidden)
-			.scrollPosition($position)
-			.scrollTargetBehavior(.viewAligned)
-			.animation(.default, value: position)
-			.onAppear {
-				currentIndex = stack.mainPhotoIndex
-
-				if !stack.cards.isEmpty {
-					position.scrollTo(id: stack.cards[currentIndex].id)
-				}
-			}
-			.onChange(of: currentIndex) { oldValue, newValue in
-				if newValue < stack.cards.count {
-					position.scrollTo(id: stack.cards[newValue].id)
-				}
-			}
-			.onScrollGeometryChange(for: CGFloat.self) { geometry in
-				geometry.contentOffset.x
-			} action: { oldValue, newValue in
-				if oldValue != newValue {
-					offsetX = newValue
-				}
-			}
-			.onChange(of: offsetX) {
-				let cardWidth = geometry.size.width - 40
-				let index = Int(round(offsetX / cardWidth))
-				let clampedIndex = max(0, min(index, stack.cards.count - 1))
-				if currentIndex != clampedIndex {
-					currentIndex = clampedIndex
-				}
-			}
-		}
-		.navigationTitle("Photos")
-		.navigationBarTitleDisplayMode(.inline)
-		.toolbar {
-			ToolbarItem(placement: .primaryAction) {
-				Button(role: .close) {
-					presentationMode.wrappedValue.dismiss()
-				}
-			}
-		}
+			.backgroundStyle(.regularMaterial)
+			.presentationBackground(.clear)
 	}
 
 }
 
 #Preview {
-	let photos = Array(repeating: 0, count: 3).enumerated().map { i, _ in
-		PhotoCard(id: i, thumbnail: UIImage(systemName: i % 2 == 0 ? "sparkles" : "star"))
-	}
+	let demoPhotos = ["2871", "2884", "2948", "2965", "3106", "3116", "3213", "3244", "3293", "3383"]
+		.map { UIImage(named: "IMG_\($0).HEIC")! }
+
+	let photos = Array(repeating: 0, count: 20 + 1 + 20)
+		.enumerated()
+		.map { i, _ in
+			PhotoCard(id: i, thumbnail: demoPhotos[i % demoPhotos.count])
+		}
 
 	let stack = PhotoCardStack()
 	stack.cards = photos
-	stack.mainPhotoIndex = 1
+	stack.mainPhotoIndex = 21
 
 	return NavigationView {
 		PhotoLibraryView()
