@@ -264,22 +264,11 @@ class ViewController: UIViewController {
 
 extension ViewController: PhotosController.PhotoLoadDelegate {
 	func didLoadThumbnail(for card: PhotoCard, image: UIImage) {
-		
 		card.thumbnail = image
-		
-		if let swipeCard = cardStack.card(forIndexAt: card.id),
-			 let contentView = swipeCard.content as? CardContentView {
-			contentView.updateCard()
-		}
 	}
 	
 	func didLoadFullImage(for card: PhotoCard, image: UIImage) {
 		card.fullImage = image
-		
-		if let swipeCard = cardStack.card(forIndexAt: card.id),
-			 let contentView = swipeCard.content as? CardContentView {
-			contentView.updateCard()
-		}
 		
 		updateCurrentItem()
 	}
@@ -326,8 +315,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 			card.setOverlay(CardOverlay(direction: direction), forDirection: direction)
 		}
 		
-		card.content = CardContentView(card: cards[index])
-		
+		card.content = CardContentWrapperView(card: cards[index])
+
 		return card
 	}
 	
