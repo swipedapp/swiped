@@ -17,7 +17,7 @@ struct SettingsFontView: View {
 
 	private let fonts = [
 		FontItem(id: .loos, name: "Loos", font: .custom("LoosExtended-Regular", size: 16)),
-		FontItem(id: .sf, name: "SF", font: .system(size: 16)),
+		FontItem(id: .sf, name: "SF", font: .system(size: 16).width(.ourExpanded)),
 	]
 
 	@Environment(\.presentationMode) var presentationMode
@@ -41,7 +41,6 @@ struct SettingsFontView: View {
 				}
 				.font(font.font)
 				.listRowBackground(Color("listRowBackground"))
-				.foregroundColor(.white)
 			}
 		}
 			.navigationTitle("Font")
