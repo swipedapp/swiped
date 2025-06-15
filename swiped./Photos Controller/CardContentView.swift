@@ -7,15 +7,21 @@
 
 import UIKit
 import SwiftUI
+import OSLog
 
 struct CardContentView: View {
 
 	@EnvironmentObject private var card: PhotoCard
 
+	@State var isScaling = false
+	@State var scale: CGFloat = 1
+
 	var body: some View {
 		let image = card.fullImage ?? card.thumbnail ?? UIImage()
+		let background = isScaling ? Color(uiColor: .systemBackground) : Color.clear
 
 		GeometryReader { geometry in
+			background.overlay {
 			ZStack {
 				RoundedRectangle(cornerRadius: 8, style: .continuous)
 					.fill(.black)
@@ -45,6 +51,20 @@ struct CardContentView: View {
 			}
 				.padding(.horizontal, 25)
 				.padding(.vertical, 30)
+				.scaleEffect(scale)
+				.gesture(MagnifyGesture()
+						.onChanged({ value in
+							isScaling = true
+							scale = value.magnification
+						})
+						.onEnded({ value in
+							withAnimation(.bouncy(duration: 0.3)) {
+								scale = 1
+							} completion: {
+								isScaling = false
+							}
+						}))
+			}
 		}
 	}
 
