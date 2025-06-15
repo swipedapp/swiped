@@ -34,74 +34,81 @@ struct SettingsView: View {
 	
 	var body: some View {
 		NavigationStack {
-			VStack {
-				Form {
-					Section(content: {}, header: {
-						ZStack(alignment: .top) {
-							if swipeDownCount < 5 {
-								HStack {
-									Image(systemName: "chevron.down")
-									Text("Swipe down to dismiss")
-									Image(systemName: "chevron.down")
-								}
-								.font(Fonts.small)
-							}
-							
+			Form {
+				Section(content: {}, header: {
+					ZStack(alignment: .top) {
+						if swipeDownCount < 5 {
 							HStack {
-								Spacer()
-								VStack(alignment: .center) {
-									Text("Settings")
-										.foregroundColor(.primary)
-										.textCase(nil)
-										.font(Fonts.hugeTitle)
-								}
-								Spacer()
+								Image(systemName: "chevron.down")
+								Text("Swipe down to dismiss")
+								Image(systemName: "chevron.down")
 							}
-							.padding(.vertical, 30)
+							.textCase(.uppercase)
+							.font(Fonts.small)
+						}
+
+						HStack {
+							Spacer()
+							VStack(alignment: .center) {
+								Text("Settings")
+									.foregroundColor(.primary)
+									.textCase(nil)
+									.font(Fonts.hugeTitle)
+							}
+							Spacer()
+						}
+						.padding(.top, 40)
+						.padding(.bottom, 30)
+					}
+						.padding(.top, -40)
+				})
+
+
+				// Production flags
+				Toggle(isOn: $timestamps) {
+
+					Text("Show relative timestamps")
+						.font(Fonts.body)
+
+				}.listRowBackground(Color("listRowBackground"))
+				NavigationLink("App Icons") {
+					SettingsIconView(collection: "main")
+				}.listRowBackground(Color("listRowBackground")).font(Fonts.body)
+
+
+				NavigationLink("Advanced") {
+					AdvancedView()
+						.environmentObject(sheetManager)
+				}
+				.font(Fonts.body)
+				.listRowBackground(Color("listRowBackground"))
+				NavigationLink("About") {
+					AboutView()
+						.environmentObject(sheetManager)
+				}
+				.font(Fonts.body)
+				.listRowBackground(Color("listRowBackground"))
+
+				Section {
+					Button(action: {
+						showResetAlert = true
+					}, label: {
+						HStack {
+							Spacer()
+							Label("Reset Database", systemImage: "xmark.bin")
+								.font(Fonts.bodyMedium)
+							Spacer()
 						}
 					})
-					
-					
-					// Production flags
-					Toggle(isOn: $timestamps) {
-						
-						Text("Show relative timestamps")
-							.font(Fonts.body)
-						
-					}.listRowBackground(Color("listRowBackground"))
-					NavigationLink("App Icons") {
-						SettingsIconView(collection: "main")
-					}.listRowBackground(Color("listRowBackground")).font(Fonts.body)
-				
-
-					NavigationLink("Advanced") {
-						AdvancedView()
-							.environmentObject(sheetManager)
-					}
-					.font(Fonts.body)
+					.foregroundColor(.red)
 					.listRowBackground(Color("listRowBackground"))
-					NavigationLink("About") {
-						AboutView()
-							.environmentObject(sheetManager)
-					}
-					.font(Fonts.body)
-					.listRowBackground(Color("listRowBackground"))
-					
-					Section {
-						Button(action: {
-							showResetAlert = true
-						}, label: {
-							HStack {
-								Spacer()
-								Label("Reset Database", systemImage: "xmark.bin")
-									.font(Fonts.bodyMedium)
-								Spacer()
-							}
-						})
-						.foregroundColor(.red)
-						.listRowBackground(Color("listRowBackground"))
-					}
 				}
+			}
+				// Works around navbar height issue - could be an actual SwiftUI bug??
+				.navigationTitle("Settings")
+				.navigationBarTitleDisplayMode(.inline)
+				.toolbar(removing: .title)
+				.toolbarBackgroundVisibility(.hidden, for: .navigationBar)
 				.scrollContentBackground(.hidden)
 				.background(Color("oled"))
 				.alert("You will lose all statistics you have collected so far. Are you sure you want to do this?", isPresented: $showResetAlert, actions: {
@@ -114,10 +121,7 @@ struct SettingsView: View {
 					}
 					Button("Cancel", role: .cancel) {}
 				})
-				
-				Spacer()
-			}
-			.background(Color("oled"))
+				.background(Color("oled"))
 		}
 		.onAppear {
 			self.swipeDownCount += 1
