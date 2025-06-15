@@ -22,33 +22,33 @@ struct CardContentView: View {
 
 		GeometryReader { geometry in
 			background.overlay {
-			ZStack {
-				RoundedRectangle(cornerRadius: 8, style: .continuous)
-					.fill(.black)
+				ZStack {
+					RoundedRectangle(cornerRadius: 8, style: .continuous)
+						.fill(.black)
 
-				Image(uiImage: image)
-					.resizable()
-					.scaledToFill()
-					.frame(width: max(geometry.size.width - 50, 0),
-								 height: max(geometry.size.height - 60, 0),
-								 alignment: .center)
-					.background(.black)
-					.aspectRatio(contentMode: image.size.width > image.size.height ? .fit : .fill)
-					.clipped()
-					.clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+					Image(uiImage: image)
+						.resizable()
+						.scaledToFill()
+						.frame(width: max(geometry.size.width - 50, 0),
+									 height: max(geometry.size.height - 60, 0),
+									 alignment: .center)
+						.background(.black)
+						.aspectRatio(contentMode: image.size.width > image.size.height ? .fit : .fill)
+						.clipped()
+						.clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
 
-				if card.asset?.mediaType == .video {
-					Image(systemName: "play.circle")
-						.font(.system(size: 48))
-						.foregroundStyle(.white)
+					if card.asset?.mediaType == .video {
+						Image(systemName: "play.circle")
+							.font(.system(size: 48))
+							.foregroundStyle(.white)
+					}
+
+					if card.fullImage == nil {
+						ProgressView()
+							.tint(.white)
+							.shadow(color: .black, radius: 2, x: 0, y: 0)
+					}
 				}
-
-				if card.fullImage == nil {
-					ProgressView()
-						.tint(.white)
-						.shadow(color: .black, radius: 2, x: 0, y: 0)
-				}
-			}
 				.padding(.horizontal, 25)
 				.padding(.vertical, 30)
 				.scaleEffect(scale)
