@@ -312,7 +312,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 		card.footerHeight = 80
 		card.swipeDirections = [.left, .right]
 		for direction in card.swipeDirections {
-			card.setOverlay(CardOverlay(direction: direction), forDirection: direction)
+			card.setOverlay(CardOverlayWrapperView(direction: direction), forDirection: direction)
 		}
 		
 		card.content = CardContentWrapperView(card: cards[index])

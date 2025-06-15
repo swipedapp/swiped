@@ -7,88 +7,72 @@
 
 import reShuffled
 import UIKit
+import SwiftUI
 
-class CardOverlay: UIView {
-	
-	init(direction: SwipeDirection) {
-		super.init(frame: .zero)
+struct CardOverlay: View {
+
+	var direction: SwipeDirection
+
+	var stuff: (text: String, color: Color, edge: Edge.Set, alignment: Alignment, rotation: CGFloat) {
 		switch direction {
-		case .left:
-			createLeftOverlay()
-		case .up:
-			fatalError()
-		case .right:
-			createRightOverlay()
-		default:
-			break
+		case .left:  return ("DELETE", Color("hdrRed"),   .trailing,  .topTrailing, .pi / 10)
+		case .right: return ("KEEP",   Color("hdrGreen"), .leading, .topLeading, -.pi / 10)
+		case .up, .down: fatalError()
 		}
 	}
-	
+
+	var body: some View {
+		let (text, color, edge, alignment, rotation) = stuff
+
+		let isLoos = Fonts.fontChoice == .loos
+
+		Color.clear
+			.overlay(alignment: alignment) {
+				Text(text)
+					.kerning(5)
+					.font(Fonts.overlay)
+					.foregroundStyle(color)
+					.padding(.top, isLoos ? -4 : 2)
+					.padding(.bottom, 2)
+					.padding(.leading, 8)
+					.padding(.trailing, 3)
+					.overlay(RoundedRectangle(cornerRadius: 4, style: .continuous)
+						.stroke(color, lineWidth: 4))
+					.rotationEffect(Angle(radians: rotation))
+					.padding(.top, 60)
+					.padding(edge, 44)
+			}
+	}
+
+}
+
+#Preview {
+	VStack {
+		CardOverlay(direction: .left)
+		CardOverlay(direction: .right)
+	}
+}
+
+class CardOverlayWrapperView: UIView {
+
+	private let hostingController: UIHostingController<AnyView>
+
+	init(direction: SwipeDirection) {
+		hostingController = UIHostingController(rootView: AnyView(
+			CardOverlay(direction: direction)
+		))
+
+		super.init(frame: .zero)
+
+		hostingController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+		hostingController.view.isOpaque = false
+		hostingController.view.backgroundColor = .clear
+		hostingController.willMove(toParent: nil)
+		addSubview(hostingController.view)
+	}
+
 	required init?(coder: NSCoder) {
-		return nil
+		fatalError("init(coder:) has not been implemented")
 	}
-	
-	private func createLeftOverlay() {
-		let leftTextView = CardOverlayLabelView(withTitle: "DELETE",
-																						color: UIColor(named: "hdrRed")!,
-																						rotation: CGFloat.pi / 10)
-		addSubview(leftTextView)
-		leftTextView.anchor(top: topAnchor,
-												right: rightAnchor,
-												paddingTop: 60,
-												paddingRight: 44)
-	}
-	
-	private func createRightOverlay() {
-		let rightTextView = CardOverlayLabelView(withTitle: "KEEP",
-																						 color: UIColor(named: "hdrGreen")!,
-																						 rotation: -CGFloat.pi / 10)
-		addSubview(rightTextView)
-		rightTextView.anchor(top: topAnchor,
-												 left: leftAnchor,
-												 paddingTop: 60,
-												 paddingLeft: 44)
-	}
-}
 
-private class CardOverlayLabelView: UIView {
-	
-	private let titleLabel: UILabel = {
-		let label = UILabel()
-		label.textAlignment = .center
-		return label
-	}()
-	
-	init(withTitle title: String, color: UIColor, rotation: CGFloat) {
-		super.init(frame: CGRect.zero)
-		layer.borderColor = color.cgColor
-		layer.borderWidth = 4
-		layer.cornerRadius = 4
-		transform = CGAffineTransform(rotationAngle: rotation)
-		
-		addSubview(titleLabel)
-		titleLabel.textColor = color
-		titleLabel.attributedText = NSAttributedString(string: title,
-																									 attributes: NSAttributedString.Key.overlayAttributes)
-		titleLabel.anchor(top: topAnchor,
-											left: leftAnchor,
-											bottom: bottomAnchor,
-											right: rightAnchor,
-											paddingTop: -2,
-											paddingLeft: 8,
-											paddingBottom: 2,
-											paddingRight: 3)
-	}
-	
-	required init?(coder aDecoder: NSCoder) {
-		return nil
-	}
-}
-
-extension NSAttributedString.Key {
-	
-	static var overlayAttributes: [NSAttributedString.Key: Any] = [
-		NSAttributedString.Key.font: Fonts.overlay,
-		NSAttributedString.Key.kern: 5.0
-	]
 }

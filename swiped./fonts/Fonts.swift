@@ -92,10 +92,10 @@ class Fonts {
 		}
 	}
 
-	static var overlay: UIFont {
+	static var overlay: Font {
 		switch fontChoice {
-		case .loos: return UIFont(name: "LoosExtended-Bold", size: 42)!
-		case .sf:   return UIFont.systemFont(ofSize: 42, weight: .bold, width: .init(Font.Width.ourExpanded.value))
+		case .loos: return .custom("LoosExtended-Bold", size: 42)
+		case .sf:   return .system(size: 42, weight: .bold).width(.ourExpanded)
 		}
 	}
 

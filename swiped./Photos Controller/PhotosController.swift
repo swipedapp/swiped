@@ -114,7 +114,7 @@ class PhotosController {
 		// Get before and after
 		var cards: [PhotoCard] = []
 		let from = max(0, index - 1)
-		let to = min(fetchResult.count, index + 1)
+		let to = min(fetchResult.count - 1, index + 1)
 
 		var i = 0
 		for resultIndex in from...to {
