@@ -40,14 +40,14 @@ struct SettingsFontView: View {
 					}
 				}
 				.font(font.font)
-				.listRowBackground(Color("forced"))
+				.listRowBackground(Color("listRowBackground"))
 				.foregroundColor(.white)
 			}
 		}
-			//.navigationTitle("Font")
+			.navigationTitle("Font")
+			.toolbar(removing: .title)
 			.scrollContentBackground(.hidden)
-			.background(.black)
-			.foregroundColor(.white)
+			.background(Color("oled"))
 	}
 }
 

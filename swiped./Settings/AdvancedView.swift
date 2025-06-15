@@ -101,6 +101,8 @@ struct AdvancedView: View {
 				Spacer()
 			}
 		}
+		.navigationTitle("Advanced")
+		.toolbar(removing: .title)
 		.listRowBackground(Color.black)
 	}
 	

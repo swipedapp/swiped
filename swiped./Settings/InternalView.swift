@@ -37,6 +37,8 @@ struct InternalView: View {
 			
 			
 		}
+		.navigationTitle("Internal")
+		.toolbar(removing: .title)
 	}
 	
 }

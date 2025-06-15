@@ -35,7 +35,8 @@ struct KnownIssuesView: View {
 				.padding(.vertical, 20)
 			}
 			.background(Color(uiColor: .systemBackground))
-			.navigationBarHidden(true)
+			.navigationTitle("Known Issues")
+			.toolbar(removing: .title)
 		}
 	}
 }

@@ -121,7 +121,6 @@ struct SettingsView: View {
 					}
 					Button("Cancel", role: .cancel) {}
 				})
-				.background(Color("oled"))
 		}
 		.onAppear {
 			self.swipeDownCount += 1

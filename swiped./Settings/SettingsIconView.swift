@@ -69,7 +69,8 @@ struct SettingsIconView: View {
 			}
 		}
 		.background(Color("oled"))
-		//.navigationTitle("Icons")
+		.navigationTitle("Icons")
+		.toolbar(removing: .title)
 	}
 	
 	func button(icon: Icon) -> some View {

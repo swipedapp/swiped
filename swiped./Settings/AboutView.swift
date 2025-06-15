@@ -78,6 +78,8 @@ struct AboutView: View {
 				Text(commitInfo).opacity(0.5).font(Fonts.body)
 				Text("Made in Australia").opacity(1).font(Fonts.body)
 			}
+			.navigationTitle("About")
+			.toolbar(removing: .title)
 			.scrollContentBackground(.hidden)
 			.background(.black)
 			.foregroundColor(.white)
