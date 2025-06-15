@@ -421,14 +421,15 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
-		// testing
+#if INTERNAL
+		// INTERNAL FUNCTION: Overrides tap to quick look with the upcoming pinch to view photo library.
 		let card = cards[index]
 		Task {
 			let photos = try! await photosController.fetchPhotos(around: card)
 			let stack = PhotoCardStack()
 			stack.cards = photos
 			stack.mainPhotoIndex = photos.count / 2
-
+			
 			await MainActor.run {
 				let hostingController = UIHostingController(rootView: AnyView(
 					NavigationView {
@@ -439,8 +440,9 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 				self.present(hostingController, animated: true)
 			}
 		}
-
+		
 		return
+#endif
 
 
 

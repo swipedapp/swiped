@@ -21,7 +21,6 @@ struct SettingsView: View {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
 	}
 	
-	
 	@EnvironmentObject var sheetManager: SheetManager
 	
 	

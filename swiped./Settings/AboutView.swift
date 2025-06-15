@@ -62,11 +62,14 @@ struct AboutView: View {
 					Link("Have an issue? Let us know.", destination: URL(string: "https://swiped.pics/support")!)
 						.listRowBackground(Color("forced")).foregroundColor(.white)
 						.font(Fonts.body)
+#if INTERNAL
 					NavigationLink("Known Issues") {
 						KnownIssuesView()
 					}
 					.listRowBackground(Color("forced")).foregroundColor(.white)
 					.font(Fonts.body)
+#endif
+					
 				}
 				
 				Spacer()
