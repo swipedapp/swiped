@@ -107,7 +107,7 @@ struct ActionButtonsView: View {
 										 text: Text("Delete"),
 										 action: .delete,
 										 animate: $deleteAnimation,
-										 effect: .drawOff)
+										 effect: .drawOff.individually)
 
 				Spacer()
 
