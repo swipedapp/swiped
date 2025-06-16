@@ -77,13 +77,14 @@ struct ActionButtonsView: View {
 	}
 
 	var shareButton: some View {
+		let button = bottomButton(image: Image(systemName: "square.and.arrow.up"),
+															text: Text("Share"),
+															action:.share,
+															animate: $shareAnimation,
+															effect: .drawOff)
+
 		if let asset = cardInfo.card?.asset,
 			 asset.mediaType == .image || asset.mediaType == .video {
-			let button = bottomButton(image: Image(systemName: "square.and.arrow.up"),
-																text: Text("Share"),
-																action:.share,
-																animate: $shareAnimation,
-																effect: .drawOff)
 
 			if CherController.hasAnySources {
 				return AnyView(button)
@@ -95,14 +96,14 @@ struct ActionButtonsView: View {
 				}))
 			}
 		} else {
-			return AnyView(EmptyView())
+			return AnyView(button)
 		}
 	}
 
 	var body: some View {
 		GlassEffectContainer {
 			HStack(spacing: 0) {
-				bottomButton(image: Image(systemName: "xmark"),
+				bottomButton(image: Image("custom.xmark"),
 										 text: Text("Delete"),
 										 action: .delete,
 										 animate: $deleteAnimation,
@@ -118,11 +119,7 @@ struct ActionButtonsView: View {
 
 				Spacer()
 
-				bottomButton(image: Image(systemName: "square.and.arrow.up"),
-										 text: Text("Share"),
-										 action:.share,
-										 animate: $shareAnimation,
-										 effect: .drawOff)
+				shareButton
 
 				Spacer()
 

@@ -9,21 +9,20 @@ import SwiftUI
 
 struct CherSheetLoadUI: View {
 	var body: some View {
-		NavigationView {
-			VStack {
-				
-				Text("Preparing...")
-					.font(Fonts.title)
-				ProgressView()
-					.controlSize(.large)
-			}
-			
-			.scrollContentBackground(.hidden)
-			.background(Color(uiColor: .systemBackground))
+		VStack {
+			Spacer()
+
+			Text("Preparing...")
+				.font(Fonts.title)
+			ProgressView()
+				.controlSize(.large)
+
 			Spacer()
 		}
+		
+		.scrollContentBackground(.hidden)
 		.interactiveDismissDisabled()
-		.presentationDetents([.height(130)])
+		.presentationDetents([.height(140)])
 		.presentationDragIndicator(.hidden)
 	}
 

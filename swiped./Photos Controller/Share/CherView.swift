@@ -24,7 +24,7 @@ struct CherView: View {
 
 	@Environment(\.presentationMode) var presentationMode
 
-	@State var isLoading = false
+	@State var isLoading = true
 
 	@State var showMessages = false
 
@@ -51,8 +51,8 @@ struct CherView: View {
 				HStack {
 					if MessageComposeView.isAvailable {
 						Button(action: {
-							isLoading = true
 							Task {
+								isLoading = true
 								shareItem = try? await CherController.getData(cardInfo: cardInfo, photosController: photosController)
 								isLoading = false
 							}
