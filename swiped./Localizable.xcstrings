@@ -1,7 +1,214 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "\nYou can disable this popup at any time in the Settings pane." : {
 
+    },
+    " " : {
+
+    },
+    "." : {
+
+    },
+    "%@ deleted" : {
+
+    },
+    "%@ kept" : {
+
+    },
+    "%@ Known issue" : {
+
+    },
+    "%@ Patched in next update" : {
+
+    },
+    "%@ Patching" : {
+
+    },
+    "%@ saved" : {
+
+    },
+    "%@ SwipeScore" : {
+
+    },
+    "⚠️Be careful what you wish for!⚠️" : {
+
+    },
+    "About" : {
+
+    },
+    "About Restriction" : {
+
+    },
+    "Advanced" : {
+
+    },
+    "App Icons" : {
+
+    },
+    "As we continue to pave the way for the future of this app, we sometimes need new tools. Tools that simply don't exist on your version of iOS.\n\nWe have discontinued support for your version of iOS. Meaning you will no longer receive quality updates. Please update iOS or switch to a device that is compatible with iOS %@ or later." : {
+
+    },
+    "As we continue to pave the way for the future of this app, we sometimes need new tools. Tools that simply don't exist on your version of iOS.\n\nWe unfortunately will be dropping support for your version of iOS to adapt to the evolution of tomorrows tech. We know it's not ideal, but we recommend you update to a later version of iOS to get future updates from this app." : {
+
+    },
+    "Before we get ready, we need some permissions." : {
+      "extractionState" : "manual"
+    },
+    "Cancel" : {
+
+    },
+    "Choose your preferred font" : {
+      "extractionState" : "manual"
+    },
+    "Classic" : {
+      "extractionState" : "manual"
+    },
+    "Continue" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Edited" : {
+
+    },
+    "Favorite" : {
+
+    },
+    "First, swipe left to delete" : {
+      "extractionState" : "manual"
+    },
+    "Font" : {
+
+    },
+    "GitHub" : {
+
+    },
+    "Have an issue? Let us know." : {
+
+    },
+    "Icons" : {
+
+    },
+    "Imported" : {
+
+    },
+    "Internal" : {
+
+    },
+    "Keep" : {
+
+    },
+    "Known Issues" : {
+
+    },
+    "Live" : {
+
+    },
+    "Made in Australia" : {
+
+    },
+    "Messages" : {
+
+    },
+    "Moving Database to SwiftData" : {
+
+    },
+    "Now, swipe right to keep" : {
+      "extractionState" : "manual"
+    },
+    "Other" : {
+
+    },
+    "Photos" : {
+
+    },
+    "Preparing..." : {
+
+    },
+    "Reset Database" : {
+
+    },
+    "Screenshot" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Share" : {
+
+    },
+    "Show relative timestamps" : {
+
+    },
+    "Show Support Alerts" : {
+
+    },
+    "Social" : {
+      "extractionState" : "manual"
+    },
+    "Summary" : {
+
+    },
+    "Swipe down to dismiss" : {
+
+    },
+    "SWIPED%@" : {
+
+    },
+    "SYNC%@" : {
+
+    },
+    "Tap to undo" : {
+      "extractionState" : "manual"
+    },
+    "Things in here are experimental, and could fail." : {
+
+    },
+    "To ensure the safety of our users, our app generates a cryptographically unique token that ensures your copy of 'swiped.' has not been tampered and/or distributed by a third party.\n\nYour device could either not connect to 'SYNC.', or could not verify the authenticity of the application with 'SYNC.'\n\nWhile in this state, your device is unable to use syncing services." : {
+
+    },
+    "Trigger Unsupported" : {
+
+    },
+    "Undo" : {
+
+    },
+    "Updating.." : {
+
+    },
+    "Version %@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Version %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "VoiceOver not recommended" : {
+      "extractionState" : "manual"
+    },
+    "Website" : {
+
+    },
+    "What style do you like?" : {
+      "extractionState" : "manual"
+    },
+    "You can change this later." : {
+      "extractionState" : "manual"
+    },
+    "You will lose all statistics you have collected so far. Are you sure you want to do this?" : {
+
+    },
+    "You’re all set!" : {
+      "extractionState" : "manual"
+    },
+    "You're on iOS %@" : {
+
+    }
   },
   "version" : "1.1"
 }
