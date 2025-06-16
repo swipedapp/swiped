@@ -28,6 +28,8 @@ struct CardContentView: View {
 	@State var libraryViewReady = false
 	@State var libraryViewStack = PhotoCardStack()
 
+	@Namespace private var animation
+
 	var body: some View {
 		let image = card.fullImage ?? card.thumbnail ?? UIImage()
 		let background = isScaling ? Color(uiColor: .systemBackground) : Color.clear
@@ -48,6 +50,7 @@ struct CardContentView: View {
 						.aspectRatio(contentMode: image.size.width > image.size.height ? .fit : .fill)
 						.clipped()
 						.clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+						.matchedTransitionSource(id: "CardToLibraryView", in: animation)
 
 					if card.asset?.mediaType == .video {
 						Image(systemName: "play.circle")
@@ -57,6 +60,7 @@ struct CardContentView: View {
 
 					if card.fullImage == nil {
 						ProgressView()
+							.controlSize(.large)
 							.tint(.white)
 							.shadow(color: .black, radius: 2, x: 0, y: 0)
 					}
@@ -80,7 +84,7 @@ struct CardContentView: View {
 					})
 					.onEnded({ value in
 						if libraryViewReady {
-							libraryViewOpen = true
+							openLibraryView()
 						}
 
 						withAnimation(.bouncy(duration: 0.3)) {
@@ -94,15 +98,16 @@ struct CardContentView: View {
 		}
 			.onChange(of: libraryViewReady) { oldValue, newValue in
 				if newValue && scale == 1 {
-					libraryViewOpen = true
+					openLibraryView()
 				}
 			}
 			.sheet(isPresented: $libraryViewOpen) {
 				NavigationView {
-					PhotoLibraryView()
+					PhotoLibraryView(animation: animation)
 						.environmentObject(libraryViewStack)
 				}
 					.presentationBackground(.clear)
+					.navigationTransition(.zoom(sourceID: "CardToLibraryView", in: animation))
 			}
 			.onChange(of: libraryViewOpen) { oldValue, newValue in
 				if !newValue {
@@ -125,10 +130,16 @@ struct CardContentView: View {
 		libraryViewReady = true
 	}
 
+	private func openLibraryView() {
+		withAnimation(.linear(duration: 1)) {
+			libraryViewOpen = true
+		}
+	}
+
 }
 
 #Preview {
-	let card = PhotoCard(id: 0, photo: nil, asset: nil, thumbnail: UIImage(named: "IMG_2871.HEIC"), fullImage: nil)
+	let card = PhotoCard(id: 0, photo: nil, asset: nil, fullImage: UIImage(named: "IMG_2871.HEIC"))
 	CardContentView()
 		.environmentObject(card)
 }

@@ -20,6 +20,8 @@ struct PhotoLibraryView: View {
 
 	@EnvironmentObject var stack: PhotoCardStack
 
+	var animation: Namespace.ID
+
 	@State private var position = ScrollPosition(edge: .top)
 
 	@Environment(\.presentationMode) var presentationMode
@@ -42,8 +44,15 @@ struct PhotoLibraryView: View {
 		ScrollView {
 			LazyVGrid(columns: columns, spacing: 2) {
 				ForEach(stack.cards) { card in
-					self.card(card)
+					let view = self.card(card)
 						.id(card.id)
+
+					if card.id == stack.mainPhotoIndex {
+						return AnyView(view
+							.navigationTransition(.zoom(sourceID: "CardToLibraryView", in: animation)))
+					} else {
+						return AnyView(view)
+					}
 				}
 			}
 		}
@@ -65,12 +74,13 @@ struct PhotoLibraryView: View {
 				}
 			}
 			.backgroundStyle(.regularMaterial)
-			.presentationBackground(.clear)
 	}
 
 }
 
 #Preview {
+	@Previewable @Namespace var animation
+
 	let demoPhotos = ["2871", "2884", "2948", "2965", "3106", "3116", "3213", "3244", "3293", "3383"]
 		.map { UIImage(named: "IMG_\($0).HEIC")! }
 
@@ -85,7 +95,7 @@ struct PhotoLibraryView: View {
 	stack.mainPhotoIndex = 21
 
 	return NavigationView {
-		PhotoLibraryView()
+		PhotoLibraryView(animation: animation)
 			.environmentObject(stack)
 	}
 }
