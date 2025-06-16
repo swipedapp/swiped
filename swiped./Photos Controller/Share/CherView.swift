@@ -24,7 +24,7 @@ struct CherView: View {
 
 	@Environment(\.presentationMode) var presentationMode
 
-	@State var isLoading = true
+	@State var isLoading = false
 
 	@State var showMessages = false
 
