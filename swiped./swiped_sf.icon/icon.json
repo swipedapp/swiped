@@ -5,9 +5,9 @@
       "blur-material" : 0.31000000000000005,
       "layers" : [
         {
-          "blend-mode" : "plus-darker",
+          "blend-mode" : "multiply",
           "fill" : {
-            "solid" : "display-p3:0.99862,1.00000,0.97596,1.00000"
+            "automatic-gradient" : "srgb:1.00000,1.00000,1.00000,1.00000"
           },
           "glass-specializations" : [
             {
@@ -21,25 +21,14 @@
       ],
       "lighting" : "individual",
       "shadow" : {
-        "kind" : "layer-color",
+        "kind" : "neutral",
         "opacity" : 0.5
       },
       "specular" : true,
-      "translucency-specializations" : [
-        {
-          "value" : {
-            "enabled" : true,
-            "value" : 0.45
-          }
-        },
-        {
-          "appearance" : "tinted",
-          "value" : {
-            "enabled" : true,
-            "value" : 0.65
-          }
-        }
-      ]
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.45
+      }
     },
     {
       "blur-material" : 0.31,
@@ -51,7 +40,13 @@
               "value" : "overlay"
             }
           ],
-          "fill" : "none",
+          "fill" : {
+            "linear-gradient" : [
+              "display-p3:0.88627,0.88627,0.88627,1.00000",
+              "display-p3:0.88627,0.88676,0.88676,1.00000"
+            ]
+          },
+          "glass" : true,
           "image-name" : "swiped_app_sf_back.svg",
           "name" : "swiped_app_sf_back"
         }
@@ -78,6 +73,9 @@
     }
   ],
   "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
     "squares" : [
       "iOS"
     ]
