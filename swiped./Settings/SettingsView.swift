@@ -26,10 +26,13 @@ struct SettingsView: View {
 	
 	@State
 	var showResetAlert: Bool = false
-	
+
 	@AppStorage("swipeDownCount")
 	var swipeDownCount = 0
-	
+
+	@AppStorage("launches")
+	var launches = 0
+
 	@Environment(\.modelContext) var modelContext
 	
 	var body: some View {
@@ -117,6 +120,7 @@ struct SettingsView: View {
 							let db = DatabaseController(modelContainer: modelContext.container)
 							await db.reset()
 							self.swipeDownCount = 0
+							self.launches = 0
 						}
 					}
 					Button("Cancel", role: .cancel) {}

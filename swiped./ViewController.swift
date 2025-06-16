@@ -149,7 +149,7 @@ class ViewController: UIViewController {
 																							 bottom: view.safeAreaLayoutGuide.bottomAnchor,
 																							 right: view.safeAreaLayoutGuide.rightAnchor,
 																							 paddingLeft: 10,
-																							 paddingBottom: 10,
+																							 paddingBottom: 0,
 																							 paddingRight: 10)
 	}
 
@@ -410,6 +410,11 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
+#if INTERNAL && targetEnvironment(simulator)
+		// INTERNAL FUNCTION: Because quick look is bugged on iOS 26 beta 1 simulator
+		return
+#endif
+
 		let logger = Logger(subsystem: "Quick Look", category: "Cards")
 		do {
 			let card = cards[index]

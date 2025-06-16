@@ -40,12 +40,18 @@ struct ActionButtonsView: View {
 
 	@Namespace private var namespace
 
+	@AppStorage("launches") var launches = 0
+
 	@State var showCher = false
 
 	@State private var keepAnimation = false
 	@State private var undoAnimation = false
 	@State private var deleteAnimation = false
 	@State private var shareAnimation = false
+
+	var showLabels: Bool {
+		return launches < 5
+	}
 
 	func bottomButton<T>(image: Image, text: Text, action: Action, animate: Binding<Bool>, effect: T) -> some View where T : IndefiniteSymbolEffect, T : SymbolEffect {
 		return Button(action: {
@@ -66,11 +72,15 @@ struct ActionButtonsView: View {
 					.font(.system(size: 24))
 					.frame(width: 30, height: 30, alignment: .center)
 					.symbolEffect(effect, options: .speed(2), isActive: animate.wrappedValue)
-				text
-					.font(Fonts.extraSmall)
+
+				if showLabels {
+					text
+						.font(Fonts.extraSmall)
+				}
 			}
 			.padding(4)
-			.frame(width: 60, height: 50)
+			.frame(width: showLabels ? 60 : 44,
+						 height: showLabels ? 50 : 44)
 		})
 		.buttonStyle(.glass)
 		.glassEffectID(1, in: namespace)
@@ -130,12 +140,16 @@ struct ActionButtonsView: View {
 										 effect: .drawOff)
 			}
 		}
+			.padding(.bottom, showLabels ? 0 : 5)
 			.opacity(cardInfo.summary ? 0 : 1)
 			.transition(.opacity.animation(.linear(duration: 0.3)))
 			.glassEffectUnion(id: 1, namespace: namespace)
 			.sheet(isPresented: $showCher) {
 				CherView()
 					.environmentObject(cardInfo)
+			}
+			.onAppear {
+				launches += 1
 			}
 	}
 
