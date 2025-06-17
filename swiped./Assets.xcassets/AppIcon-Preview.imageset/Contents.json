@@ -5,12 +5,12 @@
       "scale" : "1x"
     },
     {
-      "filename" : "swiped_sf-iOS-Default-1024x1024@2x.png",
+      "filename" : "swiped_sf-iOS-Default-1024x1024@2x_120x120.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "swiped_sf-iOS-Default-1024x1024@2x 1.png",
+      "filename" : "swiped_sf-iOS-Default-1024x1024@2x_180x180.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
