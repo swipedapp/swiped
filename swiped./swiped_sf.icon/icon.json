@@ -1,14 +1,35 @@
 {
-  "fill" : "system-dark",
+  "fill-specializations" : [
+    {
+      "value" : "system-dark"
+    },
+    {
+      "appearance" : "light",
+      "value" : "system-light"
+    }
+  ],
   "groups" : [
     {
       "blur-material" : 0.31000000000000005,
       "layers" : [
         {
           "blend-mode" : "multiply",
-          "fill" : {
-            "automatic-gradient" : "srgb:1.00000,1.00000,1.00000,1.00000"
-          },
+          "fill-specializations" : [
+            {
+              "value" : {
+                "automatic-gradient" : "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            },
+            {
+              "appearance" : "light",
+              "value" : {
+                "linear-gradient" : [
+                  "display-p3:0.51419,0.90948,0.69866,1.00000",
+                  "display-p3:0.37647,0.84706,0.59608,1.00000"
+                ]
+              }
+            }
+          ],
           "glass-specializations" : [
             {
               "appearance" : "light",
@@ -40,12 +61,25 @@
               "value" : "overlay"
             }
           ],
-          "fill" : {
-            "linear-gradient" : [
-              "display-p3:0.88627,0.88627,0.88627,1.00000",
-              "display-p3:0.88627,0.88676,0.88676,1.00000"
-            ]
-          },
+          "fill-specializations" : [
+            {
+              "value" : {
+                "linear-gradient" : [
+                  "display-p3:0.88627,0.88627,0.88627,1.00000",
+                  "display-p3:0.88627,0.88676,0.88676,1.00000"
+                ]
+              }
+            },
+            {
+              "appearance" : "light",
+              "value" : {
+                "linear-gradient" : [
+                  "display-p3:0.46981,0.76298,1.01992,1.00000",
+                  "display-p3:0.30196,0.65098,0.95686,1.00000"
+                ]
+              }
+            }
+          ],
           "glass" : true,
           "image-name" : "swiped_app_sf_back.svg",
           "name" : "swiped_app_sf_back"
