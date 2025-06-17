@@ -56,14 +56,14 @@ struct PhotoLibraryView: View {
 				}
 			}
 		}
-		.scrollPosition($position)
-		.animation(.default, value: position)
-		.onAppear {
-			if !stack.cards.isEmpty {
-				position.scrollTo(id: stack.cards[stack.mainPhotoIndex].id,
-													anchor: .center)
+			.scrollPosition($position)
+			.animation(.default, value: position)
+			.onAppear {
+				if !stack.cards.isEmpty {
+					position.scrollTo(id: stack.cards[stack.mainPhotoIndex].id,
+														anchor: .center)
+				}
 			}
-		}
 			.navigationTitle("Photos")
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {

@@ -410,8 +410,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
-#if INTERNAL && targetEnvironment(simulator)
-		// INTERNAL FUNCTION: Because quick look is bugged on iOS 26 beta 1 simulator
+#if INTERNAL
+		// INTERNAL FUNCTION: Use our rewritten full screen view
 		return
 #endif
 

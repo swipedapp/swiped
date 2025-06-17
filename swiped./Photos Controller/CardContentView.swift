@@ -28,6 +28,8 @@ struct CardContentView: View {
 	@State var libraryViewReady = false
 	@State var libraryViewStack = PhotoCardStack()
 
+	@State var fullScreenOpen = false
+
 	@Namespace private var animation
 
 	var body: some View {
@@ -85,6 +87,8 @@ struct CardContentView: View {
 					.onEnded({ value in
 						if libraryViewReady {
 							openLibraryView()
+						} else if scale > 1.1 {
+							fullScreenOpen = true
 						}
 
 						withAnimation(.bouncy(duration: 0.3)) {
@@ -93,6 +97,21 @@ struct CardContentView: View {
 							isScaling = false
 						}
 					}))
+					.accessibilityZoomAction { action in
+						switch action.direction {
+						case .zoomOut:
+							Task {
+								await getLibraryViewPhotos()
+								openLibraryView()
+							}
+
+						case .zoomIn:
+							fullScreenOpen = true
+						}
+					}
+					.onTapGesture {
+						fullScreenOpen = true
+					}
 #endif
 			}
 		}
@@ -107,6 +126,11 @@ struct CardContentView: View {
 						.environmentObject(libraryViewStack)
 				}
 					.presentationBackground(.clear)
+					.navigationTransition(.zoom(sourceID: "CardToLibraryView", in: animation))
+			}
+			.fullScreenCover(isPresented: $fullScreenOpen) {
+				FullScreenView()
+					.environmentObject(card)
 					.navigationTransition(.zoom(sourceID: "CardToLibraryView", in: animation))
 			}
 			.onChange(of: libraryViewOpen) { oldValue, newValue in
