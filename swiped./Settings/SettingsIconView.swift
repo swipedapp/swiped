@@ -23,7 +23,8 @@ struct SettingsIconView: View {
 			return [
 				Icon(name: "AppIcon", title: "Default"),
 				Icon(name: "Earlybird", title: "Earlybird"),
-				Icon(name: "SFIcon", title: "SF"),
+				// Replaced with Default. Files still exist for SFIcon.
+				//Icon(name: "SFIcon", title: "SF"),
 				Icon(name: "ghostedIcon", title: "ghosted"),
 				Icon(name: "flightIcon", title: "Flight"),
 				Icon(name: "brat-collection-general", title: "BRAT Collection", collection: "brat")
