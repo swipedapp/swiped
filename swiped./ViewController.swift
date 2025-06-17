@@ -32,10 +32,6 @@ class ViewController: UIViewController {
 	static let cardsPerStack = 20
 #endif
 
-	@State private var unsupportedios = true
-	// add the sheet manager
-	private let sheetManager = SheetManager()
-	
 	var version: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 	}
@@ -47,16 +43,17 @@ class ViewController: UIViewController {
 	var modelContext: ModelContext! {
 		didSet {
 			db = DatabaseController(modelContainer: modelContext.container)
+			photosController.db = db
 		}
 	}
-	
+
+	// add the sheet manager
+	var sheetManager: SheetManager!
+	var cardInfo: CardInfo!
+
 	private var db: DatabaseController!
 	
 	private let cardStack = SwipeCardStack()
-	private var mainView: MainView!
-	private var mainHostingController: UIHostingController<AnyView>!
-	private var actionButtonsView: ActionButtonsView!
-	private var actionButtonsHostingController: UIHostingController<AnyView>!
 
 	private let photosController = PhotosController()
 	private var cards = [PhotoCard]()
@@ -64,29 +61,19 @@ class ViewController: UIViewController {
 	private var loadingBatch = true
 	private var batchesLoaded = 0
 	private var swipedAll = false
-
-	private let cardInfo = CardInfo()
 	
 	private var previewItem: URL?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		photosController.db = db
+
 		fetchAlert()
 		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
-		mainView = MainView()
-		mainView.delegate = self
-		actionButtonsView = ActionButtonsView()
-		actionButtonsView.delegate = self
 		photosController.delegate = self
-		
-		configureNavigationBar()
-		layoutMainView()
+
 		layoutCardStackView()
-		layoutActionButtonsView()
 
 		loadBatch()
 		
@@ -106,51 +93,12 @@ class ViewController: UIViewController {
 		}
 	}
 	
-	private func configureNavigationBar() {
-		navigationController?.setNavigationBarHidden(true, animated: false)
-	}
-	
 	private func layoutCardStackView() {
 		view.addSubview(cardStack)
-		cardStack.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-										 left: view.safeAreaLayoutGuide.leftAnchor,
-										 bottom: view.safeAreaLayoutGuide.bottomAnchor,
-										 right: view.safeAreaLayoutGuide.rightAnchor,
-										 paddingTop: 76,
-										 paddingBottom: 56)
-	}
-	
-	private func layoutMainView() {
-		mainHostingController = UIHostingController(rootView: AnyView(
-			mainView
-				.environmentObject(cardInfo)
-				.environmentObject(sheetManager)
-				.modelContext(modelContext)
-		))
-		mainHostingController.willMove(toParent: self)
-		view.addSubview(mainHostingController.view)
-		mainHostingController.view.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-																			left: view.safeAreaLayoutGuide.leftAnchor,
-																			bottom: view.safeAreaLayoutGuide.bottomAnchor,
-																			right: view.safeAreaLayoutGuide.rightAnchor)
-	}
-
-	private func layoutActionButtonsView() {
-		actionButtonsHostingController = UIHostingController(rootView: AnyView(
-			actionButtonsView
-				.environmentObject(cardInfo)
-				.modelContext(modelContext)
-		))
-		actionButtonsHostingController.view.isOpaque = false
-		actionButtonsHostingController.view.backgroundColor = .clear
-		actionButtonsHostingController.willMove(toParent: self)
-		view.addSubview(actionButtonsHostingController.view)
-		actionButtonsHostingController.view.anchor(left: view.safeAreaLayoutGuide.leftAnchor,
-																							 bottom: view.safeAreaLayoutGuide.bottomAnchor,
-																							 right: view.safeAreaLayoutGuide.rightAnchor,
-																							 paddingLeft: 10,
-																							 paddingBottom: 0,
-																							 paddingRight: 10)
+		cardStack.anchor(top: view.topAnchor,
+										 left: view.leftAnchor,
+										 bottom: view.bottomAnchor,
+										 right: view.rightAnchor)
 	}
 
 	private func loadBatch() {
@@ -478,6 +426,50 @@ extension ViewController: QLPreviewControllerDataSource, QLPreviewControllerDele
 		if let previewItem = previewItem {
 			try? FileManager.default.removeItem(at: previewItem)
 			self.previewItem = nil
+		}
+	}
+}
+
+struct MainViewControllerView: UIViewControllerRepresentable {
+	@Environment(\.modelContext) private var modelContext
+
+	@EnvironmentObject private var sheetManager: SheetManager
+
+	@EnvironmentObject private var cardInfo: CardInfo
+
+	let onCoordinatorCreated: (Coordinator) -> Void
+
+	init(onCoordinatorCreated: @escaping (Coordinator) -> Void) {
+		self.onCoordinatorCreated = onCoordinatorCreated
+	}
+
+	func makeUIViewController(context: Context) -> ViewController {
+		let viewController = ViewController()
+		viewController.modelContext = modelContext
+		context.coordinator.viewController = viewController
+		onCoordinatorCreated(context.coordinator)
+		return viewController
+	}
+
+	func updateUIViewController(_ viewController: ViewController, context: Context) {
+		viewController.sheetManager = sheetManager
+		viewController.cardInfo = cardInfo
+	}
+
+	func makeCoordinator() -> Coordinator {
+		return Coordinator()
+	}
+
+	// Bridge the delegates back into the view controller while the logic for them is still here
+	class Coordinator: NSObject, ActionButtonsView.Delegate, BehindView.Delegate {
+		weak var viewController: ViewController?
+
+		func didTapButton(action: ActionButtonsView.Action) {
+			viewController?.didTapButton(action: action)
+		}
+
+		func didTapContinue() {
+			viewController?.didTapContinue()
 		}
 	}
 }

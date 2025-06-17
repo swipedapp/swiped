@@ -12,15 +12,15 @@ struct MainView: View {
 	private enum AnimationPhase: CaseIterable {
 		case start, middle, end
 	}
-	
-	weak var delegate: BehindView.Delegate?
 
 	@EnvironmentObject var cardInfo: CardInfo
 	
 	@EnvironmentObject var sheetManager: SheetManager
 	
 	@State private var trigger = 0
-	
+
+	@State private var coordinator: MainViewControllerView.Coordinator?
+
 	var body: some View {
 		KeyframeAnimator(initialValue: 0.0, trigger: trigger) { value in
 			VStack(spacing: 0) {
@@ -32,24 +32,24 @@ struct MainView: View {
 						.opacity(cardInfo.card == nil || cardInfo.summary ? value : -value)
 				}
 
-				BehindView(delegate: delegate)
-					.opacity(cardInfo.summary ? value : -value)
+				ZStack {
+					BehindView(delegate: coordinator)
+						.opacity(cardInfo.summary ? value : -value)
 
-				Spacer()
+					MainViewControllerView(onCoordinatorCreated: { coordinator in
+						self.coordinator = coordinator
+					})
+						.background(.clear)
+						.opacity(cardInfo.summary ? -value : value)
+						.padding(.bottom, 56)
 
-//				ZStack {
-//
-//					HStack {
-//						Spacer()
-//
-//						VStack(spacing: 0) {
-//							Spacer()
-//						}
-//						.foregroundColor(.primary)
-//						.opacity(cardInfo.summary ? -value : value)
-//						.padding(.trailing, 10)
-//					}
-//				}
+					VStack {
+						Spacer()
+
+						ActionButtonsView(delegate: coordinator)
+							.opacity(cardInfo.summary ? -value : value)
+					}
+				}
 			}
 		} keyframes: { _ in
 			KeyframeTrack(\.self) {

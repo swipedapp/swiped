@@ -13,11 +13,15 @@ import OSLog
 
 @main
 struct SwipedApp: App {
-	var modelContainer: ModelContainer
-	let logger = Logger(subsystem: "Init", category: "SwiftData")
+	private var modelContainer: ModelContainer
+	private let logger = Logger(subsystem: "Init", category: "SwiftData")
 
-	@State var needsMigration = false
-	
+	@State private var needsMigration = false
+
+	private let cardInfo = CardInfo()
+	// add the sheet manager
+	private let sheetManager = SheetManager()
+
 	private let db: DatabaseController
 	
 	init() {
@@ -66,11 +70,8 @@ struct SwipedApp: App {
 			logger.info("Starting migration..")
 			Task {
 				try? await Task.sleep(for: .milliseconds(100))
-				await self.db.migrate()
-				
-				await MainActor.run {
-					self.needsMigration = false
-				}
+				await db.migrate()
+				needsMigration = false
 			}
 		}
 	}
@@ -78,7 +79,7 @@ struct SwipedApp: App {
 	var body: some Scene {
 		return WindowGroup {
 			NavigationView {
-				ContentView()
+				MainView()
 					.onAppear {
 						Task {
 							self.needsMigration = await db.needsMigration()
@@ -91,23 +92,10 @@ struct SwipedApp: App {
 							}
 					})
 			}
-			.toolbar(.hidden)
-			.navigationViewStyle(.stack)
+				.navigationViewStyle(.stack)
 		}
-		.modelContainer(modelContainer)
-	}
-}
-
-struct ContentView: UIViewControllerRepresentable {
-	@Environment(\.modelContext) private var modelContext
-	
-	func makeUIViewController(context: Context) -> ViewController {
-		let viewController = ViewController()
-		viewController.modelContext = modelContext
-		return viewController
-	}
-	
-	func updateUIViewController(_ viewController: ViewController, context: Context) {
-		viewController.modelContext = modelContext
+			.environmentObject(cardInfo)
+			.environmentObject(sheetManager)
+			.modelContainer(modelContainer)
 	}
 }

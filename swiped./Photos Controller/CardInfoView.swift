@@ -277,7 +277,7 @@ struct CardInfoView: View {
 				.frame(width: 44, height: 44, alignment: .center)
 				.accessibilityLabel("Settings")
 				.accessibilityIdentifier("settingsButton")
-				.buttonStyle(.glass)
+				.glassEffect(.regular.interactive())
 			}
 
 			subhead

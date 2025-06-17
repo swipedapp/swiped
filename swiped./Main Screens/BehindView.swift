@@ -97,13 +97,13 @@ struct BehindView: SwiftUI.View {
 			.padding(.horizontal, 20)
 			.padding(.vertical, 40)
 			.onChange(of: cardInfo.summary, { oldValue, newValue in
-				if cardInfo.summary {
+				if newValue {
 					Task {
 						let db = DatabaseController(modelContainer: modelContext.container)
-						self.totalKept = await db.getTotalKept()
-						self.totalDeleted = await db.getTotalDeleted()
-						self.spaceSaved = Int64(await db.getSpaceSaved())
-						self.swipeScore = await db.calcSwipeScore()
+						totalKept = await db.getTotalKept()
+						totalDeleted = await db.getTotalDeleted()
+						spaceSaved = Int64(await db.getSpaceSaved())
+						swipeScore = await db.calcSwipeScore()
 					}
 				}
 			})

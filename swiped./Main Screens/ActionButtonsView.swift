@@ -141,9 +141,8 @@ struct ActionButtonsView: View {
 										 effect: .drawOff)
 			}
 		}
+			.padding(.horizontal, 10)
 			.padding(.bottom, showLabels ? 0 : 5)
-			.opacity(cardInfo.summary ? 0 : 1)
-			.transition(.opacity.animation(.linear(duration: 0.3)))
 			.glassEffectUnion(id: 1, namespace: namespace)
 			.sheet(isPresented: $showCher) {
 				CherView()
