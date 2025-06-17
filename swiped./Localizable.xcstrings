@@ -82,9 +82,6 @@
     "Font" : {
 
     },
-    "Fonts" : {
-
-    },
     "GitHub" : {
 
     },
@@ -180,6 +177,16 @@
     },
     "Updating.." : {
 
+    },
+    "Version %@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Version %1$@ (%2$@)"
+          }
+        }
+      }
     },
     "VoiceOver not recommended" : {
       "extractionState" : "manual"
