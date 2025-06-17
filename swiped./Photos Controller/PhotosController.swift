@@ -30,83 +30,96 @@ class PhotosController {
 	weak var delegate: PhotoLoadDelegate?
 	
 	var db: DatabaseController!
-	
-	func loadRandomPhotos(for cards: [PhotoCard], callback: @escaping () -> Void) {
-		let logger = Logger(subsystem: "Photos Loader", category: "PhotoController")
-		logger.debug("Loading photos..")
-		// Request permission to access photo library
-		PHPhotoLibrary.requestAuthorization { status in
-			switch status {
-			case .authorized, .limited:
-				Task {
-					do {
-						try await self.fetchRandomPhotos(for: cards)
-						
-						await MainActor.run {
-							callback()
-						}
-					} catch {
-						SentrySDK.capture(error: error)
-						logger.critical("Failed to load photos. \(error)")
-						
-						await MainActor.run {
-							if let error = error as? PhotoError {
-								self.delegate?.didFail(error: error)
-							}
-						}
+
+	// MARK: - Internal helpers
+
+	private static func fetchAssets(_ options: ((PHFetchOptions) -> Void)? = nil) throws -> PHFetchResult<PHAsset> {
+		let fetchOptions = PHFetchOptions()
+		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
+		fetchOptions.predicate = NSPredicate(format: "isHidden == NO AND (mediaType == %d OR mediaType == %d)",
+																				 PHAssetMediaType.image.rawValue,
+																				 PHAssetMediaType.video.rawValue)
+
+		options?(fetchOptions)
+
+		let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
+
+		if fetchResult.count == 0 {
+			throw PhotoError.noPhotosAvailable
+		}
+
+		return fetchResult
+	}
+
+	private static func loadAssetImages(asset: PHAsset, thumbnail: ((UIImage) -> Void)? = nil, fullImage: ((UIImage) -> Void)? = nil, fullImageData: ((Data, UTType) -> Void)? = nil) {
+		Task {
+			if let thumbnail = thumbnail {
+				// Create thumbnail options
+				let thumbnailOptions = PHImageRequestOptions()
+				thumbnailOptions.deliveryMode = .fastFormat
+				thumbnailOptions.resizeMode = .fast
+				thumbnailOptions.isSynchronous = true
+
+				// Request thumbnail
+				PHImageManager.default().requestImage(
+					for: asset,
+					targetSize: CGSize(width: 200, height: 200),
+					contentMode: .aspectFill,
+					options: thumbnailOptions
+				) { image, info in
+					DispatchQueue.main.async {
+						thumbnail(image ?? UIImage())
 					}
 				}
-				
-			default:
-				DispatchQueue.main.async {
-					SentrySDK.capture(error: PhotoError.noAccessToPhotoLibrary)
-					self.delegate?.didFail(error: .noAccessToPhotoLibrary)
+			}
+
+			if let fullImage = fullImage {
+				// Create full image options
+				let fullImageOptions = PHImageRequestOptions()
+				fullImageOptions.deliveryMode = .highQualityFormat
+				fullImageOptions.resizeMode = .fast
+				fullImageOptions.isSynchronous = false
+				fullImageOptions.isNetworkAccessAllowed = true
+
+				// Request full quality image asynchronously
+				PHImageManager.default().requestImage(
+					for: asset,
+					targetSize: PHImageManagerMaximumSize,
+					contentMode: .aspectFit,
+					options: fullImageOptions
+				) { image, info in
+					DispatchQueue.main.async {
+						fullImage(image ?? UIImage())
+					}
 				}
 			}
 		}
 	}
 
+	// MARK: - Load photos
+
+	private static let photosToFetchAround = 20
+
 	func fetchRecentPhotos() async throws -> [PhotoCard] {
 		// Get latest photo
-		let fetchOptions = PHFetchOptions()
-		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
-		fetchOptions.predicate = NSPredicate(format: "isHidden == NO AND (mediaType == %d OR mediaType == %d)",
-																				 PHAssetMediaType.image.rawValue,
-																				 PHAssetMediaType.video.rawValue)
-		fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-		fetchOptions.fetchLimit = 1
-
-		let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
-
-		if fetchResult.count == 0 {
-			throw PhotoError.noPhotosAvailable
+		let fetchResult = try Self.fetchAssets { options in
+			options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+			options.fetchLimit = 1
 		}
 
 		let card = PhotoCard()
 		card.id = 0
 		card.asset = fetchResult[0]
-		return try await fetchPhotos(around: card)
+		return try await fetchPhotosAround(card: card)
 	}
 
-	private static let photosToFetchAround = 20
-
-	func fetchPhotos(around card: PhotoCard) async throws -> [PhotoCard] {
+	func fetchPhotosAround(card: PhotoCard) async throws -> [PhotoCard] {
 		guard let asset = card.asset else {
 			throw PhotoError.failedToFetchPhoto
 		}
 
-		let fetchOptions = PHFetchOptions()
-		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
-		fetchOptions.predicate = NSPredicate(format: "isHidden == NO AND (mediaType == %d OR mediaType == %d)",
-																				 PHAssetMediaType.image.rawValue,
-																				 PHAssetMediaType.video.rawValue)
-
 		// Fetch all photos
-		let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
-
-		if fetchResult.count == 0 {
-			throw PhotoError.noPhotosAvailable
-		}
+		let fetchResult = try Self.fetchAssets()
 
 		let index = fetchResult.index(of: asset)
 		if index == NSNotFound {
@@ -126,42 +139,11 @@ class PhotosController {
 			card.asset = asset
 			cards.append(card)
 
-			// Create thumbnail options
-			let thumbnailOptions = PHImageRequestOptions()
-			thumbnailOptions.deliveryMode = .fastFormat
-			thumbnailOptions.resizeMode = .fast
-			thumbnailOptions.isSynchronous = false
-
-			// Create full image options
-			let fullImageOptions = PHImageRequestOptions()
-			fullImageOptions.deliveryMode = .highQualityFormat
-			fullImageOptions.resizeMode = .fast
-			fullImageOptions.isSynchronous = false
-			fullImageOptions.isNetworkAccessAllowed = true
-
-			// Request thumbnail
-			PHImageManager.default().requestImage(
-				for: asset,
-				targetSize: CGSize(width: 200, height: 200),
-				contentMode: .aspectFill,
-				options: thumbnailOptions
-			) { thumbnailImage, thumbnailInfo in
-				DispatchQueue.main.async {
-					card.thumbnail = thumbnailImage ?? UIImage()
-				}
-			}
-
-			// Request full quality image asynchronously
-			PHImageManager.default().requestImage(
-				for: asset,
-				targetSize: PHImageManagerMaximumSize,
-				contentMode: .aspectFit,
-				options: fullImageOptions
-			) { fullImage, fullImageInfo in
-				DispatchQueue.main.async {
-					card.fullImage = fullImage ?? UIImage()
-				}
-			}
+			Self.loadAssetImages(asset: asset, thumbnail: { image in
+				card.thumbnail = image
+			}, fullImage: { image in
+				card.fullImage = image
+			})
 
 			i += 1
 		}
@@ -169,21 +151,45 @@ class PhotosController {
 		return cards
 	}
 
-	private func fetchRandomPhotos(for cards: [PhotoCard]) async throws {
-		// Create fetch options
-		let fetchOptions = PHFetchOptions()
-		fetchOptions.includeAssetSourceTypes = .typeUserLibrary
-		fetchOptions.predicate = NSPredicate(format: "isHidden == NO AND (mediaType == %d OR mediaType == %d)",
-																				 PHAssetMediaType.image.rawValue,
-																				 PHAssetMediaType.video.rawValue)
-		
-		// Fetch all photos
-		let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
-		
-		if fetchResult.count == 0 {
-			throw PhotoError.noPhotosAvailable
+	func loadRandomPhotos(for cards: [PhotoCard], callback: @escaping () -> Void) {
+		let logger = Logger(subsystem: "Photos Loader", category: "PhotoController")
+		logger.debug("Loading photos..")
+		// Request permission to access photo library
+		PHPhotoLibrary.requestAuthorization { status in
+			switch status {
+			case .authorized, .limited:
+				Task {
+					do {
+						try await self.fetchRandomPhotos(for: cards)
+
+						await MainActor.run {
+							callback()
+						}
+					} catch {
+						SentrySDK.capture(error: error)
+						logger.critical("Failed to load photos. \(error)")
+
+						await MainActor.run {
+							if let error = error as? PhotoError {
+								self.delegate?.didFail(error: error)
+							}
+						}
+					}
+				}
+
+			default:
+				DispatchQueue.main.async {
+					SentrySDK.capture(error: PhotoError.noAccessToPhotoLibrary)
+					self.delegate?.didFail(error: .noAccessToPhotoLibrary)
+				}
+			}
 		}
-		
+	}
+
+	private func fetchRandomPhotos(for cards: [PhotoCard]) async throws {
+		// Fetch all photos
+		let fetchResult = try Self.fetchAssets()
+
 		if await fetchResult.count == db.getTotalKept() {
 			throw PhotoError.noPhotosLeft
 		}
@@ -228,46 +234,15 @@ class PhotosController {
 			}
 			
 			photo.size = size
-			
-			// Create thumbnail options
-			let thumbnailOptions = PHImageRequestOptions()
-			thumbnailOptions.deliveryMode = .fastFormat
-			thumbnailOptions.resizeMode = .fast
-			thumbnailOptions.isSynchronous = true
-			
-			// Create full image options
-			let fullImageOptions = PHImageRequestOptions()
-			fullImageOptions.deliveryMode = .highQualityFormat
-			fullImageOptions.resizeMode = .fast
-			fullImageOptions.isSynchronous = false
-			fullImageOptions.isNetworkAccessAllowed = true
-			
-			// Request thumbnail
-			PHImageManager.default().requestImage(
-				for: asset,
-				targetSize: CGSize(width: 200, height: 200),
-				contentMode: .aspectFill,
-				options: thumbnailOptions
-			) { thumbnailImage, thumbnailInfo in
-				DispatchQueue.main.async {
-					self.delegate?.didLoadThumbnail(for: card, image: thumbnailImage ?? UIImage())
-				}
-			}
-			
-			// Request full quality image asynchronously
-			PHImageManager.default().requestImage(
-				for: asset,
-				targetSize: PHImageManagerMaximumSize,
-				contentMode: .aspectFit,
-				options: fullImageOptions
-			) { fullImage, fullImageInfo in
-				DispatchQueue.main.async {
-					self.delegate?.didLoadFullImage(for: card, image: fullImage ?? UIImage())
-				}
-			}
+
+			Self.loadAssetImages(asset: asset, thumbnail: { image in
+				self.delegate?.didLoadThumbnail(for: card, image: image)
+			}, fullImage: { image in
+				self.delegate?.didLoadFullImage(for: card, image: image)
+			})
 		}
 	}
-	
+
 	func delete(cards: [PhotoCard], callback: @escaping (Bool) -> Void) {
 		let assets = cards.compactMap { $0.asset }
 		
@@ -317,6 +292,8 @@ class PhotosController {
 		}
 	}
 
+	// MARK: - Sharing
+
 	struct ShareItem: Identifiable {
 		var data: Data
 		var type: UTType
@@ -328,6 +305,9 @@ class PhotosController {
 		return try await withCheckedThrowingContinuation { continuation in
 			let logger = Logger(subsystem: "Photo", category: "ShareSheet Handler")
 			logger.debug("Called Share Photo")
+
+			Self.loadAssetImages(asset: asset, thumbnail: nil, fullImage: { image in
+			})
 			let fullImageOptions = PHImageRequestOptions()
 			fullImageOptions.deliveryMode = .highQualityFormat
 			fullImageOptions.resizeMode = .exact
