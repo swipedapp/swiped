@@ -21,7 +21,8 @@ struct SettingsIconView: View {
 		switch collection {
 		case "main":
 			return [
-				Icon(name: "AppIcon", title: "Classic"),
+				Icon(name: "AppIcon", title: "Default"),
+				Icon(name: "Earlybird", title: "Earlybird"),
 				Icon(name: "SFIcon", title: "SF"),
 				Icon(name: "ghostedIcon", title: "ghosted"),
 				Icon(name: "flightIcon", title: "Flight"),
