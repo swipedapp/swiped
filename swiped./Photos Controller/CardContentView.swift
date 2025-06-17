@@ -142,7 +142,7 @@ struct CardContentView: View {
 	}
 
 	private func getLibraryViewPhotos() async {
-		guard let photos = try? await photosController.fetchPhotos(around: card) else {
+		guard let photos = try? await photosController.fetchPhotosAround(card: card) else {
 			return
 		}
 
