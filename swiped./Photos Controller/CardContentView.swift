@@ -39,8 +39,8 @@ struct CardContentView: View {
 		GeometryReader { geometry in
 			background.overlay {
 				ZStack {
-					RoundedRectangle(cornerRadius: 8, style: .continuous)
-						.fill(.black)
+					//RoundedRectangle(cornerRadius: 8, style: .continuous)
+						//.fill(.primary)
 
 					Image(uiImage: image)
 						.resizable()
@@ -116,6 +116,7 @@ struct CardContentView: View {
 						}
 					}
 					.onTapGesture {
+						isScaling = true
 						fullScreenOpen = true
 					}
 #endif
