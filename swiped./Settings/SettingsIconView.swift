@@ -79,7 +79,7 @@ struct SettingsIconView: View {
 		HStack(alignment: .center, spacing: 10) {
 			Image(uiImage: UIImage(named: "\(icon.name)-Preview") ?? UIImage(systemName: "questionmark")!)
 				.frame(width: 60, height: 60)
-				.background(Color(UIColor.secondarySystemBackground))
+				//.background(Color(UIColor.secondarySystemBackground))
 				.cornerRadius(12)
 //				.overlay(
 //					RoundedRectangle(cornerRadius: 12)
