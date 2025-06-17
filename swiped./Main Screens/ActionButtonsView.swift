@@ -82,6 +82,7 @@ struct ActionButtonsView: View {
 			.frame(width: showLabels ? 60 : 44,
 						 height: showLabels ? 50 : 44)
 		})
+		.accessibilityLabel(text)
 		.buttonStyle(.glass)
 		.glassEffectID(1, in: namespace)
 	}

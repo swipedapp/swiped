@@ -93,6 +93,11 @@ public class ZoomableViewController : UIViewController, UIScrollViewDelegate {
 		scrollView.translatesAutoresizingMaskIntoConstraints = false
 		scrollView.delegate = self
 
+		// Added by us
+		scrollView.showsVerticalScrollIndicator = false
+		scrollView.showsHorizontalScrollIndicator = false
+		scrollView.decelerationRate = .fast
+
 		let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
 		gestureRecognizer.numberOfTapsRequired = 1
 		gestureRecognizer.numberOfTouchesRequired = 1

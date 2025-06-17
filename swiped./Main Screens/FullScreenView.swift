@@ -13,36 +13,37 @@ struct FullScreenView: View {
 
 	@Environment(\.presentationMode) var presentationMode
 
-	var animation: Namespace.ID
-
 	@State private var isScrolling = false
 	@State private var offset = CGPoint.zero
+	@State private var rect = CGRect.zero
 
 	var body: some View {
 		let image = card.fullImage ?? card.thumbnail ?? UIImage()
 
 		GeometryReader { geometry in
-			ScrollableImage(isScrolling: $isScrolling, offset: $offset) {
+			Zoomable {
 				Image(uiImage: image)
 					.resizable()
-					.scaledToFill()
+					.scaledToFit()
 					.frame(width: geometry.size.width,
 								 height: geometry.size.height,
 								 alignment: .center)
-					.aspectRatio(contentMode: image.size.width > image.size.height ? .fit : .fill)
-					.clipped()
+					.aspectRatio(contentMode: .fit)
+					.ignoresSafeArea(.all, edges: .all)
+					.background(.black)
 			}
+				.ignoresSafeArea(.all, edges: .all)
+				.background(.black)
 		}
-			.backgroundStyle(.regularMaterial)
-			.preferredColorScheme(.dark)
+			.ignoresSafeArea(.all, edges: .all)
+			.background(.black)
+			.presentationBackground(.black)
 	}
 }
 
 #Preview {
-	@Previewable @Namespace var animation
-
 	let card = PhotoCard(id: 0, photo: nil, asset: nil, fullImage: UIImage(named: "IMG_2871.HEIC"))
-	FullScreenView(animation: animation)
+	FullScreenView()
 		.environmentObject(card)
 }
 
