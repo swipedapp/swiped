@@ -81,10 +81,10 @@ struct SettingsIconView: View {
 				.frame(width: 60, height: 60)
 				.background(Color(UIColor.secondarySystemBackground))
 				.cornerRadius(12)
-				.overlay(
-					RoundedRectangle(cornerRadius: 12)
-						.stroke(Color(UIColor.separator), lineWidth: 1)
-				)
+//				.overlay(
+//					RoundedRectangle(cornerRadius: 12)
+//						.stroke(Color(UIColor.separator), lineWidth: 1)
+//				)
 			
 			Text(icon.title)
 				.font(Fonts.body)
