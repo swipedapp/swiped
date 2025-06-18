@@ -30,6 +30,7 @@ struct CherView: View {
 
 	@State var shareItem: PhotosController.ShareItem?
 
+	@ViewBuilder
 	func buttonLabel(image: Image, text: Text) -> some View {
 		VStack(alignment: .center) {
 			image
@@ -100,8 +101,9 @@ struct CherView: View {
 		}
 	}
 
+	@ViewBuilder
 	func messageComposeView(shareItem: PhotosController.ShareItem) -> some View {
-		return AnyView(MessageComposeView(
+		MessageComposeView(
 			attachments: [
 				MessageComposeView.MessageAttachment(data: shareItem.data,
 																						 typeIdentifier: shareItem.type.identifier,
@@ -115,7 +117,7 @@ struct CherView: View {
 					presentationMode.wrappedValue.dismiss()
 					self.shareItem = nil
 				}
-			}))
+			})
 	}
 }
 

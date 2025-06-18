@@ -167,47 +167,44 @@ struct CardInfoView: View {
 		return types.joined(separator: ", ")
 	}
 
-	var title: AnyView {
+	@ViewBuilder
+	var title: some View {
 		if logo {
 			let dot = Text(".")
 				.foregroundColor(Color("brandGreen"))
-			return AnyView(Text("SWIPED\(dot)")
+
+			Text("SWIPED\(dot)")
 				.font(.custom("LoosExtended-Bold", size: 24))
-				.contentTransition(.opacity))
-		}
-
-		let view: AnyView
-		if let asset = cardInfo.card?.asset {
-			let text: Text
-			let date = asset.creationDate ?? .distantPast
-			if timestamps {
-				text = Text(date, format: Date.RelativeFormatStyle(presentation: .numeric, unitsStyle: .wide))
-			} else {
-				text = Text(date, format: Date.FormatStyle(date: .abbreviated))
-			}
-			view = AnyView(text
-				.font(Fonts.title)
-				.contentTransition(.numericText(value: -date.timeIntervalSince1970)))
+				.contentTransition(.opacity)
 		} else {
-			view = AnyView(Text(" ")
-				.font(Fonts.title))
-		}
+			if let asset = cardInfo.card?.asset {
+				let date = asset.creationDate ?? .distantPast
+				let text = timestamps
+					? Text(date, format: Date.RelativeFormatStyle(presentation: .numeric, unitsStyle: .wide))
+					: Text(date, format: Date.FormatStyle(date: .abbreviated))
 
-		return AnyView(view
-			.textCase(.uppercase))
+				text
+					.font(Fonts.title)
+					.textCase(.uppercase)
+					.contentTransition(.numericText(value: -date.timeIntervalSince1970))
+			} else {
+				Text(" ")
+					.font(Fonts.title)
+					.textCase(.uppercase)
+			}
+		}
 	}
-	
-	var subhead: AnyView {
+
+	@ViewBuilder
+	var subhead: some View {
 		if logo {
 			if cardInfo.summary {
-				return AnyView(Text("Summary"))
+				Text("Summary")
 			} else {
-				return AnyView(Text(" "))
+				Text(" ")
 			}
-		}
-
-		if let asset = cardInfo.card?.asset {
-			return AnyView(HStack(alignment: .center, spacing: 8) {
+		} else if let asset = cardInfo.card?.asset {
+			HStack(alignment: .center, spacing: 8) {
 				Image(systemName: icon)
 					.frame(width: 20, height: 20, alignment: .center)
 				
@@ -248,11 +245,11 @@ struct CardInfoView: View {
 				}
 				Text(type)
 					.contentTransition(.numericText())
-			})
+			}
 			
+		} else {
+			Text(" ")
 		}
-		return AnyView(Text(" "))
-
 	}
 	
 	var body: some View {

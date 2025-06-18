@@ -74,7 +74,8 @@ struct SettingsIconView: View {
 		.navigationTitle("Icons")
 		.toolbar(removing: .title)
 	}
-	
+
+	@ViewBuilder
 	func button(icon: Icon) -> some View {
 		HStack(alignment: .center, spacing: 10) {
 			Image(uiImage: UIImage(named: "\(icon.name)-Preview") ?? UIImage(systemName: "questionmark")!)

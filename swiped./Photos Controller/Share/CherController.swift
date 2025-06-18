@@ -82,6 +82,7 @@ class CherController {
 		return dateFormatter
 	}()
 
+	@ViewBuilder
 	static func shareLink(cardInfo: CardInfo, photosController: PhotosController, body: () -> some View) -> some View {
 		let card = cardInfo.card
 		let asset = card?.asset
@@ -89,21 +90,21 @@ class CherController {
 															 image: Image(uiImage: card?.thumbnail ?? UIImage()))
 		if let asset = asset {
 			if asset.mediaType == .image {
-				return AnyView(ShareLink(
+				ShareLink(
 					item: photosController.getShareImage(asset: asset),
 					preview: preview,
 					label: body
-				))
+				)
 			} else {
-				return AnyView(ShareLink(
+				ShareLink(
 					item: photosController.getShareVideo(asset: asset),
 					preview: preview,
 					label: body
-				))
+				)
 			}
 		} else {
 			// Fake button for testing
-			return AnyView(Button(action: {}, label: body))
+			Button(action: {}, label: body)
 		}
 	}
 

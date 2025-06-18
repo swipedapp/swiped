@@ -26,6 +26,7 @@ struct PhotoLibraryView: View {
 
 	@Environment(\.presentationMode) var presentationMode
 
+	@ViewBuilder
 	func card(_ card: PhotoCard) -> some View {
 		Color(uiColor: .secondarySystemBackground)
 			.aspectRatio(contentMode: .fill)
@@ -48,10 +49,10 @@ struct PhotoLibraryView: View {
 						.id(card.id)
 
 					if card.id == stack.mainPhotoIndex {
-						return AnyView(view
-							.navigationTransition(.zoom(sourceID: "CardToLibraryView", in: animation)))
+						view
+							.navigationTransition(.zoom(sourceID: "CardToLibraryView", in: animation))
 					} else {
-						return AnyView(view)
+						view
 					}
 				}
 			}

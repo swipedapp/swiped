@@ -53,8 +53,9 @@ struct ActionButtonsView: View {
 		return launches < 5
 	}
 
+	@ViewBuilder
 	func bottomButton<T>(image: Image, text: Text, action: Action, animate: Binding<Bool>, effect: T) -> some View where T : IndefiniteSymbolEffect, T : SymbolEffect {
-		return Button(action: {
+		Button(action: {
 			animate.wrappedValue = true
 
 			if action == .share {
@@ -87,6 +88,7 @@ struct ActionButtonsView: View {
 		.glassEffectID(1, in: namespace)
 	}
 
+	@ViewBuilder
 	var shareButton: some View {
 		let button = bottomButton(image: Image(systemName: "square.and.arrow.up"),
 															text: Text("Share"),
@@ -98,16 +100,16 @@ struct ActionButtonsView: View {
 			 asset.mediaType == .image || asset.mediaType == .video {
 
 			if CherController.hasAnySources {
-				return AnyView(button)
+				button
 			} else {
-				return AnyView(CherController.shareLink(cardInfo: cardInfo,
-																								photosController: photosController,
-																								body: {
+				CherController.shareLink(cardInfo: cardInfo,
+																				photosController: photosController,
+																				body: {
 					button
-				}))
+				})
 			}
 		} else {
-			return AnyView(button)
+			button
 		}
 	}
 
@@ -131,6 +133,7 @@ struct ActionButtonsView: View {
 				Spacer()
 
 				shareButton
+					.id("shareButton")
 
 				Spacer()
 

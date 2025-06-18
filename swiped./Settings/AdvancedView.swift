@@ -81,8 +81,6 @@ struct AdvancedView: View {
 	}
 	
 	var syncSection: some View {
-		let syncFailed = !sync && serverController.syncFailed
-
 		let dot = Text(".")
 			.foregroundColor(isSyncOK ? Color("brandGreen") : Color("brandRed"))
 
