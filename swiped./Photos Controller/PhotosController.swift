@@ -177,7 +177,28 @@ class PhotosController {
 		}
 	}
 
+	#if SHOWCASE
+	private static let demoPhotos = ["2871", "2884", "2948", "2965", "3106", "3116", "3213", "3244", "3293", "3383"]
+		.map { id in
+			let url = Bundle.main.url(forResource: "IMG_\(id)", withExtension: "jpg")!
+			let data = try! Data(contentsOf: url)
+			return (url: url, data: data)
+		}
+	#endif
+
 	private func fetchRandomPhotos(for cards: [PhotoCard]) async throws {
+		#if SHOWCASE
+		for (i, card) in cards.enumerated() {
+			let (url, data) = Self.demoPhotos[i]
+			card.fullImage = UIImage(data: data)
+
+			let photo = Photo(id: url.lastPathComponent)
+			photo.type = .image
+			photo.creationDate = Date(timeIntervalSince1970: 1168335660)
+			photo.size = Double(data.count)
+			card.photo = photo
+		}
+		#else
 		// Fetch all photos
 		let fetchResult = try Self.fetchAssets()
 
@@ -232,6 +253,7 @@ class PhotosController {
 				card.fullImage = image
 			})
 		}
+		#endif
 	}
 
 	func delete(cards: [PhotoCard], callback: @escaping (Bool) -> Void) {

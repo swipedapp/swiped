@@ -83,7 +83,7 @@ struct PhotoLibraryView: View {
 	@Previewable @Namespace var animation
 
 	let demoPhotos = ["2871", "2884", "2948", "2965", "3106", "3116", "3213", "3244", "3293", "3383"]
-		.map { UIImage(named: "IMG_\($0).HEIC")! }
+		.map { UIImage(named: "IMG_\($0).jpg")! }
 
 	let photos = Array(repeating: 0, count: 20 + 1 + 20)
 		.enumerated()

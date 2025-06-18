@@ -35,14 +35,13 @@ struct CardInfoView: View {
 	var timestamps = false
 	
 	var icon: String {
-		guard let asset = cardInfo.card?.asset else {
+		guard let photo = cardInfo.card?.photo else {
 			return ""
 		}
-		
-		
+
 		var icon = ""
-		
-		switch asset.mediaType {
+
+		switch photo.type {
 		case .image:
 			icon = "photo"
 		case .video:
@@ -55,71 +54,74 @@ struct CardInfoView: View {
 			icon = "camera.metering.unknown"
 		}
 		
-		
-		if asset.mediaSubtypes.contains(.photoDepthEffect) {
-			icon = "person.and.background.dotted"
+		if let asset = cardInfo.card?.asset {
+			if asset.mediaSubtypes.contains(.photoDepthEffect) {
+				icon = "person.and.background.dotted"
+			}
+			if asset.mediaSubtypes.contains(.spatialMedia) {
+				icon = "video"
+			}
+			if asset.mediaSubtypes.contains(.videoCinematic) {
+				icon = "video"
+			}
+			if asset.mediaSubtypes.contains(.videoHighFrameRate) {
+				icon = "video"
+			}
+			if asset.mediaSubtypes.contains(.videoStreamed) {
+				icon = "video"
+			}
+			if asset.mediaSubtypes.contains(.videoTimelapse) {
+				icon = "timelapse"
+			}
+			if asset.mediaSubtypes.contains(.screenRecording) {
+				icon = "record.circle"
+			}
+			if asset.burstIdentifier != nil {
+				icon = "square.stack.3d.down.forward"
+			}
 		}
-		if asset.mediaSubtypes.contains(.spatialMedia) {
-			icon = "video"
-		}
-		if asset.mediaSubtypes.contains(.videoCinematic) {
-			icon = "video"
-		}
-		if asset.mediaSubtypes.contains(.videoHighFrameRate) {
-			icon = "video"
-		}
-		if asset.mediaSubtypes.contains(.videoStreamed) {
-			icon = "video"
-		}
-		if asset.mediaSubtypes.contains(.videoTimelapse) {
-			icon = "timelapse"
-		}
-		if asset.mediaSubtypes.contains(.screenRecording) {
-			icon = "record.circle"
-		}
-		if asset.burstIdentifier != nil {
-			icon = "square.stack.3d.down.forward"
-		}
-		
+
 		return icon
 	}
 	
 	var type: String {
-		guard let photo = cardInfo.card?.photo,
-					let asset = cardInfo.card?.asset else {
+		guard let photo = cardInfo.card?.photo else {
 			return ""
 		}
-		
+
+		let asset = cardInfo.card?.asset
+		let subtypes = asset?.mediaSubtypes ?? []
+
 		var types = [String]()
 		types.append(Self.fileSizeFormatter.string(fromByteCount: Int64(photo.size)))
-		if asset.mediaSubtypes.contains(.photoHDR) {
+		if subtypes.contains(.photoHDR) {
 			types.append("HDR")
 		}
-		if asset.mediaSubtypes.contains(.photoPanorama) {
+		if subtypes.contains(.photoPanorama) {
 			types.append("Panorama")
 		}
-		if asset.mediaSubtypes.contains(.photoDepthEffect) {
+		if subtypes.contains(.photoDepthEffect) {
 			types.append("Portrait")
 		}
-		if asset.mediaSubtypes.contains(.spatialMedia) {
+		if subtypes.contains(.spatialMedia) {
 			types.append("Spatial")
 		}
-		if asset.mediaSubtypes.contains(.videoCinematic) {
+		if subtypes.contains(.videoCinematic) {
 			types.append("Cinematic")
 		}
-		if asset.mediaSubtypes.contains(.videoHighFrameRate) {
+		if subtypes.contains(.videoHighFrameRate) {
 			types.append("Slo-mo")
 		}
-		if asset.mediaSubtypes.contains(.videoStreamed) {
+		if subtypes.contains(.videoStreamed) {
 			types.append("Streamed Video")
 		}
-		if asset.mediaSubtypes.contains(.videoTimelapse) {
+		if subtypes.contains(.videoTimelapse) {
 			types.append("Time Lapse")
 		}
-		if asset.mediaSubtypes.contains(.screenRecording) {
+		if subtypes.contains(.screenRecording) {
 			types.append("Screen Recording")
 		}
-		if asset.burstIdentifier != nil {
+		if asset?.burstIdentifier != nil {
 			types.append("Burst")
 		}
 		
@@ -134,7 +136,7 @@ struct CardInfoView: View {
 		 */
 		
 		if types.isEmpty {
-			switch asset.mediaType {
+			switch photo.type {
 			case .image:
 				types.append("Photo")
 			case .video:
@@ -147,21 +149,23 @@ struct CardInfoView: View {
 				types.append("Unknown")
 			}
 		}
-		
-		let resources = PHAssetResource.assetResources(for: asset)
-		
-		if resources.contains(where: { UTType($0.uniformTypeIdentifier)?.conforms(to: UTType.rawImage) == true }) {
-			types.append("RAW")
-		}
-		
-		if let resource = resources.first {
-			let fileName = resource.originalFilename
-			
-			if fileName.starts(with: "telegram-") {
-				types.append("Saved from Telegram")
+
+		if let asset = asset {
+			let resources = PHAssetResource.assetResources(for: asset)
+
+			if resources.contains(where: { UTType($0.uniformTypeIdentifier)?.conforms(to: UTType.rawImage) == true }) {
+				types.append("RAW")
+			}
+
+			if let resource = resources.first {
+				let fileName = resource.originalFilename
+
+				if fileName.starts(with: "telegram-") {
+					types.append("Saved from Telegram")
+				}
 			}
 		}
-		
+
 		
 		
 		return types.joined(separator: ", ")
@@ -177,8 +181,8 @@ struct CardInfoView: View {
 				.font(.custom("LoosExtended-Bold", size: 24))
 				.contentTransition(.opacity)
 		} else {
-			if let asset = cardInfo.card?.asset {
-				let date = asset.creationDate ?? .distantPast
+			if let photo = cardInfo.card?.photo {
+				let date = photo.creationDate ?? .distantPast
 				let text = timestamps
 					? Text(date, format: Date.RelativeFormatStyle(presentation: .numeric, unitsStyle: .wide))
 					: Text(date, format: Date.FormatStyle(date: .abbreviated))
@@ -203,52 +207,53 @@ struct CardInfoView: View {
 			} else {
 				Text(" ")
 			}
-		} else if let asset = cardInfo.card?.asset {
+		} else {
 			HStack(alignment: .center, spacing: 8) {
 				Image(systemName: icon)
 					.frame(width: 20, height: 20, alignment: .center)
 				
 				/// this looks ugly, if theres a way to fix this with a switch statement, lmk
-				if asset.mediaSubtypes.contains(.photoScreenshot) {
-					Image(systemName: "camera.viewfinder")
-						.accessibilityLabel("Screenshot")
-						.frame(width: 20, height: 20, alignment: .center)
-				}
-				
-				if asset.mediaSubtypes.contains(.photoLive) {
-					Image(systemName: "livephoto")
-						.accessibilityLabel("Live")
-						.frame(width: 20, height: 20, alignment: .center)
-				}
-				
-				
-				if asset.isFavorite {
-					Image(systemName: "heart.fill")
-						.accessibilityLabel("Favorite")
-						.frame(width: 20, height: 20, alignment: .center)
-				}
-				
-				if asset.hasAdjustments {
-					Image(systemName: "pencil")
-						.accessibilityLabel("Edited")
-						.frame(width: 20, height: 20, alignment: .center)
-				}
-				let resources = PHAssetResource.assetResources(for: asset)
-				if let resource = resources.first {
-					let fileName = resource.originalFilename
-					
-					if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
-						Image(systemName: "square.and.arrow.down")
-							.accessibilityLabel("Imported")
+				if let asset = cardInfo.card?.asset {
+					if asset.mediaSubtypes.contains(.photoScreenshot) {
+						Image(systemName: "camera.viewfinder")
+							.accessibilityLabel("Screenshot")
 							.frame(width: 20, height: 20, alignment: .center)
 					}
+
+					if asset.mediaSubtypes.contains(.photoLive) {
+						Image(systemName: "livephoto")
+							.accessibilityLabel("Live")
+							.frame(width: 20, height: 20, alignment: .center)
+					}
+
+
+					if asset.isFavorite {
+						Image(systemName: "heart.fill")
+							.accessibilityLabel("Favorite")
+							.frame(width: 20, height: 20, alignment: .center)
+					}
+
+					if asset.hasAdjustments {
+						Image(systemName: "pencil")
+							.accessibilityLabel("Edited")
+							.frame(width: 20, height: 20, alignment: .center)
+					}
+					let resources = PHAssetResource.assetResources(for: asset)
+					if let resource = resources.first {
+						let fileName = resource.originalFilename
+
+						if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
+							Image(systemName: "square.and.arrow.down")
+								.accessibilityLabel("Imported")
+								.frame(width: 20, height: 20, alignment: .center)
+						}
+					}
 				}
+
 				Text(type)
 					.contentTransition(.numericText())
 			}
 			
-		} else {
-			Text(" ")
 		}
 	}
 	

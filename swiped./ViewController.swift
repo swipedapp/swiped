@@ -28,6 +28,8 @@ class ViewController: UIViewController {
 
 #if INTERNAL
 	static let cardsPerStack = 3
+#elseif SHOWCASE
+	static let cardsPerStack = 10
 #else
 	static let cardsPerStack = 20
 #endif

@@ -80,7 +80,7 @@ struct FullScreenView: View {
 }
 
 #Preview {
-	let card = PhotoCard(id: 0, photo: nil, asset: nil, fullImage: UIImage(named: "IMG_2871.HEIC"))
+	let card = PhotoCard(id: 0, photo: nil, asset: nil, fullImage: UIImage(named: "IMG_2871.jpg"))
 	FullScreenView()
 		.environmentObject(card)
 }

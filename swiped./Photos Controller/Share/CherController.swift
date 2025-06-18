@@ -86,7 +86,7 @@ class CherController {
 	static func shareLink(cardInfo: CardInfo, photosController: PhotosController, body: () -> some View) -> some View {
 		let card = cardInfo.card
 		let asset = card?.asset
-		let preview = SharePreview(Self.dateFormatter.string(from: asset?.creationDate ?? .distantPast),
+		let preview = SharePreview(Self.dateFormatter.string(from: card?.photo?.creationDate ?? .distantPast),
 															 image: Image(uiImage: card?.thumbnail ?? UIImage()))
 		if let asset = asset {
 			if asset.mediaType == .image {

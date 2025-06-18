@@ -43,7 +43,7 @@ struct CardContentView: View {
 				ZStack {
 					let imageView = Image(uiImage: image)
 						.resizable()
-					let imageViewScaled = image.size.width > image.size.height
+					let imageViewScaled = image.size.width > image.size.height && geometry.size.width < geometry.size.height
 						? AnyView(imageView.scaledToFit())
 						: AnyView(imageView.scaledToFill())
 
@@ -182,7 +182,7 @@ struct CardContentView: View {
 }
 
 #Preview {
-	let card = PhotoCard(id: 0, photo: nil, asset: nil, fullImage: UIImage(named: "IMG_2871.HEIC"))
+	let card = PhotoCard(id: 0, photo: nil, asset: nil, fullImage: UIImage(named: "IMG_2871.jpg"))
 	CardContentView()
 		.environmentObject(card)
 }

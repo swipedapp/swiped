@@ -16,7 +16,7 @@ struct CardOverlay: View {
 	var stuff: (text: String, color: Color, edge: Edge.Set, alignment: Alignment, rotation: CGFloat) {
 		switch direction {
 		case .left:  return ("DELETE", Color("hdrRed"),   .trailing,  .topTrailing, .pi / 10)
-		case .right: return ("KEEP",   Color("hdrGreen"), .leading, .topLeading, -.pi / 10)
+		case .right: return ("KEEP",   Color("hdrGreen"), .leading,   .topLeading, -.pi / 10)
 		case .up, .down: fatalError()
 		}
 	}
