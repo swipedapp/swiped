@@ -10,7 +10,7 @@ import Photos
 import OSLog
 import Sentry
 
-struct TransferableVideo: Transferable {
+nonisolated struct TransferableVideo: Transferable {
 	let asset: PHAsset
 	
 	static var transferRepresentation: some TransferRepresentation {

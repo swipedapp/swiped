@@ -13,12 +13,12 @@ import SwiftData
 actor DatabaseController {
 
 	func needsMigration() async -> Bool {
-		let migrator = DatabaseMigrator()
+		let migrator = await DatabaseMigrator()
 		return await migrator.needsMigration()
 	}
 	
 	func migrate() async {
-		let migrator = DatabaseMigrator()
+		let migrator = await DatabaseMigrator()
 		await migrator.migrate(dbController: self)
 		
 	}

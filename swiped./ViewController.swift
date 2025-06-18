@@ -102,31 +102,41 @@ class ViewController: UIViewController {
 	}
 
 	private func loadBatch() {
-		let logger = Logger(subsystem: "Batch Loader", category: "Cards")
-		logger.debug("Creating stack of cards..")
-		loadingBatch = true
-		batchesLoaded += 1
-		
-		var newCards = [PhotoCard]()
-		/// Defines number of cards to show. CSN
-		for _ in 0..<Self.cardsPerStack {
-			newCards.append(PhotoCard())
-		}
-		
-		photosController.loadRandomPhotos(for: newCards) {
+		Task {
+			let logger = Logger(subsystem: "Batch Loader", category: "Cards")
+			logger.debug("Creating stack of cards..")
+			loadingBatch = true
+			batchesLoaded += 1
+
+			var newCards = [PhotoCard]()
+			/// Defines number of cards to show. CSN
+			for _ in 0..<Self.cardsPerStack {
+				newCards.append(PhotoCard())
+			}
+
+			do {
+				try await photosController.loadRandomPhotos(for: newCards)
+			} catch let error as PhotosController.PhotoError {
+				await MainActor.run {
+					self.didFail(error: error)
+				}
+			}
+
 			for card in newCards {
 				card.id = self.cards.count
 				self.cards.append(card)
 				self.cardStack.appendCards(atIndices: [card.id])
 			}
-			
+
 			if self.loadingBatch {
-				UIView.animate(withDuration: 0.3, delay: 0.3) {
-					self.cardStack.alpha = 1
+				await MainActor.run {
+					UIView.animate(withDuration: 0.3, delay: 0.3) {
+						self.cardStack.alpha = 1
+					}
+					self.loadingBatch = false
+					self.swipedAll = false
+					self.updateCurrentItem()
 				}
-				self.loadingBatch = false
-				self.swipedAll = false
-				self.updateCurrentItem()
 			}
 		}
 	}
@@ -211,6 +221,7 @@ class ViewController: UIViewController {
 // MARK: Data Source + Delegates
 
 extension ViewController: PhotosController.PhotoLoadDelegate {
+	@MainActor
 	func didFail(error: PhotosController.PhotoError) {
 		let logger = Logger(subsystem: "didFail", category: "PhotoController")
 		logger.critical("PhotoController Error: \(error.localizedDescription)")

@@ -14,7 +14,7 @@ import Sentry
 class PhotosController {
 
 	protocol PhotoLoadDelegate: AnyObject {
-		func didFail(error: PhotoError)
+		@MainActor func didFail(error: PhotoError)
 	}
 	
 	enum PhotoError: Error {
@@ -262,12 +262,16 @@ class PhotosController {
 					}
 				}
 			}
-			
-			DispatchQueue.main.async {
-				if !success {
-					self.delegate?.didFail(error: .failedToDelete)
+
+			if !success {
+				Task {
+					await MainActor.run {
+						self.delegate?.didFail(error: .failedToDelete)
+					}
 				}
-				
+			}
+
+			DispatchQueue.main.async {
 				callback(success)
 			}
 		}
