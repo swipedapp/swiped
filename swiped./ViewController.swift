@@ -211,16 +211,6 @@ class ViewController: UIViewController {
 // MARK: Data Source + Delegates
 
 extension ViewController: PhotosController.PhotoLoadDelegate {
-	func didLoadThumbnail(for card: PhotoCard, image: UIImage) {
-		card.thumbnail = image
-	}
-	
-	func didLoadFullImage(for card: PhotoCard, image: UIImage) {
-		card.fullImage = image
-		
-		updateCurrentItem()
-	}
-	
 	func didFail(error: PhotosController.PhotoError) {
 		let logger = Logger(subsystem: "didFail", category: "PhotoController")
 		logger.critical("PhotoController Error: \(error.localizedDescription)")

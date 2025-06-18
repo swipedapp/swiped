@@ -12,10 +12,8 @@ import os
 import Sentry
 
 class PhotosController {
-	
+
 	protocol PhotoLoadDelegate: AnyObject {
-		func didLoadThumbnail(for card: PhotoCard, image: UIImage)
-		func didLoadFullImage(for card: PhotoCard, image: UIImage)
 		func didFail(error: PhotoError)
 	}
 	
@@ -151,36 +149,29 @@ class PhotosController {
 		return cards
 	}
 
-	func loadRandomPhotos(for cards: [PhotoCard], callback: @escaping () -> Void) {
-		let logger = Logger(subsystem: "Photos Loader", category: "PhotoController")
-		logger.debug("Loading photos..")
-		// Request permission to access photo library
-		PHPhotoLibrary.requestAuthorization { status in
-			switch status {
-			case .authorized, .limited:
-				Task {
-					do {
-						try await self.fetchRandomPhotos(for: cards)
+	func loadRandomPhotos(for cards: [PhotoCard]) async throws {
+		try await withCheckedThrowingContinuation { continuation in
+			let logger = Logger(subsystem: "Photos Loader", category: "PhotoController")
+			logger.debug("Loading photos..")
+			// Request permission to access photo library
 
-						await MainActor.run {
-							callback()
-						}
-					} catch {
-						SentrySDK.capture(error: error)
-						logger.critical("Failed to load photos. \(error)")
-
-						await MainActor.run {
-							if let error = error as? PhotoError {
-								self.delegate?.didFail(error: error)
-							}
+			PHPhotoLibrary.requestAuthorization { status in
+				switch status {
+				case .authorized, .limited:
+					Task {
+						do {
+							try await self.fetchRandomPhotos(for: cards)
+							continuation.resume()
+						} catch {
+							SentrySDK.capture(error: error)
+							logger.critical("Failed to load photos. \(error)")
+							continuation.resume(throwing: PhotoError.noAccessToPhotoLibrary)
 						}
 					}
-				}
 
-			default:
-				DispatchQueue.main.async {
+				default:
 					SentrySDK.capture(error: PhotoError.noAccessToPhotoLibrary)
-					self.delegate?.didFail(error: .noAccessToPhotoLibrary)
+					continuation.resume(throwing: PhotoError.noAccessToPhotoLibrary)
 				}
 			}
 		}
@@ -236,9 +227,9 @@ class PhotosController {
 			photo.size = size
 
 			Self.loadAssetImages(asset: asset, thumbnail: { image in
-				self.delegate?.didLoadThumbnail(for: card, image: image)
+				card.thumbnail = image
 			}, fullImage: { image in
-				self.delegate?.didLoadFullImage(for: card, image: image)
+				card.fullImage = image
 			})
 		}
 	}
