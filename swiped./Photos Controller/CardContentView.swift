@@ -76,23 +76,29 @@ struct CardContentView: View {
 				.padding(.horizontal, 25)
 				.padding(.vertical, 30)
 				.scaleEffect(scale)
-#if INTERNAL
-				// INTERNAL FUNCTION: Library view - not ready yet
 				.gesture(MagnifyGesture()
 					.onChanged({ value in
 						isScaling = true
 						scale = value.magnification
-
+#if INTERNAL
+						// INTERNAL FUNCTION: Library View
 						// Start loading early
 						if scale < 0.9 && !libraryViewReady {
 							Task {
 								await getLibraryViewPhotos()
 							}
 						}
+#endif
+						
 					})
 					.onEnded({ value in
 						if libraryViewReady {
+#if INTERNAL
+							// INTERNAL FUNCTION: Library View
 							openLibraryView()
+							
+#endif
+							
 						} else if scale > 1.1 {
 							fullScreenOpen = true
 						}
@@ -106,10 +112,14 @@ struct CardContentView: View {
 					.accessibilityZoomAction { action in
 						switch action.direction {
 						case .zoomOut:
+#if INTERNAL
+							// INTERNAL FUNCTION: Library View
 							Task {
 								await getLibraryViewPhotos()
 								openLibraryView()
 							}
+#endif
+							
 
 						case .zoomIn:
 							fullScreenOpen = true
@@ -119,7 +129,6 @@ struct CardContentView: View {
 						isScaling = true
 						fullScreenOpen = true
 					}
-#endif
 			}
 		}
 			.onChange(of: libraryViewReady) { oldValue, newValue in

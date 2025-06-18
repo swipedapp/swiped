@@ -417,40 +417,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 	}
 	
 	func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
-#if INTERNAL
-		// INTERNAL FUNCTION: Use our rewritten full screen view
-		return
-#endif
-
-		let logger = Logger(subsystem: "Quick Look", category: "Cards")
-		do {
-			let card = cards[index]
-			if let asset = card.asset {
-				if asset.mediaType == .video {
-					let playerViewController = AVPlayerViewController()
-					present(playerViewController, animated: true)
-					photosController.getVideoPlayer(asset: asset) { player in
-						playerViewController.player = player
-						try? AVAudioSession.sharedInstance().setCategory(.playback)
-						player.play()
-					}
-				} else {
-					if let data = card.fullImage?.pngData() {
-						let temp = FileManager.default.temporaryDirectory.appendingPathComponent("Photo.png")
-						try data.write(to: temp)
-						previewItem = temp
-						
-						let quickLook = QLPreviewController()
-						quickLook.delegate = self
-						quickLook.dataSource = self
-						present(quickLook, animated: true)
-					}
-				}
-			}
-		} catch {
-			SentrySDK.capture(error: error)
-			logger.critical("Could not present quick look: \(error.localizedDescription)")
-		}
+	// Deprecated in v2 in favor of a custom quick look view. See CardContentView.swift for replacement or see 06ba959 for former code. 
+	return
 	}
 	
 	func didTapButton(action: ActionButtonsView.Action) {
