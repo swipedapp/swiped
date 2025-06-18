@@ -11,6 +11,7 @@ class CardInfo: ObservableObject {
 	@Published var summary = false
 	@Published var position = 0
 	@Published var card: PhotoCard?
+	@Published var appReady = false
 
 	init(summary: Bool = false) {
 		self.summary = summary

@@ -12,6 +12,8 @@ struct SplashView: View {
 
 	@State private var running = false
 
+	@EnvironmentObject private var cardInfo: CardInfo
+
 	var body: some View {
 		Color.black
 			.overlay {
@@ -35,7 +37,7 @@ struct SplashView: View {
 					KeyframeTrack(\.self) {
 						SpringKeyframe(0.0, duration: 1.0, spring: .snappy, startVelocity: 0)
 						SpringKeyframe(1.0, duration: 1.0, spring: .snappy, startVelocity: 10)
-						SpringKeyframe(1.0, duration: 2.0, spring: .snappy, startVelocity: 0)
+						SpringKeyframe(1.0, duration: .infinity, spring: .snappy, startVelocity: 0)
 					}
 				}
 					.ignoresSafeArea(.all, edges: .all)
@@ -51,7 +53,7 @@ struct SplashView: View {
 					}
 				}
 			}
-			.opacity(running ? 1 : 0)
+			.opacity(running || !cardInfo.appReady ? 1 : 0)
 	}
 }
 

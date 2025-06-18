@@ -137,6 +137,7 @@ class ViewController: UIViewController {
 					}
 					self.loadingBatch = false
 					self.swipedAll = false
+					self.cardInfo.appReady = true
 					self.updateCurrentItem()
 				}
 			}
