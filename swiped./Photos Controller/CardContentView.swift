@@ -34,23 +34,26 @@ struct CardContentView: View {
 
 	var body: some View {
 		let image = card.fullImage ?? card.thumbnail ?? UIImage()
-		let background = isScaling ? Color(uiColor: .systemBackground) : Color.clear
+		let background = isScaling || libraryViewOpen || fullScreenOpen
+			? Color(uiColor: .systemBackground)
+			: Color.clear
 
 		GeometryReader { geometry in
 			background.overlay {
 				ZStack {
-					//RoundedRectangle(cornerRadius: 8, style: .continuous)
-						//.fill(.primary)
-
-					Image(uiImage: image)
+					let imageView = Image(uiImage: image)
 						.resizable()
-						.scaledToFill()
+					let imageViewScaled = image.size.width > image.size.height
+						? AnyView(imageView.scaledToFit())
+						: AnyView(imageView.scaledToFill())
+
+					imageViewScaled
+						.clipped()
 						.frame(width: max(geometry.size.width - 50, 0),
 									 height: max(geometry.size.height - 60, 0),
 									 alignment: .center)
-						.background(.black)
 						.aspectRatio(contentMode: image.size.width > image.size.height ? .fit : .fill)
-						.clipped()
+						.background(.black)
 						.clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
 						.matchedTransitionSource(id: "CardToLibraryView", in: animation)
 
