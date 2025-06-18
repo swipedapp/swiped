@@ -80,12 +80,13 @@ struct ActionButtonsView: View {
 				}
 			}
 			.padding(4)
-			.frame(width: showLabels ? 60 : 44,
-						 height: showLabels ? 50 : 44)
+			.frame(width: showLabels ? 80 : 60,
+						 height: showLabels ? 65 : 60)
 		})
-		.accessibilityLabel(text)
-		.buttonStyle(.glass)
-		.glassEffectID(1, in: namespace)
+			.tint(.primary)
+			.accessibilityLabel(text)
+			.glassEffect(.regular.interactive())
+			.glassEffectID(1, in: namespace)
 	}
 
 	@ViewBuilder
@@ -144,7 +145,7 @@ struct ActionButtonsView: View {
 										 effect: .drawOff)
 			}
 		}
-			.padding(.horizontal, 10)
+			.padding(.horizontal, showLabels ? 10 : 20)
 			.padding(.bottom, showLabels ? 0 : 5)
 			.glassEffectUnion(id: 1, namespace: namespace)
 			.sheet(isPresented: $showCher) {
