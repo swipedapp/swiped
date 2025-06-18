@@ -59,10 +59,10 @@ struct MainView: View {
 			}
 		}
 		.onAppear {
-			self.trigger += 1
+			trigger += 1
 		}
 		.onChange(of: cardInfo.summary) { oldValue, newValue in
-			self.trigger += 1
+			trigger += 1
 		}
 	}
 	

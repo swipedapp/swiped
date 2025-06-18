@@ -51,7 +51,7 @@ struct SettingsIconView: View {
 						NavigationLink {
 							SettingsIconView(collection: collection)
 						} label: {
-							self.button(icon: icon)
+							button(icon: icon)
 						}
 					} else {
 						Button(action: {
@@ -61,7 +61,7 @@ struct SettingsIconView: View {
 								UIApplication.shared.setAlternateIconName(icon.name)
 							}
 						}, label: {
-							self.button(icon: icon)
+							button(icon: icon)
 						})
 					}
 					

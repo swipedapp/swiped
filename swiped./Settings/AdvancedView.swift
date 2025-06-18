@@ -35,9 +35,9 @@ struct AdvancedView: View {
 	
 	var showSupportAlert: Binding<Bool> {
 		return Binding(get: {
-			return self.supportAlertLastVersion != self.version
+			return supportAlertLastVersion != version
 		}, set: { value, _ in
-			self.supportAlertLastVersion = value ? "" : self.version
+			supportAlertLastVersion = value ? "" : version
 		})
 	}
 	
@@ -113,25 +113,25 @@ struct AdvancedView: View {
 				switch accountStatus {
 				case .available:
 					isSyncOK = true
-					self.cloudKitStatus = "Linked with iCloud"
+					cloudKitStatus = "Linked with iCloud"
 				case .noAccount:
 					isSyncOK = false
-					self.cloudKitStatus = "Disabled"
+					cloudKitStatus = "Disabled"
 				case .restricted:
 					isSyncOK = false
-					self.cloudKitStatus = "Restricted"
+					cloudKitStatus = "Restricted"
 				case .couldNotDetermine:
 					isSyncOK = false
 					SentrySDK.capture(message: "iCloud status: Could not determine")
-					self.cloudKitStatus = "Could not determine"
+					cloudKitStatus = "Could not determine"
 				case .temporarilyUnavailable:
 					isSyncOK = false
 					SentrySDK.capture(message: "iCloud status: Temporarily unavailable")
-					self.cloudKitStatus = "iCloud Unavailable"
+					cloudKitStatus = "iCloud Unavailable"
 				@unknown default:
 					isSyncOK = false
 					SentrySDK.capture(message: "iCloud status: Unknown")
-					self.cloudKitStatus = "Could not determine"
+					cloudKitStatus = "Could not determine"
 				}
 			}
 		}

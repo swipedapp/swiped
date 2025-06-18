@@ -119,15 +119,15 @@ struct SettingsView: View {
 						Task {
 							let db = DatabaseController(modelContainer: modelContext.container)
 							await db.reset()
-							self.swipeDownCount = 0
-							self.launches = 0
+							swipeDownCount = 0
+							launches = 0
 						}
 					}
 					Button("Cancel", role: .cancel) {}
 				})
 		}
 		.onAppear {
-			self.swipeDownCount += 1
+			swipeDownCount += 1
 		}
 	}
 	

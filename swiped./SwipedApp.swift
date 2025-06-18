@@ -82,7 +82,7 @@ struct SwipedApp: App {
 				MainView()
 					.onAppear {
 						Task {
-							self.needsMigration = await db.needsMigration()
+							needsMigration = await db.needsMigration()
 						}
 					}
 					.sheet(isPresented: $needsMigration, content: {

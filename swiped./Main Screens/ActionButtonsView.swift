@@ -60,7 +60,7 @@ struct ActionButtonsView: View {
 			if action == .share {
 				showCher = true
 			} else {
-				self.delegate?.didTapButton(action: action)
+				delegate?.didTapButton(action: action)
 			}
 
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

@@ -394,7 +394,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 		
 		if batchesLoaded == 4 && !UserDefaults.standard.bool(forKey: "requestedReview") {
 			UserDefaults.standard.set(true, forKey: "requestedReview")
-			AppStore.requestReview(in: self.view.window!.windowScene!)
+			AppStore.requestReview(in: view.window!.windowScene!)
 		}
 		
 		// Release all but the last card from memory
