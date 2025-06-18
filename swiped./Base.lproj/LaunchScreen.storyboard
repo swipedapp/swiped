@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24093.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="iPad13_0rounded" orientation="portrait" layout="fullscreen" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24053.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -12,24 +12,22 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1032" height="1376"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="swippy" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vdg-qF-tgb">
-                                <rect key="frame" x="0.0" y="338.66666666666669" width="393" height="175.00000000000006"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="logo_solid.png" translatesAutoresizingMaskIntoConstraints="NO" id="i80-O0-kDP">
+                                <rect key="frame" x="404" y="576" width="224" height="224"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="175" id="xYd-Au-G44"/>
+                                    <constraint firstAttribute="height" constant="224" id="giI-v3-Q3c"/>
+                                    <constraint firstAttribute="width" constant="224" id="nGM-kt-IxB"/>
                                 </constraints>
-                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Vdg-qF-tgb" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="6xA-l1-OcZ"/>
-                            <constraint firstItem="Vdg-qF-tgb" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="cT5-eW-ZCD"/>
-                            <constraint firstAttribute="trailing" secondItem="Vdg-qF-tgb" secondAttribute="trailing" id="yqH-Yu-AtP"/>
+                            <constraint firstItem="i80-O0-kDP" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="EMm-7h-oO2"/>
+                            <constraint firstItem="i80-O0-kDP" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="e7b-mw-56y"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -39,6 +37,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="swippy" width="1920" height="1080"/>
+        <image name="logo_solid.png" width="2048" height="2048"/>
     </resources>
 </document>

@@ -264,7 +264,9 @@ class PhotosController {
 						photo.choice = .skip
 						
 						Task {
+							// Disabled in showcase mode
 							await self.db.addPhoto(photo: photo)
+							
 						}
 					}
 				}

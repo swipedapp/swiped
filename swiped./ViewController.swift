@@ -192,7 +192,7 @@ class ViewController: UIViewController {
 	
 	private func fetchAlert() {
 		let logger = Logger(subsystem: "Fetch Alert", category: "Initialization")
-		let url = URL(string: "https://swiped.pics/api/v1.2/conf.json")!
+		let url = URL(string: "https://swiped.pics/api/v2/conf.json")!
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
 			if let error = error {
 				SentrySDK.capture(error: error)
@@ -329,7 +329,9 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 		logger.debug("Swiped all cards")
 
 		swipedAll = true
-
+		
+#if !SHOWCASE
+		// Disabled in showcase mode
 		photosController.delete(cards: toDelete) { success in
 			if !success {
 				Task {
@@ -344,6 +346,8 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 			
 			self.toDelete.removeAll()
 		}
+#endif
+	
 		
 		cardStack.isUserInteractionEnabled = false
 		
@@ -396,7 +400,10 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 		photo.swipeDate = Date()
 		
 		Task {
+#if !SHOWCASE
+			// Disabled in showcase mode
 			await self.db.addPhoto(photo: photo)
+#endif
 		}
 		
 		if direction == .up {
