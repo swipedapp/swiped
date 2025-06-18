@@ -85,6 +85,9 @@ struct SwipedApp: App {
 							needsMigration = await db.needsMigration()
 						}
 					}
+					.overlay {
+						SplashView()
+					}
 					.sheet(isPresented: $needsMigration, content: {
 						MigrationUI()
 							.onAppear {
