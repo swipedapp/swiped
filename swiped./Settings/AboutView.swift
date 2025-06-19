@@ -40,10 +40,11 @@ struct AboutView: View {
 								VStack(alignment: .center) {
 									Text("SWIPED\(Text(".").foregroundColor(Color("brandGreen")))")
 										.foregroundColor(.white)
-										.font(.custom("Extended-Bold", size: 50))
-#if !INTERNAL
+										.font(.custom("LoosExtended-Bold", size: 50))
 									Text("Version \(version) (\(build))")
 										.foregroundColor(.white).opacity(0.7).font(Fonts.summaryMedium)
+#if INTERNAL
+										.hidden()
 #endif
 								}
 								Spacer()

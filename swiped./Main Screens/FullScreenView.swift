@@ -25,57 +25,65 @@ struct FullScreenView: View {
 	@State private var player: AVPlayer?
 
 	var body: some View {
-		if let asset = card.asset,
-			 asset.mediaType == .video {
-			VideoPlayer(player: player)
+		let image = card.fullImage ?? card.thumbnail ?? UIImage()
+
+		GeometryReader { geometry in
+			let imageView = Image(uiImage: image)
+				.resizable()
+				.scaledToFit()
+				.frame(width: geometry.size.width,
+							 height: geometry.size.height,
+							 alignment: .center)
+				.aspectRatio(contentMode: .fit)
 				.ignoresSafeArea(.all, edges: .all)
 				.background(.black)
-				.presentationBackground(.black)
-				.task {
-					// Get the player
-					photosController.getVideoPlayer(asset: asset) { player in
-						self.player = player
-						try? AVAudioSession.sharedInstance().setCategory(.playback)
-						player.play()
-					}
-				}
-				.onDisappear {
-					// Stop playing
-					player?.replaceCurrentItem(with: nil)
-				}
-		} else {
-			let image = card.fullImage ?? card.thumbnail ?? UIImage()
 
-			GeometryReader { geometry in
+			let progressView = ProgressView()
+				.controlSize(.large)
+				.tint(.white)
+				.overlayShadow()
+
+			if let asset = card.asset,
+				 asset.mediaType == .video {
+				VideoPlayer(player: player)
+					.ignoresSafeArea(.all, edges: .all)
+					.background(.black)
+					.presentationBackground(.black)
+					.task {
+						// Get the player
+						if let player = try? await photosController.getVideoPlayer(asset: asset) {
+							self.player = player
+							try? AVAudioSession.sharedInstance().setCategory(.playback)
+							player.play()
+						}
+					}
+					.onDisappear {
+						// Stop playing
+						player?.replaceCurrentItem(with: nil)
+					}
+					.overlay {
+						if player == nil {
+							imageView
+							progressView
+						}
+					}
+			} else {
 				Zoomable {
 					ZStack {
-						Image(uiImage: image)
-							.resizable()
-							.scaledToFit()
-							.frame(width: geometry.size.width,
-										 height: geometry.size.height,
-										 alignment: .center)
-							.aspectRatio(contentMode: .fit)
-							.ignoresSafeArea(.all, edges: .all)
-							.background(.black)
+						imageView
 
 						if card.fullImage == nil {
-							ProgressView()
-								.controlSize(.large)
-								.tint(.white)
-								.shadow(color: .black.opacity(0.5),
-												radius: 2,
-												x: 0, y: 0)
+							progressView
 						}
 					}
 				}
-				.ignoresSafeArea(.all, edges: .all)
-				.background(.black)
+					.ignoresSafeArea(.all, edges: .all)
+					.background(.black)
 			}
-				.ignoresSafeArea(.all, edges: .all)
-				.background(.black)
-				.presentationBackground(.black)
 		}
+			.ignoresSafeArea(.all, edges: .all)
+			.background(.black)
+			.presentationBackground(.black)
 	}
 }
 
