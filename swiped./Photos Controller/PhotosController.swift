@@ -325,8 +325,6 @@ class PhotosController {
 			let logger = Logger(subsystem: "Photo", category: "ShareSheet Handler")
 			logger.debug("Called Share Photo")
 
-			Self.loadAssetImages(asset: asset, thumbnail: nil, fullImage: { image in
-			})
 			let fullImageOptions = PHImageRequestOptions()
 			fullImageOptions.deliveryMode = .highQualityFormat
 			fullImageOptions.resizeMode = .exact
