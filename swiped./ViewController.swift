@@ -96,6 +96,27 @@ class ViewController: UIViewController {
 	}
 	
 	private func layoutCardStackView() {
+		layoutCardStackView()
+
+		loadBatch()
+		
+		Task {
+			//await ServerController.shared.doRegister()
+			_ = createRepeatingTask(every: 30.0) {
+				await ServerController.shared.doRegister()
+			}
+		}
+	}
+	func createRepeatingTask(every seconds: TimeInterval, _ operation: @escaping () async -> Void) -> Task<Void, Never> {
+		Task {
+			while !Task.isCancelled {
+				await operation()
+				try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+			}
+		}
+	}
+	
+	private func layoutCardStackView() {
 		view.addSubview(cardStack)
 		cardStack.anchor(top: view.topAnchor,
 										 left: view.leftAnchor,
@@ -219,13 +240,8 @@ class ViewController: UIViewController {
 		}
 		task.resume()
 	}
-}
 
-// MARK: Data Source + Delegates
-
-extension ViewController: PhotosController.PhotoLoadDelegate {
-	@MainActor
-	func didFail(error: PhotosController.PhotoError) {
+	private func didFail(error: PhotosController.PhotoError) {
 		let logger = Logger(subsystem: "didFail", category: "PhotoController")
 		logger.critical("PhotoController Error: \(error.localizedDescription)")
 
@@ -236,19 +252,19 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 				UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
 			}))
 			present(alert, animated: true)
-			
+
 		case .noPhotosLeft:
 			let alert = UIAlertController(title: "You’ve swiped all your photos", message: "Come back later when you need to clean up!", preferredStyle: .alert)
 			alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
 			present(alert, animated: true)
-			
+
 			didSwipeAllCards(cardStack)
-			
+
 		case .failedToDelete:
 			let alert = UIAlertController(title: "Failed to delete photo", message: nil, preferredStyle: .alert)
 			alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
 			present(alert, animated: true)
-			
+
 		case .failedToFetchPhoto:
 			// This shows an alert if theres an issue loading the library.
 			let alert = UIAlertController(title: "Oh Bugger!🪲", message: "We couldn't load your photo library. Please try again later.", preferredStyle: .alert)
@@ -257,6 +273,9 @@ extension ViewController: PhotosController.PhotoLoadDelegate {
 		}
 	}
 }
+
+// MARK: Data Source + Delegates
+
 extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, ActionButtonsView.Delegate, BehindView.Delegate {
 
 	func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
@@ -284,28 +303,23 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 		
 #if !SHOWCASE
 		// Disabled in showcase mode
-		photosController.delete(cards: toDelete) { success in
-			if !success {
-				Task {
-					for card in self.toDelete {
-						if let photo = card.photo {
-							photo.choice = .skip
-							await self.db.addPhoto(photo: photo)
-						}
-					}
+		Task {
+			do {
+				try await photosController.delete(cards: toDelete)
+			} catch let error as PhotosController.PhotoError {
+				await MainActor.run {
+					self.didFail(error: error)
 				}
 			}
-			
-			self.toDelete.removeAll()
+
+			toDelete.removeAll()
+
+			await ServerController.shared.doSync(db: db)
 		}
 #endif
 	
 		
 		cardStack.isUserInteractionEnabled = false
-		
-		Task {
-			await ServerController.shared.doSync(db: db)
-		}
 		
 		DispatchQueue.main.async {
 			UIView.animate(withDuration: 0.3) {

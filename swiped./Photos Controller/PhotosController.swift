@@ -13,10 +13,6 @@ import Sentry
 
 class PhotosController {
 
-	protocol PhotoLoadDelegate: AnyObject {
-		@MainActor func didFail(error: PhotoError)
-	}
-	
 	enum PhotoError: Error {
 		case noAccessToPhotoLibrary
 		case noPhotosAvailable
@@ -24,8 +20,6 @@ class PhotosController {
 		case failedToFetchPhoto
 		case failedToDelete
 	}
-	
-	weak var delegate: PhotoLoadDelegate?
 	
 	var db: DatabaseController!
 
@@ -256,57 +250,46 @@ class PhotosController {
 		#endif
 	}
 
-	func delete(cards: [PhotoCard], callback: @escaping (Bool) -> Void) {
+	func delete(cards: [PhotoCard]) async throws {
 		let assets = cards.compactMap { $0.asset }
-		
-		PHPhotoLibrary.shared().performChanges {
-			PHAssetChangeRequest.deleteAssets(assets as NSFastEnumeration)
-		} completionHandler: { success, error in
-			if let error = error as? NSError {
-				if error.code != PHPhotosError.userCancelled.rawValue {
-					SentrySDK.capture(error: error)
-				}
 
-				os_log(.error, "⚠️ Could not delete photos. \(error)")
+		do {
+			try await PHPhotoLibrary.shared().performChanges {
+				PHAssetChangeRequest.deleteAssets(assets as NSFastEnumeration)
 			}
-			
-			if !success {
-				// Mark as skipped because the user likely pressed cancel
+		} catch {
+			os_log(.error, "⚠️ Could not delete photos. \(error)")
+			let isCancelled = (error as? PHPhotosError)?.code == PHPhotosError.userCancelled
+			if !isCancelled {
+				SentrySDK.capture(error: error)
+			}
+
+			// Mark as skipped because the user likely pressed cancel
+			Task {
 				for card in cards {
 					if let photo = card.photo {
 						photo.choice = .skip
-						
-						Task {
-							// Disabled in showcase mode
-							await self.db.addPhoto(photo: photo)
-							
-						}
+
+						// Disabled in showcase mode
+						await self.db.addPhoto(photo: photo)
 					}
 				}
 			}
 
-			if !success {
-				Task {
-					await MainActor.run {
-						self.delegate?.didFail(error: .failedToDelete)
-					}
-				}
-			}
-
-			DispatchQueue.main.async {
-				callback(success)
+			if !isCancelled {
+				throw PhotoError.failedToDelete
 			}
 		}
 	}
 	
-	func getVideoPlayer(asset: PHAsset, callback: @escaping (AVPlayer) -> Void) {
-		let fullVideoOptions = PHVideoRequestOptions()
-		fullVideoOptions.deliveryMode = .automatic
-		fullVideoOptions.isNetworkAccessAllowed = true
-		
-		PHCachingImageManager().requestPlayerItem(forVideo: asset, options: fullVideoOptions) { playerItem, args in
-			DispatchQueue.main.async {
-				callback(AVPlayer(playerItem: playerItem))
+	func getVideoPlayer(asset: PHAsset) async throws -> AVPlayer {
+		return try await withCheckedThrowingContinuation { continuation in
+			let fullVideoOptions = PHVideoRequestOptions()
+			fullVideoOptions.deliveryMode = .automatic
+			fullVideoOptions.isNetworkAccessAllowed = true
+
+			PHCachingImageManager().requestPlayerItem(forVideo: asset, options: fullVideoOptions) { playerItem, args in
+				continuation.resume(returning: AVPlayer(playerItem: playerItem))
 			}
 		}
 	}
