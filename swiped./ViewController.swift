@@ -69,13 +69,17 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		cardStack.translatesAutoresizingMaskIntoConstraints = false
 		cardStack.delegate = self
 		cardStack.dataSource = self
 		view.addSubview(cardStack)
-		cardStack.anchor(top: view.topAnchor,
-										 left: view.leftAnchor,
-										 bottom: view.bottomAnchor,
-										 right: view.rightAnchor)
+
+		NSLayoutConstraint.activate([
+			cardStack.topAnchor.constraint(equalTo: view.topAnchor),
+			cardStack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+			cardStack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			cardStack.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+		])
 		
 		Task {
 			try? await Task.sleep(for: .milliseconds(Int(SplashView.animationDuration * 1000)))

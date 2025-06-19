@@ -41,8 +41,7 @@ struct FullScreenView: View {
 			let progressView = ProgressView()
 				.controlSize(.large)
 				.tint(.white)
-				.shadow(color: .black, radius: 1, x: 0, y: 0)
-				.shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 0)
+				.overlayShadow()
 
 			if let asset = card.asset,
 				 asset.mediaType == .video {

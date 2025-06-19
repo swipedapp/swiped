@@ -68,7 +68,25 @@ struct MainView: View {
 	
 }
 
-#Preview {
+#Preview("Main") {
+	let cardInfo = CardInfo()
+	cardInfo.setCard(nil, position: 0, summary: false)
+
+	return MainView()
+		.environmentObject(cardInfo)
+		.environmentObject(SheetManager())
+}
+
+#Preview("Summary") {
+	let cardInfo = CardInfo()
+	cardInfo.setCard(nil, position: 0, summary: true)
+
+	return MainView()
+		.environmentObject(cardInfo)
+		.environmentObject(SheetManager())
+}
+
+#Preview("Animating") {
 	let cardInfo = CardInfo()
 	cardInfo.setCard(nil, position: ViewController.cardsPerStack, summary: false)
 
@@ -80,22 +98,4 @@ struct MainView: View {
 				cardInfo.setCard(nil, position: ViewController.cardsPerStack, summary: !cardInfo.summary)
 			}
 		}
-}
-
-#Preview {
-	let cardInfo = CardInfo()
-	cardInfo.setCard(nil, position: 0, summary: false)
-
-	return MainView()
-		.environmentObject(cardInfo)
-		.environmentObject(SheetManager())
-}
-
-#Preview {
-	let cardInfo = CardInfo()
-	cardInfo.setCard(nil, position: 0, summary: true)
-
-	return MainView()
-		.environmentObject(cardInfo)
-		.environmentObject(SheetManager())
 }
