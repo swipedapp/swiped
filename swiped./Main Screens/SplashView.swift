@@ -11,6 +11,7 @@ struct SplashView: View {
 	public static let animationDuration: CGFloat = 2.5
 
 	@State private var running = false
+	@State private var waiting = false
 
 	@EnvironmentObject private var cardInfo: CardInfo
 
@@ -43,17 +44,29 @@ struct SplashView: View {
 					.ignoresSafeArea(.all, edges: .all)
 			}
 			.drawingGroup()
+			.overlay {
+				if waiting {
+					ProgressView()
+						.tint(.white)
+						.offset(x: 0, y: 100)
+				}
+			}
 			.ignoresSafeArea(.all, edges: .all)
 			.onAppear {
 				running = true
 
 				Timer.scheduledTimer(withTimeInterval: Self.animationDuration, repeats: false) { _ in
 					withAnimation(.linear(duration: 0.3)) {
-						running = false
+						waiting = true
 					}
 				}
 			}
-			.opacity(running || !cardInfo.appReady ? 1 : 0)
+			.onChange(of: cardInfo.appReady, { oldValue, newValue in
+				if newValue {
+					running = false
+				}
+			})
+			.opacity(running ? 1 : 0)
 	}
 }
 

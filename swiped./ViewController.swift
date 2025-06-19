@@ -69,59 +69,33 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		fetchAlert()
-		//view.backgroundColor = UIColor.black
 		cardStack.delegate = self
 		cardStack.dataSource = self
-		photosController.delegate = self
-
-		layoutCardStackView()
-
-		loadBatch()
-		
-		Task {
-			//await ServerController.shared.doRegister()
-			_ = createRepeatingTask(every: 30.0) {
-				await ServerController.shared.doRegister()
-			}
-		}
-	}
-	func createRepeatingTask(every seconds: TimeInterval, _ operation: @escaping () async -> Void) -> Task<Void, Never> {
-		Task {
-			while !Task.isCancelled {
-				await operation()
-				try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
-			}
-		}
-	}
-	
-	private func layoutCardStackView() {
-		layoutCardStackView()
-
-		loadBatch()
-		
-		Task {
-			//await ServerController.shared.doRegister()
-			_ = createRepeatingTask(every: 30.0) {
-				await ServerController.shared.doRegister()
-			}
-		}
-	}
-	func createRepeatingTask(every seconds: TimeInterval, _ operation: @escaping () async -> Void) -> Task<Void, Never> {
-		Task {
-			while !Task.isCancelled {
-				await operation()
-				try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
-			}
-		}
-	}
-	
-	private func layoutCardStackView() {
 		view.addSubview(cardStack)
 		cardStack.anchor(top: view.topAnchor,
 										 left: view.leftAnchor,
 										 bottom: view.bottomAnchor,
 										 right: view.rightAnchor)
+		
+		Task {
+			try? await Task.sleep(for: .milliseconds(Int(SplashView.animationDuration * 1000)))
+			fetchAlert()
+			loadBatch()
+
+			//await ServerController.shared.doRegister()
+			_ = createRepeatingTask(every: 30.0) {
+				await ServerController.shared.doRegister()
+			}
+		}
+	}
+
+	func createRepeatingTask(every seconds: TimeInterval, _ operation: @escaping () async -> Void) -> Task<Void, Never> {
+		Task {
+			while !Task.isCancelled {
+				await operation()
+				try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+			}
+		}
 	}
 
 	private func loadBatch() {
