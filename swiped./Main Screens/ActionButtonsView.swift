@@ -97,8 +97,8 @@ struct ActionButtonsView: View {
 															animate: $shareAnimation,
 															effect: .drawOff)
 
-		if let asset = cardInfo.card?.asset,
-			 asset.mediaType == .image || asset.mediaType == .video {
+		if let photo = cardInfo.card?.photo,
+			 photo.type == .image || photo.type == .video {
 
 			if CherController.hasAnySources {
 				button

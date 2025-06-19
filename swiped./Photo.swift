@@ -24,7 +24,9 @@ class Photo {
 		case delete = 2
 		case skip = 3
 	}
-	
+
+	#Index<Photo>([\.id])
+
 	var id: String = ""
 	var size: Double = 0
 	var creationDate: Date?

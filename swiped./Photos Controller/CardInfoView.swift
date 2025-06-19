@@ -36,10 +36,10 @@ struct CardInfoView: View {
 	
 	var icon: String {
 		guard let photo = cardInfo.card?.photo else {
-			return ""
+			return "photo"
 		}
 
-		var icon = ""
+		var icon = "photo"
 
 		switch photo.type {
 		case .image:

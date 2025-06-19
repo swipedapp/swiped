@@ -32,10 +32,6 @@ actor DatabaseController {
 	}
 	
 	func addPhoto(photo: Photo) {
-		if let photo2 = getPhoto(id: photo.id) {
-			modelContext.delete(photo2)
-		}
-		
 		modelContext.insert(photo)
 		try! modelContext.save()
 	}
