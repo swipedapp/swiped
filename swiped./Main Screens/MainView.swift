@@ -41,7 +41,7 @@ struct MainView: View {
 					})
 						.background(.clear)
 						.opacity(cardInfo.summary ? -value : value)
-						.padding(.bottom, 56)
+						.padding(.bottom, 65)
 
 					VStack {
 						Spacer()
