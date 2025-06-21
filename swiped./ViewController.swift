@@ -147,8 +147,10 @@ class ViewController: UIViewController {
 	private func updateCurrentItem() {
 		if cards.count > 0 && !swipedAll {
 			let index = cardStack.topCardIndex ?? 0
-			cardInfo.setCard(cards[index], position: cardStack.swipedCards().count)
-			appState.setSummary(false)
+			withAnimation {
+				cardInfo.setCard(cards[index], position: cardStack.swipedCards().count)
+				appState.setSummary(false)
+			}
 		}
 	}
 	
@@ -305,7 +307,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 			UIView.animate(withDuration: 0.3) {
 				self.cardStack.alpha = 0
 			}
-			
+
 			self.appState.setSummary(true)
 		}
 	}
@@ -341,22 +343,17 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 		guard let photo = card.photo else {
 			return
 		}
-		
-		photo.choice = choice
-		photo.swipeDate = Date()
-		
+
+		withTransaction(Transaction()) {
+			photo.choice = choice
+			photo.swipeDate = Date()
+		}
+
 		Task {
 #if !SHOWCASE
 			// Disabled in showcase mode
 			await self.db.addPhoto(photo: photo)
 #endif
-		}
-		
-		if direction == .up {
-			if let image = card.fullImage ?? card.thumbnail {
-				let shareSheet = UIActivityViewController(activityItems: [image], applicationActivities: [])
-				present(shareSheet, animated: true)
-			}
 		}
 		
 		updateCurrentItem()

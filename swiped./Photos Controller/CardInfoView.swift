@@ -27,14 +27,31 @@ struct CardInfoView: View {
 			photosController.db = DatabaseController(modelContainer: modelContext.container)
 		}
 	}
-	
+
+	@State var isRaw = false
+	@State var fileName: String?
+
 	@State var showSettings = false
 
 	@State private var trigger = 0
 
 	@AppStorage("timestamps")
 	var timestamps = false
-	
+
+	private func updateCard() {
+		guard let asset = cardInfo.card?.asset else {
+			return
+		}
+
+		let resources = PHAssetResource.assetResources(for: asset)
+
+		isRaw = resources.contains(where: { UTType($0.uniformTypeIdentifier)?.conforms(to: UTType.rawImage) == true })
+
+		if let resource = resources.first {
+			fileName = resource.originalFilename
+		}
+	}
+
 	var icon: String {
 		guard let photo = cardInfo.card?.photo else {
 			return "photo"
@@ -152,15 +169,11 @@ struct CardInfoView: View {
 		}
 
 		if let asset = asset {
-			let resources = PHAssetResource.assetResources(for: asset)
-
-			if resources.contains(where: { UTType($0.uniformTypeIdentifier)?.conforms(to: UTType.rawImage) == true }) {
+			if isRaw {
 				types.append("RAW")
 			}
 
-			if let resource = resources.first {
-				let fileName = resource.originalFilename
-
+			if let fileName {
 				if fileName.starts(with: "telegram-") {
 					types.append("Saved from Telegram")
 				}
@@ -239,10 +252,7 @@ struct CardInfoView: View {
 							.accessibilityLabel("Edited")
 							.frame(width: 20, height: 20, alignment: .center)
 					}
-					let resources = PHAssetResource.assetResources(for: asset)
-					if let resource = resources.first {
-						let fileName = resource.originalFilename
-
+					if let fileName {
 						if !fileName.starts(with: "IMG_") && !asset.mediaSubtypes.contains(.screenRecording) {
 							Image(systemName: "square.and.arrow.down")
 								.accessibilityLabel("Imported")
@@ -291,6 +301,9 @@ struct CardInfoView: View {
 		.padding(.horizontal, 20)
 		.frame(height: 77)
 		.foregroundColor(.primary)
+		.onChange(of: cardInfo.card, { oldValue, newValue in
+			updateCard()
+		})
 		.sheet(isPresented: $showSettings) {
 			SettingsView()
 		}
