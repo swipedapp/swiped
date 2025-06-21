@@ -39,9 +39,9 @@ struct BehindView: SwiftUI.View {
 	}
 	
 	private static let fileSizeFormatter = ByteCountFormatter()
-	
-	@EnvironmentObject var cardInfo: CardInfo
-	
+
+	@EnvironmentObject var appState: AppState
+
 	@Environment(\.modelContext) var modelContext
 	
 	@State var totalKept = 0
@@ -65,12 +65,8 @@ struct BehindView: SwiftUI.View {
 				Text("\(Self.fileSizeFormatter.string(fromByteCount: spaceSaved)) saved")
 					.frame(maxWidth: .infinity, alignment: .leading)
 				HStack {
-					if #available(iOS 17.4, *) {
-						// Use the correct symbol for this. Just saving my ass from a blank symbol :sob:
-						Image(systemName: "medal.star.fill")
-					} else {
-						Image(systemName: "trophy.fill")
-					}
+					Image(systemName: "medal.star.fill")
+						.accessibilityHidden(true)
 
 					Text("\(swipeScore.formatted()) SwipeScore").font(Fonts.summaryMedium)
 						.frame(maxWidth: .infinity, alignment: .leading)
@@ -96,7 +92,7 @@ struct BehindView: SwiftUI.View {
 			.frame(maxWidth: 450)
 			.padding(.horizontal, 20)
 			.padding(.vertical, 40)
-			.onChange(of: cardInfo.summary, { oldValue, newValue in
+			.onChange(of: appState.summary, { oldValue, newValue in
 				if newValue {
 					Task {
 						let db = DatabaseController(modelContainer: modelContext.container)
@@ -111,9 +107,8 @@ struct BehindView: SwiftUI.View {
 }
 
 #Preview {
-	let info = CardInfo()
-	info.setCard(nil, position: 0, summary: true)
-	
+	let appState = AppState(summary: true)
+
 	return BehindView()
-		.environmentObject(info)
+		.environmentObject(appState)
 }

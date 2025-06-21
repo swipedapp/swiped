@@ -19,8 +19,9 @@ struct CardInfoView: View {
 
 	var logo = false
 
+	@EnvironmentObject var appState: AppState
 	@EnvironmentObject var cardInfo: CardInfo
-	
+
 	@Environment(\.modelContext) var modelContext {
 		didSet {
 			photosController.db = DatabaseController(modelContainer: modelContext.container)
@@ -202,7 +203,7 @@ struct CardInfoView: View {
 	@ViewBuilder
 	var subhead: some View {
 		if logo {
-			if cardInfo.summary {
+			if appState.summary {
 				Text("Summary")
 			} else {
 				Text(" ")
@@ -298,9 +299,11 @@ struct CardInfoView: View {
 }
 
 #Preview {
+	let appState = AppState(summary: false)
 	let cardInfo = CardInfo()
 	cardInfo.card = PhotoCard()
 	
 	return CardInfoView()
+		.environmentObject(appState)
 		.environmentObject(cardInfo)
 }

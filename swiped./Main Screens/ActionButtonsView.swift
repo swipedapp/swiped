@@ -161,7 +161,7 @@ struct ActionButtonsView: View {
 
 #Preview {
 	let cardInfo = CardInfo()
-	cardInfo.setCard(nil, position: 0, summary: false)
+	cardInfo.setCard(nil, position: 0)
 
 	return ActionButtonsView()
 		.environmentObject(cardInfo)

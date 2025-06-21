@@ -51,6 +51,7 @@ class ViewController: UIViewController {
 
 	// add the sheet manager
 	var sheetManager: SheetManager!
+	var appState: AppState!
 	var cardInfo: CardInfo!
 
 	private var db: DatabaseController!
@@ -136,7 +137,7 @@ class ViewController: UIViewController {
 					}
 					self.loadingBatch = false
 					self.swipedAll = false
-					self.cardInfo.appReady = true
+					self.appState.appReady = true
 					self.updateCurrentItem()
 				}
 			}
@@ -146,7 +147,8 @@ class ViewController: UIViewController {
 	private func updateCurrentItem() {
 		if cards.count > 0 && !swipedAll {
 			let index = cardStack.topCardIndex ?? 0
-			cardInfo.setCard(cards[index], position: cardStack.swipedCards().count, summary: false)
+			cardInfo.setCard(cards[index], position: cardStack.swipedCards().count)
+			appState.setSummary(false)
 		}
 	}
 	
@@ -304,7 +306,7 @@ extension ViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, Acti
 				self.cardStack.alpha = 0
 			}
 			
-			self.cardInfo.setSummary(true)
+			self.appState.setSummary(true)
 		}
 	}
 	
@@ -431,6 +433,7 @@ struct MainViewControllerView: UIViewControllerRepresentable {
 
 	@EnvironmentObject private var sheetManager: SheetManager
 
+	@EnvironmentObject private var appState: AppState
 	@EnvironmentObject private var cardInfo: CardInfo
 
 	let onCoordinatorCreated: (Coordinator) -> Void
@@ -449,6 +452,7 @@ struct MainViewControllerView: UIViewControllerRepresentable {
 
 	func updateUIViewController(_ viewController: ViewController, context: Context) {
 		viewController.sheetManager = sheetManager
+		viewController.appState = appState
 		viewController.cardInfo = cardInfo
 	}
 

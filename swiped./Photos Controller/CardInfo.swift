@@ -8,26 +8,13 @@
 import SwiftUI
 
 class CardInfo: ObservableObject {
-	@Published var summary = false
 	@Published var position = 0
 	@Published var card: PhotoCard?
-	@Published var appReady = false
 
-	init(summary: Bool = false) {
-		self.summary = summary
-	}
-
-	func setCard(_ card: PhotoCard?, position: Int, summary: Bool) {
+	func setCard(_ card: PhotoCard?, position: Int) {
 		withAnimation {
 			self.card = card
 			self.position = position
-			self.summary = summary
-		}
-	}
-
-	func setSummary(_ summary: Bool) {
-		withAnimation {
-			self.summary = summary
 		}
 	}
 }

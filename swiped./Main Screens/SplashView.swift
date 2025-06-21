@@ -13,7 +13,7 @@ struct SplashView: View {
 	@State private var running = false
 	@State private var waiting = false
 
-	@EnvironmentObject private var cardInfo: CardInfo
+	@EnvironmentObject private var appState: AppState
 
 	var body: some View {
 		Color.black
@@ -61,7 +61,7 @@ struct SplashView: View {
 					}
 				}
 			}
-			.onChange(of: cardInfo.appReady, { oldValue, newValue in
+			.onChange(of: appState.appReady, { oldValue, newValue in
 				if newValue {
 					running = false
 				}

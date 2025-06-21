@@ -18,6 +18,7 @@ struct SwipedApp: App {
 
 	@State private var needsMigration = false
 
+	private let appState = AppState()
 	private let cardInfo = CardInfo()
 	// add the sheet manager
 	private let sheetManager = SheetManager()
@@ -97,6 +98,7 @@ struct SwipedApp: App {
 			}
 				.navigationViewStyle(.stack)
 		}
+			.environmentObject(appState)
 			.environmentObject(cardInfo)
 			.environmentObject(sheetManager)
 			.modelContainer(modelContainer)

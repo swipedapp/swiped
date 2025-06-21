@@ -13,8 +13,9 @@ struct MainView: View {
 		case start, middle, end
 	}
 
+	@EnvironmentObject var appState: AppState
 	@EnvironmentObject var cardInfo: CardInfo
-	
+
 	@EnvironmentObject var sheetManager: SheetManager
 	
 	@State private var trigger = 0
@@ -26,28 +27,28 @@ struct MainView: View {
 			VStack(spacing: 0) {
 				ZStack {
 					CardInfoView()
-						.opacity(cardInfo.card == nil || cardInfo.summary ? -value : value)
+						.opacity(cardInfo.card == nil || appState.summary ? -value : value)
 
 					CardInfoView(logo: true)
-						.opacity(cardInfo.card == nil || cardInfo.summary ? value : -value)
+						.opacity(cardInfo.card == nil || appState.summary ? value : -value)
 				}
 
 				ZStack {
 					BehindView(delegate: coordinator)
-						.opacity(cardInfo.summary ? value : -value)
+						.opacity(appState.summary ? value : -value)
 
 					MainViewControllerView(onCoordinatorCreated: { coordinator in
 						self.coordinator = coordinator
 					})
 						.background(.clear)
-						.opacity(cardInfo.summary ? -value : value)
+						.opacity(appState.summary ? -value : value)
 						.padding(.bottom, 65)
 
 					VStack {
 						Spacer()
 
 						ActionButtonsView(delegate: coordinator)
-							.opacity(cardInfo.summary ? -value : value)
+							.opacity(appState.summary ? -value : value)
 					}
 				}
 			}
@@ -61,7 +62,7 @@ struct MainView: View {
 		.onAppear {
 			trigger += 1
 		}
-		.onChange(of: cardInfo.summary) { oldValue, newValue in
+		.onChange(of: appState.summary) { oldValue, newValue in
 			trigger += 1
 		}
 	}
@@ -69,33 +70,39 @@ struct MainView: View {
 }
 
 #Preview("Main") {
+	let appState = AppState(summary: false)
 	let cardInfo = CardInfo()
-	cardInfo.setCard(nil, position: 0, summary: false)
+	cardInfo.setCard(nil, position: 0)
 
 	return MainView()
+		.environmentObject(appState)
 		.environmentObject(cardInfo)
 		.environmentObject(SheetManager())
 }
 
 #Preview("Summary") {
+	let appState = AppState(summary: true)
 	let cardInfo = CardInfo()
-	cardInfo.setCard(nil, position: 0, summary: true)
+	cardInfo.setCard(nil, position: 0)
 
 	return MainView()
+		.environmentObject(appState)
 		.environmentObject(cardInfo)
 		.environmentObject(SheetManager())
 }
 
 #Preview("Animating") {
+	let appState = AppState(summary: false)
 	let cardInfo = CardInfo()
-	cardInfo.setCard(nil, position: ViewController.cardsPerStack, summary: false)
+	cardInfo.setCard(nil, position: ViewController.cardsPerStack)
 
 	return MainView()
+		.environmentObject(appState)
 		.environmentObject(cardInfo)
 		.environmentObject(SheetManager())
 		.onAppear {
 			Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { _ in
-				cardInfo.setCard(nil, position: ViewController.cardsPerStack, summary: !cardInfo.summary)
+				appState.setSummary(!appState.summary)
 			}
 		}
 }
